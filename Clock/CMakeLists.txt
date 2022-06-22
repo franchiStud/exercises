@@ -15,7 +15,7 @@ qt_add_qml_module(appClock
     URI Clock
     VERSION 1.0
     QML_FILES main.qml Button.qml AnalogClock.qml DigitalClock.qml DateTxt.qml Clock.qml
-        SetButton.qml Head.qml Back.qml
+        SetButton.qml Head.qml Back.qml AlarmDateButton.qml
 )
 
 qt_add_resources(appClock "assets"

@@ -13,7 +13,7 @@ Window {
 
     //-------------------------------- elementi comuni a più view
     Head{
-        txt: view
+        txt: root.view
     }
 
     Back{ // presente in tutte le view tranne DeveClock
@@ -37,7 +37,7 @@ Window {
 
     //-------------------------------- view DeveClock
     Clock{
-        visible: view==="DeveClock" ? true : false
+        visible: root.view==="DeveClock" ? true : false
     }
 
     Button{ //pulsante timer
@@ -45,7 +45,7 @@ Window {
         x: 18
         state: "disabled"
         buttonTxt: "TIMER"
-        visible: view==="DeveClock" ? true : false
+        visible: root.view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
@@ -61,7 +61,7 @@ Window {
         x: 272
         state: "disabled"
         buttonTxt: "ALARM"
-        visible: view==="DeveClock" ? true : false
+        visible: root.view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
@@ -88,12 +88,26 @@ Window {
         y: 33
         x: 403
         source: "/assets/alarm-on-feedback.svg"
-        visible: view==="DeveClock" ? root.isThereAlarm : false
+        visible: root.view==="DeveClock" ? root.isThereAlarm : false
     }
     Image {
         y: 33
         x: 349
         source: "/assets/timer.svg"
-        visible: view==="DeveClock" ? root.isThereTimer : false
+        visible: root.view==="DeveClock" ? root.isThereTimer : false
+    }
+
+    //-------------------------------- view Alarm
+    AlarmDateButton{
+        visible: root.view==="Alarm" ? true : false
+        state: "selected"
+        buttonTxt: "Everyday"
+        x: 34
+    }
+    AlarmDateButton{
+        visible: root.view==="Alarm" ? true : false
+        state: "disabled"
+        buttonTxt: "Set date"
+        x: 254
     }
 }
