@@ -3,6 +3,7 @@ import QtQuick
 Image{
     source: "/assets/comp-clock-dial.svg"
     property bool alarmSet: false
+    property date currentDate: new Date()
     y: 210
     DateTxt{ //Label data
            x: parent.width/2
@@ -18,12 +19,7 @@ Image{
         x: cen.x+cen.width/2-4 //posizione calcolata rispetto al centro
         y: cen.y-119
         transformOrigin: Item.Bottom //rotazione calcolata in base ai minuti
-        rotation: new Date().getMinutes()*6
-        Timer{ //l'ora si aggiorna ogni 0.5 secondi
-            interval: 500; running: true; repeat: true;
-            onTriggered: {
-                parent.rotation=new Date().getMinutes()*6 }
-        }
+        rotation: currentDate.getMinutes()*6
     }
     Image{ //lancetta delle ore
         id: ore
@@ -33,24 +29,25 @@ Image{
         x: cen.x+cen.width/2-7 //posizione calcolata rispetto al centro
         y: cen.y-94
         transformOrigin: Item.Bottom
-        rotation: ( //calcolo dell'ora:
-                      new Date().getHours()>12 ?// se è più di mezzogiorno si sottrae 12 all'orario
-                       new Date().getHours()-12 :
-                       new Date().getHours())//altrimenti si lascia l'orario così com'è
-                  *30// si moltiplica per 30 (numero di gradi da cui "distano" tra di loro le ore)
-                  +30*(new Date().getMinutes()/60) //si somma ai minuti
-        Timer{ //l'ora si aggiorna ogni 0.5 secondi
-            interval: 500; running: true; repeat: true;
-            onTriggered: {
-                parent.rotation=(new Date().getHours()>12 ?
-                                     new Date().getHours()-12 :
-                                     new Date().getHours())
-                                *30
-                                +30*(new Date().getMinutes()/60)
-            }
-        }
+        rotation: (currentDate.getHours()>12 ?
+                      currentDate.getHours()-12 :
+                      currentDate.getHours())
+                 *30
+                 +30*(currentDate.getMinutes()/60)
     }
 
+    Timer{ //l'ora si aggiorna ogni 0.5 secondi
+        interval: 500; running: true; repeat: true;
+        onTriggered: {
+            currentDate=new Date();
+            ore.rotation=(currentDate.getHours()>12 ?
+                                 currentDate.getHours()-12 :
+                                 currentDate.getHours())
+                            *30
+                            +30*(currentDate.getMinutes()/60)
+            minuti.rotation=currentDate.getMinutes()*6
+        }
+    }
 
     Image{ //centro
         id: cen

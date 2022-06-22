@@ -32,13 +32,13 @@ Item{ //Label data
         }
         s+=new Date().getDate()
         switch(new Date().getDay()){
-            case 1: s+=", Monday "; break
-            case 2: s+=", Tuesday "; break
-            case 3: s+=", Wensday "; break
-            case 4: s+=", Thursday "; break
-            case 5: s+=", Friday "; break
-            case 6: s+=", Saturday "; break
-            case 0: s+=", Sunday "; break
+            case 1: s+=", Monday"; break
+            case 2: s+=", Tuesday"; break
+            case 3: s+=", Wednesday"; break
+            case 4: s+=", Thursday"; break
+            case 5: s+=", Friday"; break
+            case 6: s+=", Saturday"; break
+            case 0: s+=", Sunday"; break
         }
         return s;
     }
