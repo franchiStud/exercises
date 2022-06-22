@@ -42,11 +42,11 @@ Rectangle{
         font.pixelSize: 30
         y:292
         x:192
-        text: new Date().getHours()>12 ? "AM" : "PM"
+        text: new Date().getHours()>12 ? "PM" : "AM"
         Timer{
             interval: 500; running: true; repeat: true
             onTriggered: {
-                parent.text=new Date().getHours()>12 ? "AM" : "PM"
+                parent.text=new Date().getHours()>12 ? "PM" : "AM"
             }
         }
     }

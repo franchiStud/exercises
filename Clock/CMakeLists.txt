@@ -15,7 +15,7 @@ qt_add_qml_module(appClock
     URI Clock
     VERSION 1.0
     QML_FILES main.qml Button.qml AnalogClock.qml DigitalClock.qml DateTxt.qml Clock.qml
-        SetAlarm.qml
+        SetButton.qml Head.qml Back.qml
 )
 
 qt_add_resources(appClock "assets"
@@ -31,7 +31,7 @@ qt_add_resources(appClock "assets"
         assets/ic-mins-handle.svg assets/ic-tick-disabled.svg assets/ic-tick-hover.svg
         assets/ic-tick-selected.svg assets/switch-off-disable.svg assets/switch-off-selected.svg
         assets/switch-on-disable.svg assets/switch-on-disable2.svg assets/switch-on-selected.svg
-        assets/comp-clock-dial-setting-alarm-mode.svg assets/timer.svg
+        assets/comp-clock-dial-setting-alarm-mode.svg assets/timer.svg assets/btn-back-hover.svg
 )
 
 set_target_properties(appClock PROPERTIES

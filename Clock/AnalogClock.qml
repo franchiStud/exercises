@@ -1,17 +1,17 @@
 import QtQuick
 
-Image{
+Image {
     source: "/assets/comp-clock-dial.svg"
     property bool alarmSet: false
     property date currentDate: new Date()
     y: 210
-    DateTxt{ //Label data
+    DateTxt { //Label data
            x: parent.width/2
            y: -42
            visible: true
        }
 
-    Image{ //lancetta dei minuti
+    Image { //lancetta dei minuti
         id: minuti
         width: 8
         height: 130
@@ -20,8 +20,11 @@ Image{
         y: cen.y-119
         transformOrigin: Item.Bottom //rotazione calcolata in base ai minuti
         rotation: currentDate.getMinutes()*6
+        Behavior on rotation {
+            NumberAnimation{ duration: 200 }
+        }
     }
-    Image{ //lancetta delle ore
+    Image { //lancetta delle ore
         id: ore
         width: 14
         height: 105
@@ -34,9 +37,12 @@ Image{
                       currentDate.getHours())
                  *30
                  +30*(currentDate.getMinutes()/60)
+        Behavior on rotation {
+            NumberAnimation { duration: 200 }
+        }
     }
 
-    Timer{ //l'ora si aggiorna ogni 0.5 secondi
+    Timer { //l'ora si aggiorna ogni 0.5 secondi
         interval: 500; running: true; repeat: true;
         onTriggered: {
             currentDate=new Date();
@@ -49,7 +55,7 @@ Image{
         }
     }
 
-    Image{ //centro
+    Image { //centro
         id: cen
         anchors.centerIn: parent
         source: "/assets/ic-clock-hands_center.svg"

@@ -11,69 +11,79 @@ Window {
     color: "#151B2E"
     title: qsTr("DeveClock")
 
-    Item{ //Label titolo
-        x: 240
-        y: 58
-        Text{
-            anchors.centerIn: parent
-            id: head
-            text: root.view
-            font.pixelSize: 36
-            color: "#9FAAB0"
-            visible: true
+    //-------------------------------- elementi comuni a più view
+    Head{
+        txt: view
+    }
+
+    Back{ // presente in tutte le view tranne DeveClock
+        visible: root.view!=="DeveClock" ? true : false
+        state: "disabled"
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                var nextView = ""
+                switch (view){
+                    case "Timer": nextView="DeveClock"; break
+                    case "Alarm": nextView="DeveClock"; break
+                }
+                parent.state= "enabled"
+                deveClockTransition.thenDisable=parent
+                deveClockTransition.nextView=nextView
+                deveClockTransition.running=true
+            }
         }
     }
 
+    //-------------------------------- view DeveClock
     Clock{
         visible: view==="DeveClock" ? true : false
     }
 
-    Rectangle{ //linea (separa label "DeveClock" e label data)
-        x: 40
-        y: 116
-        width: 400
-        height: 1
-        color: "#9FAAB0"
-        visible: view==="DeveClock" ? true : false
-    }
-
     Button{ //pulsante timer
+        id: timerButton
         x: 18
-        y: 690
-        state: "stTimer"
+        state: "disabled"
+        buttonTxt: "TIMER"
         visible: view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
+                parent.state= "enabled"
+                deveClockTransition.thenDisable=parent
+                deveClockTransition.nextView="Timer"
+                deveClockTransition.running=true
             }
         }
     }
     Button{ //pulsante allarme
+        id: alarmButton
         x: 272
-        y: 690
-        state: "stAlarm"
+        state: "disabled"
+        buttonTxt: "ALARM"
         visible: view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
+                parent.state= "enabled"
+                deveClockTransition.thenDisable=parent
+                deveClockTransition.nextView="Alarm"
+                deveClockTransition.running=true
             }
         }
     }
 
-    Image{
-        id: back
-        source: "/assets/btn-back-active.svg"
-        x: 28
-        y: 20
-        sourceSize.height: 80
-        visible: view!=="DeveClock" ? true : false
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-
-            }
+    Timer {
+        id: deveClockTransition
+        property string nextView
+        property var thenDisable
+        interval: 300; running: false; repeat: false
+        onTriggered: {
+            thenDisable.state="disabled"
+            root.view=nextView
         }
     }
+
     Image {
         y: 33
         x: 403

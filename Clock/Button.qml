@@ -1,7 +1,9 @@
 import QtQuick
 
 Rectangle { //pulsanti
-   id: button
+   id: root
+   property string buttonTxt
+   y: 690
    width: 190
    height: 64
    visible: true
@@ -9,27 +11,43 @@ Rectangle { //pulsanti
    border.width: 1
    radius: 32
    color: "transparent"
+   Behavior on color{
+       ColorAnimation {duration: 250}
+   }
+
    Text {
-        color: "#FCB647"
-        id: txt
-        anchors.centerIn: parent
-        font.family: "Buenos Aires"
-        font.pixelSize: 30
-        font.letterSpacing: 1.8
+       id: txt
+       color: "#FCB647"
+       text: root.buttonTxt
+       anchors.centerIn: parent
+       font.family: "Buenos Aires"
+       font.pixelSize: 30
+       font.letterSpacing: 1.8
+       Behavior on color{
+           ColorAnimation {duration: 250}
+       }
     }
     states: [
-        State { //stato del pulsante timer
-            name: "stTimer"
+        State {
+            name: "enabled"
+            PropertyChanges {
+                target: root
+                color: "#FCB647"
+            }
             PropertyChanges {
                 target: txt
-                text: "TIMER"
+                color: "#151B2E"
             }
         },
-        State { //stato del pulsante alarm
-            name: "stAlarm"
+        State {
+            name: "disabled"
+            PropertyChanges {
+                target: root
+                color: "#151B2E"
+            }
             PropertyChanges {
                 target: txt
-                text: "ALARM"
+                color: "#FCB647"
             }
         }
     ] //nel main ci sono due istanze di Button, una per timer e una per alarm
