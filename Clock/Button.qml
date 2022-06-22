@@ -1,14 +1,14 @@
 import QtQuick
 
 Rectangle { //pulsanti
-    id: button
-    width: 190
-    height: 64
-    visible: true
-    border.color: "#FCB647"
-    border.width: 1
-    radius: 32
-    color: "transparent"
+   id: button
+   width: 190
+   height: 64
+   visible: true
+   border.color: "#FCB647"
+   border.width: 1
+   radius: 32
+   color: "transparent"
    Text {
         color: "#FCB647"
         id: txt

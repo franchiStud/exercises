@@ -1,6 +1,10 @@
 import QtQuick
 
 Window {
+    id: root
+    property bool isThereAlarm: false
+    property bool isThereTimer: false
+    property string view: "DeveClock"
     width: 480
     height: 800
     visible: true
@@ -13,39 +17,16 @@ Window {
         Text{
             anchors.centerIn: parent
             id: head
-            text: "DeveClock"
+            text: root.view
             font.pixelSize: 36
             color: "#9FAAB0"
             visible: true
         }
     }
 
-    AnalogClock{// orologio analogico
-        id: ac
-        visible: true
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                ac.visible=false
-                dc.visible=true
-            }
-        }
+    Clock{
+        visible: view==="DeveClock" ? true : false
     }
-
-    DigitalClock{// orologio digitale
-        id: dc
-        visible: false
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                dc.visible=false
-                ac.visible=true
-            }
-        }
-    }
-
-
-
 
     Rectangle{ //linea (separa label "DeveClock" e label data)
         x: 40
@@ -53,19 +34,17 @@ Window {
         width: 400
         height: 1
         color: "#9FAAB0"
-        visible: true
+        visible: view==="DeveClock" ? true : false
     }
 
     Button{ //pulsante timer
         x: 18
         y: 690
         state: "stTimer"
-        visible: true
+        visible: view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                head.text="Timer"
-                back.visible=true
             }
         }
     }
@@ -73,12 +52,10 @@ Window {
         x: 272
         y: 690
         state: "stAlarm"
-        visible: true
+        visible: view==="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                head.text="Alarm"
-                back.visible= true
             }
         }
     }
@@ -89,12 +66,24 @@ Window {
         x: 28
         y: 20
         sourceSize.height: 80
-        visible: false
+        visible: view!=="DeveClock" ? true : false
         MouseArea{
             anchors.fill: parent
             onClicked: {
 
             }
         }
+    }
+    Image {
+        y: 33
+        x: 403
+        source: "/assets/alarm-on-feedback.svg"
+        visible: view==="DeveClock" ? root.isThereAlarm : false
+    }
+    Image {
+        y: 33
+        x: 349
+        source: "/assets/timer.svg"
+        visible: view==="DeveClock" ? root.isThereTimer : false
     }
 }
