@@ -9,7 +9,6 @@ find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(appClock
     main.cpp
-    res.qrc
 )
 
 qt_add_qml_module(appClock
@@ -31,11 +30,7 @@ qt_add_resources(appClock "assets"
         assets/ic-mins-handle.svg assets/ic-tick-disabled.svg assets/ic-tick-hover.svg
         assets/ic-tick-selected.svg assets/switch-off-disable.svg assets/switch-off-selected.svg
         assets/switch-on-disable.svg assets/switch-on-disable2.svg assets/switch-on-selected.svg
-)
-
-qt_add_resources(appClock "images"
-    PREFIX "/"
-    FILES images/analog.png images/back.png
+        assets/comp-clock-dial-setting-alarm-mode.svg
 )
 
 set_target_properties(appClock PROPERTIES

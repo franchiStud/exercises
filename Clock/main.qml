@@ -71,7 +71,7 @@ Window {
 
     Image{
         id: back
-        source: "/images/back.png"
+        source: "/assets/btn-back-active.svg"
         x: 28
         y: 20
         sourceSize.height: 80
