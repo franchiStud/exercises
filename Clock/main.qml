@@ -88,6 +88,12 @@ Window {
             x: 403
             source: "/assets/alarm-on-feedback.svg"
             visible: root.isThereAlarm
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    view="Alarm clock list"
+                }
+            }
         }
 
         Image {
@@ -151,16 +157,23 @@ Window {
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
-                        if(!alarm.everyDay&&!alarm.setDate)return
-                        alarmList.alarms.append({
-                            "everyDay": alarm.everyDay,
-                            "hours": alarmHourSet.hourSet[0],
-                            "minutes": alarmHourSet.hourSet[1],
-                            "day": alarmGeneral.newDate[0],
-                            "month": alarmGeneral.newDate[1],
-                            "year": alarmGeneral.newDate[2],
-                            "on": true
-                            })
+                        if(!alarm.everyDay&&!alarm.setDate) return
+
+                        if(alarm.everyDay)
+                            alarmList.everyDayAlarms.append({
+                                "hours": alarmHourSet.hourSet[0],
+                                "minutes": alarmHourSet.hourSet[1],
+                                "on": true,
+                                })
+                        else
+                            alarmList.dateAlarms.append({
+                                "hours": alarmHourSet.hourSet[0],
+                                "minutes": alarmHourSet.hourSet[1],
+                                "day": alarmGeneral.newDate[0],
+                                "month": alarmGeneral.newDate[1],
+                                "year": alarmGeneral.newDate[2],
+                                "on": true,
+                                })
                         parent.state= "active"
                         transitionTimer.thenChange=parent
                         transitionTimer.nextView="DeveClock"
@@ -177,11 +190,47 @@ Window {
         Item{
             id: alarmClockList
             visible: root.view==="Alarm clock list"
-        }
+            AlarmList{
+                id: alarmList
+            }
+            DeleteButton{
+                x: 23
+                y: 706
+                visible: alarmList.howManySelected>0
+                state: "disabled"
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        for(var a=0;a<alarmList.isSelected.length;a++){
+                            for(var e=0;e<alarmList.everyDayAlarms.count;e++)
+                                if(alarmList.everyDayAlarms.get(e).hours==
+                                        alarmList.isSelected[a].hours &&
+                                    alarmList.everyDayAlarms.get(e).minutes==
+                                        alarmList.isSelected[a].minutes)
+                                alarmList.everyDayAlarms.remove(e, 1)
 
-        AlarmList{
-            id: alarmList
+                            for(var i=0;i<alarmList.dateAlarms.count;i++)
+                                if(alarmList.dateAlarms.get(i).hours==
+                                        alarmList.isSelected[a].hours &&
+                                    alarmList.dateAlarms.get(i).minutes==
+                                        alarmList.isSelected[a].minutes)
+                                alarmList.dateAlarms.remove(i, 1)
+
+                        }
+                        parent.state= "enabled"
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextView="Alarm clock list"
+                        transitionTimer.nextState="disabled"
+                        transitionTimer.running=true
+                        deleteButtonTimer.running=true
+                    }
+                }
+                Timer{
+                    id: deleteButtonTimer
+                    interval: 300; running: false;repeat: false;
+                    onTriggered: { alarmList.howManySelected=0 }
+                }
+            }
         }
     }
-
 }

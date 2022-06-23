@@ -14,7 +14,7 @@ qt_add_executable(appClock
 qt_add_qml_module(appClock
     URI Clock
     VERSION 1.0
-    QML_FILES main.qml Head.qml Back.qml SetButton.qml
+    QML_FILES main.qml Head.qml Back.qml SetButton.qml DeleteButton.qml
         Button.qml AnalogClock.qml DigitalClock.qml DateTxt.qml Clock.qml
         AlarmDateButton.qml AlarmAnalogClock.qml AlarmHourSet.qml AlarmList.qml
 )

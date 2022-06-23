@@ -60,11 +60,28 @@ Item {
         onTriggered: {
             if(dragArea.drag.active){
                 txt.x=cursor.x+32
-                txt.text=(Math.round(5.5+(cursor.x+13)/21.66667))
-                        +":"
-                        +((Math.round((cursor.x+13)%21.66667))<=10 ? "00" : "30")
+                txt.text=(Math.round(5.5+(cursor.x+13)/21.66667))+":"
                 hourSet[0]=(Math.round(5.5+(cursor.x+13)/21.66667))
-                hourSet[1]=((Math.round((cursor.x+13)%21.66667))<=10 ? 0 : 30)
+
+                if((Math.round((cursor.x+13)%21.66667))<=3){
+                    hourSet[1]=0
+                    txt.text+="00"
+                }else if((Math.round((cursor.x+13)%21.66667))<=6){
+                    hourSet[1]=10
+                    txt.text+="10"
+                }else if((Math.round((cursor.x+13)%21.66667))<=10){
+                    hourSet[1]=20
+                    txt.text+="20"
+                }else if((Math.round((cursor.x+13)%21.66667))<=13){
+                    hourSet[1]=30
+                    txt.text+="30"
+                }else if((Math.round((cursor.x+13)%21.66667))<=16){
+                    hourSet[1]=40
+                    txt.text+="40"
+                }else{
+                    hourSet[1]=50
+                    txt.text+="50"
+                }
                 analogClock.setAlarm(hourSet)
             }
         }

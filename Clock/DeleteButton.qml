@@ -1,0 +1,52 @@
+import QtQuick
+
+Rectangle {
+   id: root
+   y: 690
+   width: 434
+   height: 64
+   visible: true
+   border.color: "#EC6545"
+   border.width: 1
+   radius: 32
+   color: "transparent"
+   Behavior on color{
+       ColorAnimation {duration: 250}
+   }
+   Text {
+       id: txt
+       color: "#EC6545"
+       text: "DELETE"
+       anchors.centerIn: parent
+       font.family: "Buenos Aires"
+       font.pixelSize: 30
+       font.letterSpacing: 1.8
+       Behavior on color{
+           ColorAnimation {duration: 250}
+       }
+    }
+    states: [
+        State {
+            name: "enabled"
+            PropertyChanges {
+                target: root
+                color: "#EC6545"
+            }
+            PropertyChanges {
+                target: txt
+                color: "#151B2E"
+            }
+        },
+        State {
+            name: "disabled"
+            PropertyChanges {
+                target: root
+                color: "#151B2E"
+            }
+            PropertyChanges {
+                target: txt
+                color: "#EC6545"
+            }
+        }
+    ]
+}
