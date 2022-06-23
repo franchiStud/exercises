@@ -28,6 +28,56 @@ Item {
             width: 400
             height: 88
             color: "#151B2E"
+            Rectangle{
+                id: onOffButton
+                x: 302
+                y: 14
+                width: 112
+                height: 60
+                radius: 8
+                state: isActive ? "on" : "off"
+                states: [
+                    State {
+                        name: "on"
+                        PropertyChanges {
+                            target: onOffButton
+                            color: "#0f494f"
+                        }
+                        PropertyChanges {
+                            target: onOffImage
+                            source: "/assets/switch-on-selected"
+                            x: 306
+                        }
+                    },
+                    State {
+                        name: "off"
+                        PropertyChanges {
+                            target: onOffButton
+                            color: "#313848"
+                        }
+                        PropertyChanges {
+                            target: onOffImage
+                            source: "/assets/switch-off-selected"
+                            x: 358
+                        }
+                    }
+                ]
+                Behavior on color{
+                    ColorAnimation{ duration: 250 }
+                }
+                MouseArea{
+                    anchors.fill:parent
+                    onClicked: isActive=!isActive
+                }
+            }
+            Image {
+                id: onOffImage
+                y: 18
+                state: isActive ? "on" : "off"
+                Behavior on x{
+                    NumberAnimation{ duration: 250 }
+                }
+            }
             Image {
                 id: img
                 x: 15
@@ -67,8 +117,11 @@ Item {
                 }
             }
             Text {
-                text: hours
-                font.pixelSize: 20
+                text: hours+":"+(minutes<10 ? "00" : minutes)
+                font.pixelSize: 40
+                x: 82
+                y: 20
+                color: "#9FAAB0"
             }
             Rectangle{
                 y: 0
@@ -99,29 +152,6 @@ Item {
         y: 185+(everyDayAlarms.count>0 ? everyDayAlarms.count*88+150 : 0)
         width: 180
         height: 200
-        delegate: Rectangle{
-            width: 400
-            height: 88
-            color: "#151B2E"
-            Row{
-                spacing: 10
-                Text {
-                    text: hours
-                    font.pixelSize: 20
-                }
-            }
-            Rectangle{
-                y: 0
-                width: 424
-                height: 1
-                color: "#1B2F46"
-            }
-            Rectangle{
-                y: 87
-                width: 424
-                height: 1
-                color: "#1B2F46"
-            }
-        }
+        //delegate:
     }
 }

@@ -149,7 +149,7 @@ Window {
                 isActive: root.view==="Alarm"
             }
 
-            SetButton{
+            SetButton{// set date
                 x: 23
                 y: 706
                 state: "disable"
@@ -158,12 +158,11 @@ Window {
                     anchors.fill: parent
                     onClicked: {
                         if(!alarm.everyDay&&!alarm.setDate) return
-
                         if(alarm.everyDay)
                             alarmList.everyDayAlarms.append({
                                 "hours": alarmHourSet.hourSet[0],
                                 "minutes": alarmHourSet.hourSet[1],
-                                "on": true,
+                                "isActive": true,
                                 })
                         else
                             alarmList.dateAlarms.append({
@@ -172,7 +171,7 @@ Window {
                                 "day": alarmGeneral.newDate[0],
                                 "month": alarmGeneral.newDate[1],
                                 "year": alarmGeneral.newDate[2],
-                                "on": true,
+                                "isActive": true,
                                 })
                         parent.state= "active"
                         transitionTimer.thenChange=parent
@@ -223,6 +222,8 @@ Window {
                         transitionTimer.nextState="disabled"
                         transitionTimer.running=true
                         deleteButtonTimer.running=true
+                        root.isThereAlarm=alarmList.dateAlarms.count>0 ||
+                                alarmList.everyDayAlarms.count>0
                     }
                 }
                 Timer{
