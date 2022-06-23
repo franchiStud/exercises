@@ -19,6 +19,9 @@ Rectangle {
        font.pixelSize: 36
        font.letterSpacing: 1.8
        text: buttonTxt
+       Behavior on color{
+           ColorAnimation{ duration: 250 }
+       }
     }
     states: [
         State { //stato del pulsante active
@@ -44,4 +47,7 @@ Rectangle {
             }
         }
     ]
+    Behavior on color{
+        ColorAnimation{ duration: 250 }
+    }
 }

@@ -17,20 +17,15 @@ Window {
     }
 
     Back{ // presente in tutte le view tranne DeveClock
-        visible: root.view!=="DeveClock" ? true : false
+        visible: root.view!=="DeveClock"
         state: "disabled"
         MouseArea{
             anchors.fill: parent
             onClicked: {
-                var nextView = ""
-                switch (view){
-                    case "Timer": nextView="DeveClock"; break
-                    case "Alarm": nextView="DeveClock"; break
-                }
                 parent.state= "enabled"
                 transitionTimer.thenChange=parent
                 transitionTimer.nextState="disabled"
-                transitionTimer.nextView=nextView
+                transitionTimer.nextView= view==="Set date" ? "Alarm" : "DeveClock"
                 transitionTimer.running=true
             }
         }
@@ -50,7 +45,7 @@ Window {
     //-------------------------------- view DeveClock
     Item{
         id: deveClock
-        visible: root.view==="DeveClock" ? true : false
+        visible: root.view==="DeveClock"
 
         Clock{}
 
@@ -104,40 +99,88 @@ Window {
     }
 
 
-    //-------------------------------- view Alarm
+    //----------------------------------- tutte le view relative ad Alarm
     Item{
-        visible: root.view==="Alarm" ? true : false
-        id: alarm
-        property date newAlarm
-        property bool everyDay: true
-        property bool setDate: false
-        AlarmDateButton{
-            id: alarmEveryday
-            state: "selected"
-            buttonTxt: "Everyday"
-            x: 34
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    parent.state= !alarm.everyDay ?
-                                "selected-hover" : "disabled-hover"
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="Alarm"
-                    transitionTimer.nextState= !alarm.everyDay ?
-                                "selected" : "disabled"
-                    transitionTimer.running=true
-                    alarmDay.state= !alarm.everyDay ?
-                                "disabled" : "selected"
-                    alarm.everyDay= !alarm.everyDay
+        id: alarmGeneral
+        property var newDate: [0,0,0]
+        //-------------------------------- view Alarm
+        Item{
+            visible: root.view==="Alarm"
+            id: alarm
+            property bool everyDay: true
+            property bool setDate: false
+            AlarmDateButton{
+                id: alarmEveryday
+                state: "selected"
+                buttonTxt: "Everyday"
+                x: 34
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        parent.state= !alarm.everyDay ?
+                                    "selected-hover" : "disabled-hover"
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextView="Alarm"
+                        transitionTimer.nextState= !alarm.everyDay ?
+                                    "selected" : "disabled"
+                        transitionTimer.running=true
+                        alarmDay.state= !alarm.everyDay ?
+                                    "disabled" : "selected"
+                        alarm.everyDay= !alarm.everyDay
+                    }
+                }
+            }
+
+            AlarmDateButton{
+                id: alarmDay
+                state: "disabled"
+                buttonTxt: "Set date"
+                x: 254
+            }
+
+            AlarmHourSet{
+                id: alarmHourSet
+                isActive: root.view==="Alarm"
+            }
+
+            SetButton{
+                x: 23
+                y: 706
+                state: "disable"
+                buttonTxt: "SET ALARM"
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        if(!alarm.everyDay&&!alarm.setDate)return
+                        alarmList.alarms.append({
+                            "everyDay": alarm.everyDay,
+                            "hours": alarmHourSet.hourSet[0],
+                            "minutes": alarmHourSet.hourSet[1],
+                            "day": alarmGeneral.newDate[0],
+                            "month": alarmGeneral.newDate[1],
+                            "year": alarmGeneral.newDate[2],
+                            "on": true
+                            })
+                        parent.state= "active"
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextView="DeveClock"
+                        transitionTimer.nextState="disable"
+                        transitionTimer.running=true
+                        isThereAlarm=true
+                    }
                 }
             }
         }
 
-        AlarmDateButton{
-            id: alarmDay
-            state: "selected"
-            buttonTxt: "Set date"
-            x: 254
+
+        //-------------------------------- view Alarm clock list
+        Item{
+            id: alarmClockList
+            visible: root.view==="Alarm clock list"
+        }
+
+        AlarmList{
+            id: alarmList
         }
     }
 
