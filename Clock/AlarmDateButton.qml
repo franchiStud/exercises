@@ -79,7 +79,7 @@ Rectangle {
             }
             PropertyChanges {
                 target: tick
-                source: "/assets/ic-tick-selected"
+                source: "/assets/ic-tick-hover"
             }
         }
     ]

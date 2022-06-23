@@ -28,86 +28,117 @@ Window {
                     case "Alarm": nextView="DeveClock"; break
                 }
                 parent.state= "enabled"
-                deveClockTransition.thenDisable=parent
-                deveClockTransition.nextView=nextView
-                deveClockTransition.running=true
+                transitionTimer.thenChange=parent
+                transitionTimer.nextState="disabled"
+                transitionTimer.nextView=nextView
+                transitionTimer.running=true
+            }
+        }
+        Timer {
+            id: transitionTimer
+            property string nextView
+            property var thenChange
+            property string nextState
+            interval: 300; running: false; repeat: false
+            onTriggered: {
+                thenChange.state=nextState
+                root.view=nextView
             }
         }
     }
 
     //-------------------------------- view DeveClock
-    Clock{
+    Item{
+        id: deveClock
         visible: root.view==="DeveClock" ? true : false
-    }
 
-    Button{ //pulsante timer
-        id: timerButton
-        x: 18
-        state: "disabled"
-        buttonTxt: "TIMER"
-        visible: root.view==="DeveClock" ? true : false
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                parent.state= "enabled"
-                deveClockTransition.thenDisable=parent
-                deveClockTransition.nextView="Timer"
-                deveClockTransition.running=true
+        Clock{}
+
+        Button{ //pulsante timer
+            id: timerButton
+            x: 18
+            state: "disabled"
+            buttonTxt: "TIMER"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    parent.state= "enabled"
+                    transitionTimer.thenChange=parent
+                    transitionTimer.nextView="Timer"
+                    transitionTimer.nextState="disable"
+                    transitionTimer.running=true
+                }
             }
         }
-    }
-    Button{ //pulsante allarme
-        id: alarmButton
-        x: 272
-        state: "disabled"
-        buttonTxt: "ALARM"
-        visible: root.view==="DeveClock" ? true : false
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                parent.state= "enabled"
-                deveClockTransition.thenDisable=parent
-                deveClockTransition.nextView="Alarm"
-                deveClockTransition.running=true
+
+        Button{ //pulsante allarme
+            id: alarmButton
+            x: 272
+            state: "disabled"
+            buttonTxt: "ALARM"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    parent.state= "enabled"
+                    transitionTimer.thenChange=parent
+                    transitionTimer.nextView="Alarm"
+                    transitionTimer.nextState="disable"
+                    transitionTimer.running=true
+                }
             }
         }
-    }
 
-    Timer {
-        id: deveClockTransition
-        property string nextView
-        property var thenDisable
-        interval: 300; running: false; repeat: false
-        onTriggered: {
-            thenDisable.state="disabled"
-            root.view=nextView
+        Image {
+            y: 33
+            x: 403
+            source: "/assets/alarm-on-feedback.svg"
+            visible: root.isThereAlarm
+        }
+
+        Image {
+            y: 33
+            x: 349
+            source: "/assets/timer.svg"
+            visible: root.isThereTimer
         }
     }
 
-    Image {
-        y: 33
-        x: 403
-        source: "/assets/alarm-on-feedback.svg"
-        visible: root.view==="DeveClock" ? root.isThereAlarm : false
-    }
-    Image {
-        y: 33
-        x: 349
-        source: "/assets/timer.svg"
-        visible: root.view==="DeveClock" ? root.isThereTimer : false
-    }
 
     //-------------------------------- view Alarm
-    AlarmDateButton{
+    Item{
         visible: root.view==="Alarm" ? true : false
-        state: "selected"
-        buttonTxt: "Everyday"
-        x: 34
+        id: alarm
+        property date newAlarm
+        property bool everyDay: true
+        property bool setDate: false
+        AlarmDateButton{
+            id: alarmEveryday
+            state: "selected"
+            buttonTxt: "Everyday"
+            x: 34
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    parent.state= !alarm.everyDay ?
+                                "selected-hover" : "disabled-hover"
+                    transitionTimer.thenChange=parent
+                    transitionTimer.nextView="Alarm"
+                    transitionTimer.nextState= !alarm.everyDay ?
+                                "selected" : "disabled"
+                    transitionTimer.running=true
+                    alarmDay.state= !alarm.everyDay ?
+                                "disabled" : "selected"
+                    alarm.everyDay= !alarm.everyDay
+                }
+            }
+        }
+
+        AlarmDateButton{
+            id: alarmDay
+            state: "selected"
+            buttonTxt: "Set date"
+            x: 254
+        }
     }
-    AlarmDateButton{
-        visible: root.view==="Alarm" ? true : false
-        state: "disabled"
-        buttonTxt: "Set date"
-        x: 254
-    }
+
 }
