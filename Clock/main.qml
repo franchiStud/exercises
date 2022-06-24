@@ -108,7 +108,6 @@ Window {
     //----------------------------------- tutte le view relative ad Alarm
     Item{
         id: alarmGeneral
-        property var newDate: [0,0,0]
         //-------------------------------- view Alarm
         Item{
             visible: root.view==="Alarm"
@@ -130,7 +129,7 @@ Window {
                         transitionTimer.nextState= !alarm.everyDay ?
                                     "selected" : "disabled"
                         transitionTimer.running=true
-                        alarmDay.state= !alarm.everyDay ?
+                        alarmDate.state= !alarm.everyDay ?
                                     "disabled" : "selected"
                         alarm.everyDay= !alarm.everyDay
                     }
@@ -138,14 +137,26 @@ Window {
             }
 
             AlarmDateButton{
-                id: alarmDay
+                id: alarmDate
                 state: "disabled"
                 buttonTxt: "Set date"
                 x: 254
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        parent.state="selected-hover"
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextView="Set date"
+                        transitionTimer.nextState= "selected"
+                        transitionTimer.running=true
+                        alarmEveryday.state= "disabled"
+                        alarm.everyDay= false
+                    }
+                }
             }
 
-            AlarmHourSet{
-                id: alarmHourSet
+            AlarmSetHour{
+                id: alarmSetHour
                 isActive: root.view==="Alarm"
             }
 
@@ -160,17 +171,20 @@ Window {
                         if(!alarm.everyDay&&!alarm.setDate) return
                         if(alarm.everyDay)
                             alarmList.everyDayAlarms.append({
-                                "hours": alarmHourSet.hourSet[0],
-                                "minutes": alarmHourSet.hourSet[1],
+                                "hours": alarmSetHour.hourSet[0],
+                                "minutes": alarmSetHour.hourSet[1],
+                                "day": 0,
+                                "month": 0,
+                                "year": 0,
                                 "isActive": true,
                                 })
                         else
                             alarmList.dateAlarms.append({
-                                "hours": alarmHourSet.hourSet[0],
-                                "minutes": alarmHourSet.hourSet[1],
-                                "day": alarmGeneral.newDate[0],
-                                "month": alarmGeneral.newDate[1],
-                                "year": alarmGeneral.newDate[2],
+                                "hours": alarmSetHour.hourSet[0],
+                                "minutes": alarmSetHour.hourSet[1],
+                                "day": alarmSetDate.newDate[0],
+                                "month": alarmSetDate.newDate[1],
+                                "year": alarmSetDate.newDate[2],
                                 "isActive": true,
                                 })
                         parent.state= "active"
@@ -202,17 +216,13 @@ Window {
                     onClicked: {
                         for(var a=0;a<alarmList.isSelected.length;a++){
                             for(var e=0;e<alarmList.everyDayAlarms.count;e++)
-                                if(alarmList.everyDayAlarms.get(e).hours==
-                                        alarmList.isSelected[a].hours &&
-                                    alarmList.everyDayAlarms.get(e).minutes==
-                                        alarmList.isSelected[a].minutes)
+                                if(alarmClockList.equals(alarmList.isSelected[a],
+                                                         alarmList.everyDayAlarms.get(e)))
                                 alarmList.everyDayAlarms.remove(e, 1)
 
                             for(var i=0;i<alarmList.dateAlarms.count;i++)
-                                if(alarmList.dateAlarms.get(i).hours==
-                                        alarmList.isSelected[a].hours &&
-                                    alarmList.dateAlarms.get(i).minutes==
-                                        alarmList.isSelected[a].minutes)
+                                if(alarmClockList.equals(alarmList.isSelected[a],
+                                                         alarmList.dateAlarms.get(i)))
                                 alarmList.dateAlarms.remove(i, 1)
 
                         }
@@ -228,10 +238,50 @@ Window {
                 }
                 Timer{
                     id: deleteButtonTimer
-                    interval: 300; running: false;repeat: false;
+                    interval: 300; running: false; repeat: false;
                     onTriggered: { alarmList.howManySelected=0 }
                 }
             }
+
+            function equals(isSelected, listedAlarm){
+                return listedAlarm.hours===
+                        isSelected.hours &&
+                    listedAlarm.minutes===
+                        isSelected.minutes &&
+                    listedAlarm.day===
+                         isSelected.day &&
+                    listedAlarm.month===
+                         isSelected.month &&
+                    listedAlarm.year===
+                         isSelected.year
+            }
         }
+        Item{
+            id: alarmSetDateGeneral
+            visible: view==="Set date"
+            AlarmSetDate{
+                id: alarmSetDate
+            }
+            SetButton{
+                state: "disable"
+                buttonTxt: "SET DATE"
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked:{
+                        alarmDate.buttonTxt=
+                                          alarmSetDate.newDate[0]+"/"+
+                                          alarmSetDate.newDate[1]+"/"+
+                                          alarmSetDate.newDate[2]
+                        alarm.setDate=true
+                        parent.state= "active"
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextView="Alarm"
+                        transitionTimer.nextState="disable"
+                        transitionTimer.running=true
+                   }
+                }
+            }
+        }
+
     }
 }
