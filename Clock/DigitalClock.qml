@@ -2,21 +2,23 @@ import QtQuick
 
 Rectangle{
     property bool alarmSet: false
+
+    x: 18
+    y: 160
     width: 444
     height: 390
     radius: 40
+
     color: "#1B2F46"
-    x: 18
-    y: 160
+
     DateTxt{ //Label data
         x: 222
         y: 40
+
         visible: true
     }
+
     Text {
-        color: "#FCB647"
-        anchors.centerIn: parent
-        font.pixelSize: 120
         text: (new Date().getHours()>12 ?
                   new Date().getHours()-12 :
                   new Date().getHours())
@@ -24,6 +26,12 @@ Rectangle{
               +(new Date().getMinutes()<10 ?
                    "0" : "")
               +new Date().getMinutes()
+
+        anchors.centerIn: parent
+
+        color: "#FCB647"
+        font.pixelSize: 120
+
         Timer{
             interval: 500; running: true; repeat: true
             onTriggered: {
@@ -37,17 +45,20 @@ Rectangle{
             }
         }
     }
+
     Text{
-        color: "#9FAAB0"
-        font.pixelSize: 30
+        text: new Date().getHours()>12 ? "PM" : "AM"
+
         y:292
         x:192
-        text: new Date().getHours()>12 ? "PM" : "AM"
+
+        color: "#9FAAB0"
+        font.pixelSize: 30
+
         Timer{
             interval: 500; running: true; repeat: true
-            onTriggered: {
-                parent.text=new Date().getHours()>12 ? "PM" : "AM"
-            }
+            onTriggered: { parent.text=new Date().getHours()>12? "PM"
+                                                               : "AM" }
         }
     }
 }

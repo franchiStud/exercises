@@ -2,31 +2,42 @@ import QtQuick
 
 Rectangle { //pulsanti
    id: root
+
    property string buttonTxt
-   y: 690
+
+   property int buttonY
+   property int buttonHeight
+
+   y: buttonY
    width: 190
-   height: 64
-   visible: true
+   height: buttonHeight
+   radius: 32
+
    border.color: "#FCB647"
    border.width: 1
-   radius: 32
-   color: "transparent"
+
+   state: "disabled"
+
    Behavior on color{
        ColorAnimation {duration: 250}
    }
 
    Text {
        id: txt
-       color: "#FCB647"
+
        text: root.buttonTxt
+
        anchors.centerIn: parent
+
        font.family: "Buenos Aires"
        font.pixelSize: 30
        font.letterSpacing: 1.8
+
        Behavior on color{
            ColorAnimation {duration: 250}
        }
     }
+
     states: [
         State {
             name: "enabled"
@@ -36,14 +47,14 @@ Rectangle { //pulsanti
             }
             PropertyChanges {
                 target: txt
-                color: "#151B2E"
+                color: "#151B2"
             }
         },
         State {
             name: "disabled"
             PropertyChanges {
                 target: root
-                color: "#151B2E"
+                color: "#151B2"
             }
             PropertyChanges {
                 target: txt

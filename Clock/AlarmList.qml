@@ -2,6 +2,7 @@ import QtQuick
 
 Item {
     id: root
+
     property var everyDayAlarms: ListModel{}
     property var dateAlarms: ListModel{}
     property var isSelected: []
@@ -9,20 +10,25 @@ Item {
     property var deleteButton: DeleteButton{ x: 23; y: 706 }
 
     Text{
+        text: everyDayAlarms.count>0 ? "Everyday" : ""
+
         x: 38
         y: 135
-        text: everyDayAlarms.count>0 ? "Everyday" : ""
+
         font.pixelSize: 20
         color: "#FCB647"
     }
 
     ListView{
         id: everyDayView
+
         model: everyDayAlarms
+
         x: 29
         y: 185
         width: 180
         height: 200
+
         delegate: AlarmListComponent{}
     }
 

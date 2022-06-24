@@ -2,25 +2,17 @@ import QtQuick
 
 Image{
     id: root
+
     property bool direction //true: up, false: down
-    x: 28
-    y: direction ? 440 : 551
+    property bool isActive: true
+
+    anchors.horizontalCenter: parent.horizontalCenter
+    y: direction ? parent.height+10
+                 : parent.height+10+sourceSize.height
+
     rotation: direction ? 0 : 180
-    states: [
-        State {
-            name: "active"
-            PropertyChanges {
-                target: root
-                source: "/assets/btn-arrow-active.svg"
-            }
-        },
-        State {
-            name: "hover"
-            PropertyChanges {
-                target: root
-                source: "/assets/btn-arrow-hover.svg"
-            }
-        }
-    ]
+    source: isActive ? "/assets/btn-arrow-active.svg"
+                     : "/assets/btn-arrow-hover.svg"
+
 }
 

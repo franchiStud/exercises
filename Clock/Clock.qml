@@ -3,7 +3,7 @@ import QtQuick
 Item{
     AnalogClock{// orologio analogico
         id: ac
-        visible: true
+
         MouseArea{
             anchors.fill: parent
             onClicked: {
@@ -15,7 +15,9 @@ Item{
 
     DigitalClock{// orologio digitale
         id: dc
+
         visible: false
+
         MouseArea{
             anchors.fill: parent
             onClicked: {

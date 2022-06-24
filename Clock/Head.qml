@@ -1,27 +1,30 @@
 import QtQuick
 
-Item {
-   id: root
-   property string txt
-   Item{ //Label titolo
-       x: 240
-       y: 58
-       Text{
-           anchors.centerIn: parent
-           id: head
-           text: root.txt
-           font.pixelSize: 36
-           color: "#9FAAB0"
-           visible: true
-       }
-   }
+Item{
+    id: root
 
-   Rectangle{ //linea (separa label "DeveClock" e label data)
-       x: 40
-       y: 116
-       width: 400
-       height: 1
-       color: "#9FAAB0"
-       visible: true
-   }
+    property string txt
+
+    x: parent.width/2
+    y: 58
+
+    Text{
+        id: head
+
+        text: root.txt
+
+        anchors.centerIn: parent
+
+        font.pixelSize: 36
+        color: "#9FAAB0"
+    }
+
+    Rectangle{ //linea (separa label "DeveClock" e label data)
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: root.y
+        width: 400
+        height: 1
+
+        color: "#9FAAB0"
+    }
 }

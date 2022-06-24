@@ -1,21 +1,25 @@
 import QtQuick
 
 Item{ //Label data
+
     Text{
         id: date
-        anchors.centerIn: parent
         text: getDate();
+
+        anchors.centerIn: parent
+
         font.pixelSize: 24
         color: "#FCB647"
     }
+
     Timer{ //la data si aggiorna ogni 0.5 secondi
         interval: 500; running: true; repeat: true;
-        onTriggered: {
-            date.text=getDate()
-        }
+        onTriggered: { date.text=getDate() }
     }
+
     function getDate(){ //calcola la data di oggi
         var s=""
+
         switch(new Date().getMonth()){
             case 0: s+="Jenuary "; break
             case 1: s+="February "; break

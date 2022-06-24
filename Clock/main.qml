@@ -2,14 +2,20 @@ import QtQuick
 
 Window {
     id: root
+
     property bool isThereAlarm: false
     property bool isThereTimer: false
     property string view: "DeveClock"
+
+    property int buttonY: 690
+    property int buttonHeight: 64
+
     width: 480
     height: 800
     visible: true
+
     color: "#151B2E"
-    title: qsTr("DeveClock")
+    title: "DeveClock"
 
     //-------------------------------- elementi comuni a più view
     Head{
@@ -18,7 +24,9 @@ Window {
 
     Back{ // presente in tutte le view tranne DeveClock
         visible: root.view!=="DeveClock"
+
         state: "disabled"
+
         MouseArea{
             anchors.fill: parent
             onClicked: {
@@ -29,11 +37,14 @@ Window {
                 transitionTimer.running=true
             }
         }
+
         Timer {
             id: transitionTimer
+
             property string nextView
             property var thenChange
             property string nextState
+
             interval: 300; running: false; repeat: false
             onTriggered: {
                 thenChange.state=nextState
@@ -45,22 +56,28 @@ Window {
     //-------------------------------- view DeveClock
     Item{
         id: deveClock
+
         visible: root.view==="DeveClock"
 
         Clock{}
 
         Button{ //pulsante timer
             id: timerButton
+
+            buttonY: root.buttonY
+            buttonHeight: root.buttonHeight
+
             x: 18
-            state: "disabled"
+
             buttonTxt: "TIMER"
+
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
                     parent.state= "enabled"
                     transitionTimer.thenChange=parent
                     transitionTimer.nextView="Timer"
-                    transitionTimer.nextState="disable"
+                    transitionTimer.nextState="disabled"
                     transitionTimer.running=true
                 }
             }
@@ -68,8 +85,12 @@ Window {
 
         Button{ //pulsante allarme
             id: alarmButton
+
             x: 272
-            state: "disabled"
+
+            buttonY: root.buttonY
+            buttonHeight: root.buttonHeight
+
             buttonTxt: "ALARM"
             MouseArea{
                 anchors.fill: parent
@@ -77,29 +98,32 @@ Window {
                     parent.state= "enabled"
                     transitionTimer.thenChange=parent
                     transitionTimer.nextView="Alarm"
-                    transitionTimer.nextState="disable"
+                    transitionTimer.nextState="disabled"
                     transitionTimer.running=true
                 }
             }
         }
 
         Image {
+            source: "/assets/alarm-on-feedback.svg"
+
             y: 33
             x: 403
-            source: "/assets/alarm-on-feedback.svg"
+
             visible: root.isThereAlarm
+
             MouseArea{
                 anchors.fill: parent
-                onClicked: {
-                    view="Alarm clock list"
-                }
+                onClicked: { view="Alarm clock list" }
             }
         }
 
         Image {
+            source: "/assets/timer.svg"
+
             y: 33
             x: 349
-            source: "/assets/timer.svg"
+
             visible: root.isThereTimer
         }
     }
@@ -110,15 +134,21 @@ Window {
         id: alarmGeneral
         //-------------------------------- view Alarm
         Item{
-            visible: root.view==="Alarm"
             id: alarm
+
             property bool everyDay: true
             property bool setDate: false
+
+            visible: root.view==="Alarm"
+
             AlarmDateButton{
                 id: alarmEveryday
+
+                x: 34
+
                 state: "selected"
                 buttonTxt: "Everyday"
-                x: 34
+
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
@@ -138,9 +168,12 @@ Window {
 
             AlarmDateButton{
                 id: alarmDate
+
+                x: 254
+
                 state: "disabled"
                 buttonTxt: "Set date"
-                x: 254
+
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
@@ -157,14 +190,17 @@ Window {
 
             AlarmSetHour{
                 id: alarmSetHour
+
                 isActive: root.view==="Alarm"
             }
 
             SetButton{// set date
                 x: 23
                 y: 706
+
                 state: "disable"
                 buttonTxt: "SET ALARM"
+
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
@@ -202,15 +238,23 @@ Window {
         //-------------------------------- view Alarm clock list
         Item{
             id: alarmClockList
+
             visible: root.view==="Alarm clock list"
+
             AlarmList{
                 id: alarmList
             }
+
             DeleteButton{
                 x: 23
                 y: 706
+
+                buttonY: root.buttonY
+                buttonHeight: root.buttonHeight
+
                 visible: alarmList.howManySelected>0
                 state: "disabled"
+
                 MouseArea{
                     anchors.fill: parent
                     onClicked: {
@@ -238,6 +282,7 @@ Window {
                 }
                 Timer{
                     id: deleteButtonTimer
+
                     interval: 300; running: false; repeat: false;
                     onTriggered: { alarmList.howManySelected=0 }
                 }
@@ -256,15 +301,20 @@ Window {
                          isSelected.year
             }
         }
+
         Item{
             id: alarmSetDateGeneral
+
             visible: view==="Set date"
+
             AlarmSetDate{
                 id: alarmSetDate
             }
+
             SetButton{
                 state: "disable"
                 buttonTxt: "SET DATE"
+
                 MouseArea{
                     anchors.fill: parent
                     onClicked:{
@@ -278,10 +328,9 @@ Window {
                         transitionTimer.nextView="Alarm"
                         transitionTimer.nextState="disable"
                         transitionTimer.running=true
-                   }
+                    }
                 }
             }
         }
-
     }
 }
