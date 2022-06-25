@@ -14,11 +14,11 @@ Item {
 
         width: 190
         height: 290
-        radius:30
+        radius: width/8
 
         color: "#1B2F46"
 
-        Text{
+        Text {
             id: day
 
             text: newDate[0]
@@ -31,7 +31,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 120
         }
-        Text{
+        Text {
             id: weekDay
 
             text: {
@@ -54,7 +54,8 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 50
         }
-        Text{
+
+        Text {
             id: restOfDate
 
             text: "/"+root.newDate[1]+"/"+root.newDate[2]
@@ -83,10 +84,10 @@ Item {
             }
         }
 
-        AlarmSetDateArrow{
+        AlarmSetDateArrow {
             direction: false
 
-            MouseArea{
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     chDate(parent.direction)
@@ -98,7 +99,7 @@ Item {
         }
     }
 
-    Timer{
+    Timer {
         id: arrowTimer
 
         property var thenChange
@@ -107,8 +108,8 @@ Item {
         onTriggered: thenChange.state= "active"
     }
 
-    function chDate(direction){//true: upArrow, false: downArrow
-        if(direction){
+    function chDate(direction) {//true: upArrow, false: downArrow
+        if(direction) {
             root.newDate[0]++
 
             if((root.newDate[0] > 31) ||//jan, march, may, july, aug, oct, dec
@@ -174,12 +175,12 @@ Item {
         }
     }
 
-    function refreshDate(){
+    function refreshDate() {
         day.text=root.newDate[0]
 
         restOfDate.text="/"+root.newDate[1]+"/"+root.newDate[2]
 
-        switch(root.newDate[3]){
+        switch ( root.newDate[3] ) {
             case 0: weekDay.text="Sun"; break
             case 1: weekDay.text="Mon"; break
             case 2: weekDay.text="Tue"; break

@@ -8,11 +8,9 @@ Image {
     property var hour
 
     source: "/assets/comp-clock-dial-setting-alarm-mode.svg"
-    x:58
-    y:196
 
-    Image { //lancetta dei minuti
-        id: minuti
+    Image { //minute hand
+        id: mins
 
         source: "/assets/ic-clock-hand_mins.svg"
         sourceSize: "4x100"
@@ -20,7 +18,7 @@ Image {
         anchors.centerIn: cen
         anchors.verticalCenterOffset: -sourceSize.height/2
 
-        transformOrigin: Item.Bottom //rotazione calcolata in base ai minuti
+        transformOrigin: Item.Bottom
         rotation: currentDate.getMinutes()*6
 
         Behavior on rotation {
@@ -28,8 +26,8 @@ Image {
         }
     }
 
-    Image { //lancetta delle ore
-        id: ore
+    Image { //hour hand
+        id: hours
 
         source: "/assets/ic-clock-hand_hours.svg"
         sourceSize: "83x9"
@@ -50,7 +48,7 @@ Image {
         }
     }
 
-    Image { //lancetta alarm
+    Image { //alarm hand
         id: alarmLine
 
         source: "/assets/ic-clock-hand-alarm.svg"
@@ -64,13 +62,13 @@ Image {
                   + (hour[1]/60)*30
     }
 
-    Timer { //l'ora si aggiorna ogni 0.5 secondi
+    Timer { //hour refreshes every 0.5 secs
         interval: 500; running: true; repeat: true;
         onTriggered: { currentDate=new Date(); }
     }
 
 
-    Image { //centro
+    Image { //center
         id: cen
 
         source: "/assets/ic-clock-hands_center.svg"

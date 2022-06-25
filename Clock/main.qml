@@ -18,23 +18,25 @@ Window {
     title: "DeveClock"
 
     //-------------------------------- elementi comuni a più view
-    Head{
+    Head {
         txt: root.view
     }
 
-    Back{ // presente in tutte le view tranne DeveClock
+    Back { // presente in tutte le view tranne DeveClock
         visible: root.view!=="DeveClock"
 
         state: "disabled"
 
-        MouseArea{
+        MouseArea {
             anchors.fill: parent
             onClicked: {
-                parent.state= "enabled"
-                transitionTimer.thenChange=parent
-                transitionTimer.nextState="disabled"
-                transitionTimer.nextView= view==="Set date" ? "Alarm" : "DeveClock"
-                transitionTimer.running=true
+                parent.state = "enabled"
+                transitionTimer.thenChange = parent
+                transitionTimer.nextState = "disabled"
+                transitionTimer.nextView = (view==="Set date") ?
+                                          "Alarm"
+                                        : "DeveClock"
+                transitionTimer.running = true
             }
         }
 
@@ -54,14 +56,14 @@ Window {
     }
 
     //-------------------------------- view DeveClock
-    Item{
+    Item {
         id: deveClock
 
         visible: root.view==="DeveClock"
 
-        Clock{}
+        Clock {}
 
-        Button{ //pulsante timer
+        Button { //pulsante timer
             id: timerButton
 
             buttonY: root.buttonY
@@ -71,19 +73,19 @@ Window {
 
             buttonTxt: "TIMER"
 
-            MouseArea{
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    parent.state= "enabled"
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="Timer"
-                    transitionTimer.nextState="disabled"
-                    transitionTimer.running=true
+                    parent.state = "enabled"
+                    transitionTimer.thenChange = parent
+                    transitionTimer.nextView = "Timer"
+                    transitionTimer.nextState = "disabled"
+                    transitionTimer.running = true
                 }
             }
         }
 
-        Button{ //pulsante allarme
+        Button {
             id: alarmButton
 
             x: 272
@@ -92,14 +94,15 @@ Window {
             buttonHeight: root.buttonHeight
 
             buttonTxt: "ALARM"
-            MouseArea{
+
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    parent.state= "enabled"
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="Alarm"
-                    transitionTimer.nextState="disabled"
-                    transitionTimer.running=true
+                    parent.state = "enabled"
+                    transitionTimer.thenChange = parent
+                    transitionTimer.nextView = "Alarm"
+                    transitionTimer.nextState = "disabled"
+                    transitionTimer.running = true
                 }
             }
         }
@@ -112,7 +115,7 @@ Window {
 
             visible: root.isThereAlarm
 
-            MouseArea{
+            MouseArea {
                 anchors.fill: parent
                 onClicked: { view="Alarm clock list" }
             }
@@ -130,10 +133,10 @@ Window {
 
 
     //----------------------------------- tutte le view relative ad Alarm
-    Item{
+    Item {
         id: alarmGeneral
         //-------------------------------- view Alarm
-        Item{
+        Item {
             id: alarm
 
             property bool everyDay: true
@@ -141,7 +144,7 @@ Window {
 
             visible: root.view==="Alarm"
 
-            AlarmDateButton{
+            AlarmDateButton {
                 id: alarmEveryday
 
                 x: 34
@@ -149,7 +152,7 @@ Window {
                 state: "selected"
                 buttonTxt: "Everyday"
 
-                MouseArea{
+                MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         parent.state= !alarm.everyDay ?
@@ -166,7 +169,7 @@ Window {
                 }
             }
 
-            AlarmDateButton{
+            AlarmDateButton {
                 id: alarmDate
 
                 x: 254
@@ -174,7 +177,7 @@ Window {
                 state: "disabled"
                 buttonTxt: "Set date"
 
-                MouseArea{
+                MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         parent.state="selected-hover"
@@ -188,20 +191,20 @@ Window {
                 }
             }
 
-            AlarmSetHour{
+            AlarmSetHour {
                 id: alarmSetHour
 
                 isActive: root.view==="Alarm"
             }
 
-            SetButton{// set date
+            SetButton {// set date
                 x: 23
                 y: 706
 
                 state: "disable"
                 buttonTxt: "SET ALARM"
 
-                MouseArea{
+                MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         if(!alarm.everyDay&&!alarm.setDate) return
@@ -236,16 +239,16 @@ Window {
 
 
         //-------------------------------- view Alarm clock list
-        Item{
+        Item {
             id: alarmClockList
 
             visible: root.view==="Alarm clock list"
 
-            AlarmList{
+            AlarmList {
                 id: alarmList
             }
 
-            DeleteButton{
+            DeleteButton {
                 x: 23
                 y: 706
 
@@ -255,7 +258,7 @@ Window {
                 visible: alarmList.howManySelected>0
                 state: "disabled"
 
-                MouseArea{
+                MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         for(var a=0;a<alarmList.isSelected.length;a++){
@@ -280,7 +283,7 @@ Window {
                                 alarmList.everyDayAlarms.count>0
                     }
                 }
-                Timer{
+                Timer {
                     id: deleteButtonTimer
 
                     interval: 300; running: false; repeat: false;
@@ -288,7 +291,7 @@ Window {
                 }
             }
 
-            function equals(isSelected, listedAlarm){
+            function equals(isSelected, listedAlarm) {
                 return listedAlarm.hours===
                         isSelected.hours &&
                     listedAlarm.minutes===
@@ -302,20 +305,20 @@ Window {
             }
         }
 
-        Item{
+        Item {
             id: alarmSetDateGeneral
 
             visible: view==="Set date"
 
-            AlarmSetDate{
+            AlarmSetDate {
                 id: alarmSetDate
             }
 
-            SetButton{
+            SetButton {
                 state: "disable"
                 buttonTxt: "SET DATE"
 
-                MouseArea{
+                MouseArea {
                     anchors.fill: parent
                     onClicked:{
                         alarmDate.buttonTxt=

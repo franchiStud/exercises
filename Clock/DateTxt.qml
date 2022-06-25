@@ -1,8 +1,8 @@
 import QtQuick
 
-Item{ //Label data
+Item { //Label data
 
-    Text{
+    Text {
         id: date
         text: getDate();
 
@@ -12,15 +12,15 @@ Item{ //Label data
         color: "#FCB647"
     }
 
-    Timer{ //la data si aggiorna ogni 0.5 secondi
+    Timer { //la data si aggiorna ogni 0.5 secondi
         interval: 500; running: true; repeat: true;
         onTriggered: { date.text=getDate() }
     }
 
-    function getDate(){ //calcola la data di oggi
+    function getDate() { //calcola la data di oggi
         var s=""
 
-        switch(new Date().getMonth()){
+        switch ( new Date().getMonth() ) {
             case 0: s+="Jenuary "; break
             case 1: s+="February "; break
             case 2: s+="March" ; break
@@ -34,8 +34,10 @@ Item{ //Label data
             case 10: s+="November "; break
             case 11: s+="December "; break
         }
+
         s+=new Date().getDate()
-        switch(new Date().getDay()){
+
+        switch ( new Date().getDay() ) {
             case 1: s+=", Monday"; break
             case 2: s+=", Tuesday"; break
             case 3: s+=", Wednesday"; break
@@ -44,6 +46,7 @@ Item{ //Label data
             case 6: s+=", Saturday"; break
             case 0: s+=", Sunday"; break
         }
+
         return s;
     }
 }

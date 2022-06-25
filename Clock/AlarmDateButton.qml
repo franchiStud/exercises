@@ -31,7 +31,7 @@ Rectangle {
         font.pixelSize: 24
     }
 
-    states:[
+    states: [
 
         State {
             name: "selected"
@@ -105,5 +105,4 @@ Rectangle {
             }
         }
     ]
-
 }

@@ -3,13 +3,21 @@ import QtQuick
 Item {
     id: root
 
-    property var everyDayAlarms: ListModel{}
-    property var dateAlarms: ListModel{}
+    property var everyDayAlarms: ListModel {}
+    property var dateAlarms: ListModel {}
     property var isSelected: []
     property real howManySelected: 0
-    property var deleteButton: DeleteButton{ x: 23; y: 706 }
+    property var deleteButton: DeleteButton {
+                                    x: 23;
+                                    y: 706 }
 
-    Text{
+    property var everydayToOthersDistance: everyDayAlarms.count > 0
+                                        ? everyDayAlarms.count * 88 + 100
+                                        : 0
+
+    Text {
+        id: everyDayTxt
+
         text: everyDayAlarms.count>0 ? "Everyday" : ""
 
         x: 38
@@ -19,7 +27,7 @@ Item {
         color: "#FCB647"
     }
 
-    ListView{
+    ListView {
         id: everyDayView
 
         model: everyDayAlarms
@@ -32,20 +40,32 @@ Item {
         delegate: AlarmListComponent{}
     }
 
-    Text{
-        x: 38
-        y: 135+(everyDayAlarms.count>0 ? everyDayAlarms.count*88+100 : 0)
-        text: dateAlarms.count>0 ? "Others" : ""
+    Text {
+        id: dateAlarmsTxt
+
+        anchors.left: everyDayTxt.left
+        y: everyDayTxt.y + everydayToOthersDistance
+
+
+        text: dateAlarms.count > 0 ? "Others" : ""
+
         font.pixelSize: 20
         color: "#FCB647"
     }
-    ListView{
-        id: elenco
+
+    ListView {
+        id: dateView
+
         model: dateAlarms
-        x: 29
-        y: 185+(everyDayAlarms.count>0 ? everyDayAlarms.count*88+100 : 0)
-        width: 180
-        height: 200
-        delegate: AlarmListComponent{}
+
+        anchors.left: everyDayView.left
+        anchors.right: everyDayView.right
+        anchors.verticalCenter: everyDayView.top
+        anchors.verticalCenterOffset: everydayToOthersDistance +
+                                      dateAlarmsTxt.font.pixelSize * 5
+
+        height: everyDayView.height
+
+        delegate: AlarmListComponent {}
     }
 }

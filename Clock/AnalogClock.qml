@@ -27,7 +27,7 @@ Image {
         rotation: currentDate.getMinutes()*6
 
         Behavior on rotation {
-            NumberAnimation{ duration: 200 }
+            NumberAnimation { duration: 200 }
         }
     }
 

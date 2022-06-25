@@ -1,10 +1,10 @@
 import QtQuick
 
-Item{
-    AnalogClock{// orologio analogico
+Item {
+    AnalogClock {// orologio analogico
         id: ac
 
-        MouseArea{
+        MouseArea {
             anchors.fill: parent
             onClicked: {
                 ac.visible=false
@@ -13,12 +13,12 @@ Item{
         }
     }
 
-    DigitalClock{// orologio digitale
+    DigitalClock {// orologio digitale
         id: dc
 
         visible: false
 
-        MouseArea{
+        MouseArea {
             anchors.fill: parent
             onClicked: {
                 dc.visible=false

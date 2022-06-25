@@ -5,14 +5,16 @@ Component {
     id: alarmListComponent
 
     Rectangle {
-
         id: thisAlarmE
+
+        property real lineHeight: 88
+
         width: 424
-        height: 88
+        height: lineHeight
 
         color: "#151B2E"
 
-        Rectangle{
+        Rectangle {
             id: onOffButton
 
             x: parent.width-124
@@ -23,11 +25,11 @@ Component {
 
             color: isActive ? "#0f494f" : "#313848"
 
-            Behavior on color{
-                ColorAnimation{ duration: 250 }
+            Behavior on color {
+                ColorAnimation { duration: 250 }
             }
 
-            MouseArea{
+            MouseArea {
                 anchors.fill:parent
                 onClicked: isActive=!isActive
             }
@@ -40,11 +42,11 @@ Component {
             source: isActive ? "/assets/switch-on-selected"
                              : "/assets/switch-off-selected"
 
-            x: isActive ? onOffButton.x+4 : onOffButton.x+54
+            x: isActive ? onOffButton.x + 4 : onOffButton.x + 54
             anchors.verticalCenter: parent.verticalCenter
 
-            Behavior on x{
-                NumberAnimation{ duration: 250 }
+            Behavior on x {
+                NumberAnimation { duration: 250 }
             }
         }
 
@@ -59,16 +61,16 @@ Component {
             source: disable ? "/assets/check_disabled.svg"
                             : "/assets/check_selected.svg"
 
-            MouseArea{
+            MouseArea {
                 anchors.fill: parent
 
                 onClicked: {
                     var thisAlarm={"hours": hours, "minutes": minutes,
                         "day": day, "month": month, "year": year}
 
-                    if(parent.disable===true){
+                    if(parent.disable===true) {
                         isSelected[root.howManySelected++]=thisAlarm
-                    }else{
+                    } else {
                         var app=[], e=0;
 
                         for(var i=0;i<root.howManySelected;i++)
@@ -94,7 +96,7 @@ Component {
             color: "#9FAAB0"
         }
 
-        Text{// dateTxt
+        Text {// dateTxt
             text: day===0 ? "" : day+"/"+month+"/"+year
 
             anchors.horizontalCenter: hourTxt.horizontalCenter
@@ -104,7 +106,7 @@ Component {
             color: "#9FAAB0"
         }
 
-        Rectangle{
+        Rectangle {
 
             width: parent.width
             height: 1
@@ -112,7 +114,7 @@ Component {
             color: "#1B2F46"
         }
 
-        Rectangle{
+        Rectangle {
             y: parent.height-1
 
             width: parent.width

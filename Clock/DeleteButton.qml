@@ -16,8 +16,8 @@ Rectangle {
     radius: 32
     color: "transparent"
 
-    Behavior on color{
-        ColorAnimation {duration: 250}
+    Behavior on color {
+        ColorAnimation { duration: 250 }
     }
 
     Text {
@@ -33,7 +33,7 @@ Rectangle {
         font.letterSpacing: 1.8
 
         Behavior on color{
-            ColorAnimation {duration: 250}
+            ColorAnimation { duration: 250 }
         }
      }
      states: [
@@ -60,5 +60,4 @@ Rectangle {
              }
          }
      ]
-
 }

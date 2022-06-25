@@ -1,6 +1,6 @@
 import QtQuick
 
-Image{
+Image {
     id: root
 
     property bool direction //true: up, false: down

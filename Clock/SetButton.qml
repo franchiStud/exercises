@@ -28,8 +28,8 @@ Rectangle {
        font.pixelSize: 36
        font.letterSpacing: 1.8
 
-       Behavior on color{
-           ColorAnimation{ duration: 250 }
+       Behavior on color {
+           ColorAnimation { duration: 250 }
        }
     }
 
@@ -58,7 +58,7 @@ Rectangle {
         }
     ]
 
-    Behavior on color{
-        ColorAnimation{ duration: 250 }
+    Behavior on color {
+        ColorAnimation { duration: 250 }
     }
 }

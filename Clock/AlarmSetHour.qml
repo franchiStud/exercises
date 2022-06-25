@@ -10,16 +10,21 @@ Item {
     AlarmAnalogClock{
         id: analogClock
         hour: root.hourSet
+
+        x:58
+        y:196
     }
 
     Image {
         id: slider
+
+        source: "/assets/comp-slider.svg"
+
         x: -12
         y: 578
-        source: "/assets/comp-slider.svg"
     }
 
-    Text{
+    Text {
         id: txt
 
         x: cursor.x+32
@@ -31,7 +36,7 @@ Item {
         color: "#00B49D"
     }
 
-    Image{
+    Image {
         id: cursor
 
         property bool pressed: false
@@ -42,7 +47,7 @@ Item {
         y: slider.y+12
     }
 
-    MouseArea{
+    MouseArea {
         id: dragArea
 
         anchors.left: slider.left
@@ -56,10 +61,10 @@ Item {
         drag.minimumX: slider.x
     }
 
-    Timer{
+    Timer {
         interval: 10; repeat: root.isActive; running: root.isActive
         onTriggered: {
-            if(dragArea.drag.active){
+            if(dragArea.drag.active) {
                 cursor.pressed=true
 
                 var hourWidth=Math.abs((dragArea.drag.minimumX)

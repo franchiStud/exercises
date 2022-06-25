@@ -19,7 +19,7 @@ Item{
         color: "#9FAAB0"
     }
 
-    Rectangle{ //linea (separa label "DeveClock" e label data)
+    Rectangle{
         anchors.horizontalCenter: parent.horizontalCenter
         y: root.y
         width: 400

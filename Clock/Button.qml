@@ -1,44 +1,44 @@
 import QtQuick
 
-Rectangle { //pulsanti
-   id: root
+Rectangle { //DeveClock buttons
+    id: root
 
-   property string buttonTxt
+    property string buttonTxt
 
-   property int buttonY
-   property int buttonHeight
+    property int buttonY
+    property int buttonHeight
 
-   y: buttonY
-   width: 190
-   height: buttonHeight
-   radius: 32
+    y: buttonY
+    width: 190
+    height: buttonHeight
+    radius: width/6
 
-   border.color: "#FCB647"
-   border.width: 1
+    border.color: "#FCB647"
+    border.width: 1
 
-   state: "disabled"
+    state: "disabled"
 
-   Behavior on color{
-       ColorAnimation {duration: 250}
-   }
-
-   Text {
-       id: txt
-
-       text: root.buttonTxt
-
-       anchors.centerIn: parent
-
-       font.family: "Buenos Aires"
-       font.pixelSize: 30
-       font.letterSpacing: 1.8
-
-       Behavior on color{
-           ColorAnimation {duration: 250}
-       }
+    Behavior on color {
+       ColorAnimation { duration: 250 }
     }
 
-    states: [
+    Text {
+        id: txt
+
+        text: root.buttonTxt
+
+        anchors.centerIn: parent
+
+        font.family: "Buenos Aires"
+        font.pixelSize: 30
+        font.letterSpacing: 1.8
+
+        Behavior on color {
+            ColorAnimation { duration: 250 }
+        }
+     }
+
+     states: [
         State {
             name: "enabled"
             PropertyChanges {
