@@ -7,21 +7,22 @@ Item {
     property var dateAlarms: ListModel {}
     property var isSelected: []
     property real howManySelected: 0
-    property var deleteButton: DeleteButton {
-                                    x: 23;
-                                    y: 706 }
+    property var deleteButton: DeleteButton {}
 
     property var everydayToOthersDistance: everyDayAlarms.count > 0
                                         ? everyDayAlarms.count * 88 + 100
                                         : 0
+
+
 
     Text {
         id: everyDayTxt
 
         text: everyDayAlarms.count>0 ? "Everyday" : ""
 
-        x: 38
-        y: 135
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: -160
+        anchors.verticalCenterOffset: -250
 
         font.pixelSize: 20
         color: "#FCB647"
@@ -32,12 +33,13 @@ Item {
 
         model: everyDayAlarms
 
-        x: 29
-        y: 185
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: -120
+        anchors.verticalCenterOffset: -120
         width: 180
         height: 200
 
-        delegate: AlarmListComponent{}
+        delegate: AlarmListComponent {}
     }
 
     Text {

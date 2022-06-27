@@ -5,11 +5,12 @@ Rectangle {
 
    property string buttonTxt
 
-   x: 23
-   y: 706
+   anchors.centerIn: parent
+   anchors.verticalCenterOffset: 340
+
    width: 434
    height: buttonHeight
-   radius: 32
+   radius: buttonHeight/2
 
    visible: true
 

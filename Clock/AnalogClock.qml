@@ -6,7 +6,8 @@ Image {
 
     source: "/assets/comp-clock-dial.svg"
 
-    y: 210
+    anchors.centerIn: parent
+    anchors.verticalCenterOffset: 50
 
     DateTxt { //Label data
            x: parent.width/2

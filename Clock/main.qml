@@ -7,8 +7,8 @@ Window {
     property bool isThereTimer: false
     property string view: "DeveClock"
 
-    property int buttonY: 690
-    property int buttonHeight: 64
+    property int buttonY: root.height/2*0.725
+    property int buttonHeight: root.height*0.08
 
     width: 480
     height: 800
@@ -19,11 +19,15 @@ Window {
 
     //-------------------------------- elementi comuni a più view
     Head {
+        id: head
+
         txt: root.view
     }
 
     Back { // presente in tutte le view tranne DeveClock
         visible: root.view!=="DeveClock"
+
+        anchors.verticalCenter: head.verticalCenter
 
         state: "disabled"
 
@@ -59,6 +63,8 @@ Window {
     Item {
         id: deveClock
 
+        anchors.centerIn: parent
+
         visible: root.view==="DeveClock"
 
         Clock {}
@@ -66,10 +72,8 @@ Window {
         Button { //pulsante timer
             id: timerButton
 
-            buttonY: root.buttonY
-            buttonHeight: root.buttonHeight
-
-            x: 18
+            anchors.horizontalCenter: deveClock.horizontalCenter
+            anchors.horizontalCenterOffset: -width/2-30
 
             buttonTxt: "TIMER"
 
@@ -88,10 +92,9 @@ Window {
         Button {
             id: alarmButton
 
-            x: 272
+            anchors.horizontalCenter: deveClock.horizontalCenter
+            anchors.horizontalCenterOffset: width/2+30
 
-            buttonY: root.buttonY
-            buttonHeight: root.buttonHeight
 
             buttonTxt: "ALARM"
 
@@ -110,8 +113,9 @@ Window {
         Image {
             source: "/assets/alarm-on-feedback.svg"
 
-            y: 33
-            x: 403
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -340
+            anchors.horizontalCenterOffset: 180
 
             visible: root.isThereAlarm
 
@@ -124,8 +128,10 @@ Window {
         Image {
             source: "/assets/timer.svg"
 
-            y: 33
-            x: 349
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -340
+
+            anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
 
             visible: root.isThereTimer
         }
@@ -135,6 +141,9 @@ Window {
     //----------------------------------- tutte le view relative ad Alarm
     Item {
         id: alarmGeneral
+
+        anchors.centerIn: parent
+
         //-------------------------------- view Alarm
         Item {
             id: alarm
@@ -142,12 +151,15 @@ Window {
             property bool everyDay: true
             property bool setDate: false
 
+            anchors.centerIn: parent
+
             visible: root.view==="Alarm"
 
             AlarmDateButton {
                 id: alarmEveryday
 
-                x: 34
+                anchors.horizontalCenter: alarm.horizontalCenter
+                anchors.horizontalCenterOffset: -width/2-10
 
                 state: "selected"
                 buttonTxt: "Everyday"
@@ -172,7 +184,8 @@ Window {
             AlarmDateButton {
                 id: alarmDate
 
-                x: 254
+                anchors.horizontalCenter: alarm.horizontalCenter
+                anchors.horizontalCenterOffset: width/2+10
 
                 state: "disabled"
                 buttonTxt: "Set date"
@@ -198,8 +211,6 @@ Window {
             }
 
             SetButton {// set date
-                x: 23
-                y: 706
 
                 state: "disable"
                 buttonTxt: "SET ALARM"
@@ -247,6 +258,8 @@ Window {
         Item {
             id: alarmClockList
 
+            anchors.centerIn: parent
+
             visible: root.view==="Alarm clock list"
 
             AlarmList {
@@ -254,12 +267,6 @@ Window {
             }
 
             DeleteButton {
-                x: 23
-                y: 706
-
-                buttonY: root.buttonY
-                buttonHeight: root.buttonHeight
-
                 visible: alarmList.howManySelected>0
                 state: "disabled"
 
@@ -354,5 +361,14 @@ Window {
                 }
             }
         }
+    }
+    Item {
+        id: timer
+
+        anchors.centerIn: parent
+
+        visible: view==="Timer"
+
+
     }
 }

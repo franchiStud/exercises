@@ -4,7 +4,6 @@ Image {
     id: root
 
     x: 28
-    y: 20
 
     sourceSize.height: 80
 

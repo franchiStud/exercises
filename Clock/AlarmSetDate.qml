@@ -5,9 +5,12 @@ Item {
 
     property var newDate: new Date()
 
+    anchors.centerIn: parent
+
     Rectangle {
-        x: 28
-        y: 140
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -90
+        anchors.horizontalCenterOffset: -100
 
         width: 190
         height: 290
@@ -43,8 +46,8 @@ Item {
                 }
             }
 
-            anchors.horizontalCenter: parent.horizontalCenter
-            y: 45
+            anchors.top: parent.top
+            anchors.verticalCenterOffset: 45
             width: parent.width
 
             color: "#9FAAB0"
@@ -67,7 +70,7 @@ Item {
             font.letterSpacing: 2
         }
 
-        AlarmSetDateArrow{
+        SetArrow {
             direction: true
 
             MouseArea{
@@ -85,7 +88,7 @@ Item {
             }
         }
 
-        AlarmSetDateArrow {
+        SetArrow {
             direction: false
 
             MouseArea {

@@ -1,18 +1,19 @@
 import QtQuick
 
 Item {
-
     id: root
 
     property var hourSet: new Date()
     property bool isActive
 
-    AlarmAnalogClock{
+    anchors.centerIn: parent
+
+    AlarmAnalogClock {
         id: analogClock
+
         hour: root.hourSet
 
-        x:58
-        y:196
+        anchors.centerIn: parent
     }
 
     Image {
@@ -20,8 +21,8 @@ Item {
 
         source: "/assets/comp-slider.svg"
 
-        x: -12
-        y: 578
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: 220
     }
 
     Text {
@@ -57,7 +58,7 @@ Item {
 
         drag.target: cursor
         drag.axis: Drag.XAxis
-        drag.maximumX: 378
+        drag.maximumX: slider.x+390
         drag.minimumX: slider.x
     }
 
@@ -66,16 +67,18 @@ Item {
         onTriggered: {
             var hourSetApp=root.hourSet
             if(dragArea.drag.active) {
+
                 cursor.pressed=true
 
                 var hourWidth=Math.abs((dragArea.drag.minimumX)
-                    +Math.abs(dragArea.drag.maximumX))/18
+                    +Math.abs(dragArea.drag.maximumX))/5.3
                 var tenMinutesWidth=hourWidth/6
 
                 var posM=(cursor.x-dragArea.drag.minimumX)%hourWidth
 
-                hourSetApp.setHours(Math.round(5.5+(cursor.x-dragArea.drag.minimumX)
-                                      /hourWidth))
+                hourSetApp.setHours(Math.round(
+                            5.5+(cursor.x-dragArea.drag.minimumX)
+                            / hourWidth))
 
 
                 if(posM<=(tenMinutesWidth*1))

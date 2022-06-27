@@ -6,8 +6,7 @@ Rectangle {
     property bool alarmSet: false
     property var currentDate: new Date()
 
-    x: 18
-    y: 160
+    anchors.centerIn: parent
     width: 444
     height: 390
     radius: 40

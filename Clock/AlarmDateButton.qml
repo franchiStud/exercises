@@ -5,10 +5,12 @@ Rectangle {
 
     property string buttonTxt
 
-    y: 140
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.verticalCenterOffset: -235
+
     width: 192
     height: 50
-    radius: 25
+    radius: height/2
 
     border.width: 1
     color: "#2b3e53"

@@ -3,10 +3,8 @@ import QtQuick
 Rectangle {
     id: root
 
-    property int buttonY
-    property int buttonHeight
-
-    y: buttonY
+    anchors.centerIn: parent
+    anchors.verticalCenterOffset: 340
     width: 434
     height: buttonHeight
 

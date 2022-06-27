@@ -5,13 +5,10 @@ Rectangle { //DeveClock buttons
 
     property string buttonTxt
 
-    property int buttonY
-    property int buttonHeight
-
     y: buttonY
     width: 190
     height: buttonHeight
-    radius: width/6
+    radius: buttonHeight/2
 
     border.color: "#FCB647"
     border.width: 1

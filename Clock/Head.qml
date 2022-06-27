@@ -5,11 +5,12 @@ Item{
 
     property string txt
 
-    x: parent.width/2
-    y: 58
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.top
+    anchors.verticalCenterOffset: 60
 
     Text{
-        id: head
+        id: headTxt
 
         text: root.txt
 
@@ -20,8 +21,8 @@ Item{
     }
 
     Rectangle{
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: root.y
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: 50
         width: 400
         height: 1
 
