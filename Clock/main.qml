@@ -362,4 +362,13 @@ Window {
             }
         }
     }
+    Item {
+        id: timer
+
+        anchors.centerIn: parent
+
+        visible: view==="Timer"
+
+
+    }
 }

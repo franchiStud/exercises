@@ -16,12 +16,13 @@ qt_add_qml_module(appClock
     VERSION 1.0
     QML_FILES
         #File generali
-        main.qml Head.qml Back.qml SetButton.qml
+        main.qml Head.qml Back.qml SetButton.qml SetArrow.qml
         #File della view DeveClock
         Button.qml AnalogClock.qml DigitalClock.qml DateTxt.qml Clock.qml
         #File alarm
         AlarmDateButton.qml AlarmAnalogClock.qml AlarmSetHour.qml AlarmList.qml
-        AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml AlarmSetDateArrow.qml
+        AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml
+        #File Timer
 )
 
 qt_add_resources(appClock "assets"

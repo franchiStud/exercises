@@ -70,7 +70,7 @@ Item {
             font.letterSpacing: 2
         }
 
-        AlarmSetDateArrow{
+        SetArrow {
             direction: true
 
             MouseArea{
@@ -88,7 +88,7 @@ Item {
             }
         }
 
-        AlarmSetDateArrow {
+        SetArrow {
             direction: false
 
             MouseArea {
