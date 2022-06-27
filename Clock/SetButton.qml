@@ -2,24 +2,38 @@ import QtQuick
 
 Rectangle {
    id: root
+
    property string buttonTxt
-   x: 23
-   y: 706
+
+   anchors.centerIn: parent
+   anchors.verticalCenterOffset: 340
+
    width: 434
-   height: 64
+   height: buttonHeight
+   radius: buttonHeight/2
+
    visible: true
+
    border.color: "#00A6E2"
    border.width: 1
-   radius: 32
+
    Text {
        id: txt
-       color: "#00A6E2"
+
+       text: buttonTxt
+
        anchors.centerIn: parent
+
+       color: "#00A6E2"
        font.family: "Buenos Aires"
        font.pixelSize: 36
        font.letterSpacing: 1.8
-       text: buttonTxt
+
+       Behavior on color {
+           ColorAnimation { duration: 250 }
+       }
     }
+
     states: [
         State { //stato del pulsante active
             name: "active"
@@ -44,4 +58,8 @@ Rectangle {
             }
         }
     ]
+
+    Behavior on color {
+        ColorAnimation { duration: 250 }
+    }
 }
