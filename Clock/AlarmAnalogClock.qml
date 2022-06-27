@@ -1,11 +1,10 @@
 import QtQuick
 
 Image {
-
     id: root
 
     property date currentDate: new Date()
-    property var hour
+    property var hour: new Date()
 
     source: "/assets/comp-clock-dial-setting-alarm-mode.svg"
 
@@ -58,8 +57,10 @@ Image {
         anchors.verticalCenterOffset: -sourceSize.height/2
 
         transformOrigin: Item.Bottom
-        rotation: (hour[0]>12 ? hour[0]-12 : hour[0])*30
-                  + (hour[1]/60)*30
+        rotation: (hour.getHours()>12
+                        ? hour.getHours()-12
+                        : hour.getHours())*30
+                  + (hour.getMinutes()/60)*30
     }
 
     Timer { //hour refreshes every 0.5 secs
@@ -75,6 +76,7 @@ Image {
         sourceSize: "21x21"
 
         anchors.centerIn: parent
+        anchors.verticalCenterOffset: -10
     }
 }
 

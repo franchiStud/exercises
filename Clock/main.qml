@@ -208,24 +208,29 @@ Window {
                     anchors.fill: parent
                     onClicked: {
                         if(!alarm.everyDay&&!alarm.setDate) return
+
+                        var appendDate=alarmSetHour.hourSet
+
                         if(alarm.everyDay)
                             alarmList.everyDayAlarms.append({
-                                "hours": alarmSetHour.hourSet[0],
-                                "minutes": alarmSetHour.hourSet[1],
-                                "day": 0,
-                                "month": 0,
-                                "year": 0,
-                                "isActive": true,
-                                })
-                        else
+                                "date": appendDate,
+                                "everyDay": true,
+                                "isActive": true
+                            })
+                        else{
+                            appendDate.setDate(
+                                alarmSetDate.newDate.getDate())
+                            appendDate.setMonth(
+                                        alarmSetDate.newDate.getMonth())
+                            appendDate.setFullYear(
+                                        alarmSetDate.newDate.getFullYear())
                             alarmList.dateAlarms.append({
-                                "hours": alarmSetHour.hourSet[0],
-                                "minutes": alarmSetHour.hourSet[1],
-                                "day": alarmSetDate.newDate[0],
-                                "month": alarmSetDate.newDate[1],
-                                "year": alarmSetDate.newDate[2],
+                                "date": appendDate,
+                                "everyDay": false,
                                 "isActive": true,
                                 })
+                        }
+
                         parent.state= "active"
                         transitionTimer.thenChange=parent
                         transitionTimer.nextView="DeveClock"
@@ -264,14 +269,19 @@ Window {
                         for(var a=0;a<alarmList.isSelected.length;a++){
                             for(var e=0;e<alarmList.everyDayAlarms.count;e++)
                                 if(alarmClockList.equals(alarmList.isSelected[a],
-                                                         alarmList.everyDayAlarms.get(e)))
-                                alarmList.everyDayAlarms.remove(e, 1)
+                                            alarmList.everyDayAlarms.get(e)))
+                               {
+                                    alarmList.everyDayAlarms.remove(e, 1)
+                                }
+
+
 
                             for(var i=0;i<alarmList.dateAlarms.count;i++)
                                 if(alarmClockList.equals(alarmList.isSelected[a],
-                                                         alarmList.dateAlarms.get(i)))
-                                alarmList.dateAlarms.remove(i, 1)
-
+                                            alarmList.dateAlarms.get(i)))
+                                {
+                                    alarmList.dateAlarms.remove(i, 1)
+                                }
                         }
                         parent.state= "enabled"
                         transitionTimer.thenChange=parent
@@ -292,16 +302,25 @@ Window {
             }
 
             function equals(isSelected, listedAlarm) {
-                return listedAlarm.hours===
-                        isSelected.hours &&
-                    listedAlarm.minutes===
-                        isSelected.minutes &&
-                    listedAlarm.day===
-                         isSelected.day &&
-                    listedAlarm.month===
-                         isSelected.month &&
-                    listedAlarm.year===
-                         isSelected.year
+                if(isSelected.everyDay!==listedAlarm.everyDay)
+                    return false
+
+                if(listedAlarm.everyDay)
+                    return listedAlarm.date.getHours() ===
+                            isSelected.date.getHours() &&
+                           listedAlarm.date.getMinutes() ===
+                            isSelected.date.getMinutes() &&
+                           listedAlarm.date.getDate() ===
+                            isSelected.date.getDate() &&
+                           listedAlarm.date.getMonth() ===
+                            isSelected.date.getMonth() &&
+                           listedAlarm.date.getFullYear() ===
+                            isSelected.date.getFullYear()
+                else
+                    return listedAlarm.date.getHours() ===
+                            isSelected.date.getHours() &&
+                           listedAlarm.date.getMinutes() ===
+                            isSelected.date.getMinutes()
             }
         }
 
@@ -322,9 +341,9 @@ Window {
                     anchors.fill: parent
                     onClicked:{
                         alarmDate.buttonTxt=
-                                          alarmSetDate.newDate[0]+"/"+
-                                          alarmSetDate.newDate[1]+"/"+
-                                          alarmSetDate.newDate[2]
+                                          alarmSetDate.newDate.getDate()+"/"+
+                                          alarmSetDate.newDate.getMonth()+"/"+
+                                          alarmSetDate.newDate.getFullYear()
                         alarm.setDate=true
                         parent.state= "active"
                         transitionTimer.thenChange=parent

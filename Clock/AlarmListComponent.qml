@@ -65,16 +65,21 @@ Component {
                 anchors.fill: parent
 
                 onClicked: {
-                    var thisAlarm={"hours": hours, "minutes": minutes,
-                        "day": day, "month": month, "year": year}
-
                     if(parent.disable===true) {
-                        isSelected[root.howManySelected++]=thisAlarm
+                        isSelected[root.howManySelected++]={
+                            "date": date,
+                            "everyDay": everyDay,
+                            "isActive": isActive
+                        }
                     } else {
                         var app=[], e=0;
 
                         for(var i=0;i<root.howManySelected;i++)
-                            if(isSelected[i]!==thisAlarm)
+                            if(isSelected[i]!=={
+                                        "date": date,
+                                        "everyDay": everyDay,
+                                        "isActive": isActive
+                                    })
                                 app[e++]=isSelected[i]
                         isSelected=app
                         howManySelected--;
@@ -87,17 +92,21 @@ Component {
         Text {// hourTxt
             id: hourTxt
 
-            text: hours+":"+(minutes<10 ? "00" : minutes)
+            text: date.getHours()+":"+(date.getMinutes()<10
+                                       ? "00"
+                                       : date.getMinutes())
 
             x: 82
-            y: day===0 ? 20 : 35
+            y: everyDay ? 20 : 35
 
             font.pixelSize: 40
             color: "#9FAAB0"
         }
 
         Text {// dateTxt
-            text: day===0 ? "" : day+"/"+month+"/"+year
+            text: everyDay ? "" : date.getDate()+"/"+
+                                  date.getMonth()+"/"+
+                                  date.getFullYear()
 
             anchors.horizontalCenter: hourTxt.horizontalCenter
             y: 14

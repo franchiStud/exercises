@@ -4,7 +4,7 @@ Item {
 
     id: root
 
-    property var hourSet: [6,0]
+    property var hourSet: new Date()
     property bool isActive
 
     AlarmAnalogClock{
@@ -64,6 +64,7 @@ Item {
     Timer {
         interval: 10; repeat: root.isActive; running: root.isActive
         onTriggered: {
+            var hourSetApp=root.hourSet
             if(dragArea.drag.active) {
                 cursor.pressed=true
 
@@ -73,24 +74,29 @@ Item {
 
                 var posM=(cursor.x-dragArea.drag.minimumX)%hourWidth
 
-                hourSet[0]=Math.round(5.5+(cursor.x-dragArea.drag.minimumX)
-                                      /hourWidth)
-                txt.text=hourSet[0]+":"
+                hourSetApp.setHours(Math.round(5.5+(cursor.x-dragArea.drag.minimumX)
+                                      /hourWidth))
+
 
                 if(posM<=(tenMinutesWidth*1))
-                    hourSet[1]=0
+                    hourSetApp.setMinutes(0)
                 else if(posM<=(tenMinutesWidth*2))
-                    hourSet[1]=10
+                    hourSetApp.setMinutes(10)
                 else if(posM<=(tenMinutesWidth*3))
-                    hourSet[1]=20
+                    hourSetApp.setMinutes(20)
                 else if(posM<=(tenMinutesWidth*4))
-                    hourSet[1]=30
+                    hourSetApp.setMinutes(30)
                 else if(posM<=(tenMinutesWidth*5))
-                    hourSet[1]=40
+                    hourSetApp.setMinutes(40)
                 else
-                    hourSet[1]=50
+                    hourSetApp.setMinutes(50)
 
-                txt.text+=hourSet[1]
+                root.hourSet=hourSetApp
+                txt.text=root.hourSet.getHours()+
+                        ":"+
+                        ((root.hourSet.getMinutes() < 10)
+                                ? "00"
+                                : root.hourSet.getMinutes())
                 analogClock.hour=hourSet
             } else
                 cursor.pressed=false
