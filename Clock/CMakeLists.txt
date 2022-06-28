@@ -23,6 +23,7 @@ qt_add_qml_module(appClock
         AlarmDateButton.qml AlarmAnalogClock.qml AlarmSetHour.qml AlarmList.qml
         AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml
         #File Timer
+        TimerSet.qml TimerCD.qml
 )
 
 qt_add_resources(appClock "assets"
@@ -39,6 +40,11 @@ qt_add_resources(appClock "assets"
         assets/ic-tick-selected.svg assets/switch-off-disable.svg assets/switch-off-selected.svg
         assets/switch-on-disable.svg assets/switch-on-disable2.svg assets/switch-on-selected.svg
         assets/comp-clock-dial-setting-alarm-mode.svg assets/timer.svg assets/btn-back-hover.svg
+)
+
+qt_add_resources(appClock "sounds"
+    PREFIX "/"
+    FILES sounds/timer.wav sounds/alarm.wav
 )
 
 set_target_properties(appClock PROPERTIES

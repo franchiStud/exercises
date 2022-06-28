@@ -10,7 +10,7 @@ Item {
     property var deleteButton: DeleteButton {}
 
     property var everydayToOthersDistance: everyDayAlarms.count > 0
-                                        ? everyDayAlarms.count * 88 + 100
+                                        ? everyDayAlarms.count * 88 + 120
                                         : 0
 
 
@@ -34,10 +34,11 @@ Item {
         model: everyDayAlarms
 
         anchors.centerIn: parent
-        anchors.horizontalCenterOffset: -120
-        anchors.verticalCenterOffset: -120
-        width: 180
-        height: 200
+        anchors.verticalCenterOffset: -80
+        width: 424
+        height: 264
+
+        clip: true
 
         delegate: AlarmListComponent {}
     }
@@ -63,8 +64,10 @@ Item {
         anchors.left: everyDayView.left
         anchors.right: everyDayView.right
         anchors.verticalCenter: everyDayView.top
-        anchors.verticalCenterOffset: everydayToOthersDistance +
+        anchors.verticalCenterOffset: everydayToOthersDistance + 40 +
                                       dateAlarmsTxt.font.pixelSize * 5
+
+        clip: true
 
         height: everyDayView.height
 

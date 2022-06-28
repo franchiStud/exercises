@@ -37,7 +37,6 @@ Component {
         }
 
 
-
         Image {
             id: onOffImage
 

@@ -3,7 +3,9 @@ import QtQuick
 Image {
     id: root
 
-    x: 28
+    property int startX
+
+    state: "disabled"
 
     sourceSize.height: 80
 
@@ -12,14 +14,14 @@ Image {
             name: "enabled"; PropertyChanges {
                 target: root
                 source: "/assets/btn-back-hover.svg"
-                x: root.x-10
+                x: root.startX-10
             }
         },
         State {
             name: "disabled"; PropertyChanges {
                 target: root
                 source: "/assets/btn-back-active.svg"
-                x: root.x
+                x: root.startX
             }
         }
     ]

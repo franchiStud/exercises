@@ -1,23 +1,25 @@
 import QtQuick
 
 Rectangle {
-   id: root
+    id: root
 
-   property string buttonTxt
+    property string buttonTxt
 
-   anchors.centerIn: parent
-   anchors.verticalCenterOffset: 340
+    anchors.centerIn: parent
+    anchors.verticalCenterOffset: 340
 
-   width: 434
-   height: buttonHeight
-   radius: buttonHeight/2
+    width: 434
+    height: buttonHeight
+    radius: buttonHeight/2
 
-   visible: true
+    visible: true
 
-   border.color: "#00A6E2"
-   border.width: 1
+    border.color: "#00A6E2"
+    border.width: 1
 
-   Text {
+    state: "disable"
+
+    Text {
        id: txt
 
        text: buttonTxt

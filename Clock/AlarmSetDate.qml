@@ -46,8 +46,8 @@ Item {
                 }
             }
 
-            anchors.top: parent.top
-            anchors.verticalCenterOffset: 45
+            anchors.horizontalCenter: day.horizontalCenter
+            anchors.bottom: day.top
             width: parent.width
 
             color: "#9FAAB0"

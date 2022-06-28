@@ -1,10 +1,11 @@
 import QtQuick
+import QtMultimedia
 
 Window {
     id: root
 
     property bool isThereAlarm: false
-    property bool isThereTimer: false
+    property bool isThereTimer: !timerCD.timerEnd
     property string view: "DeveClock"
 
     property int buttonY: root.height/2*0.725
@@ -134,6 +135,11 @@ Window {
             anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
 
             visible: root.isThereTimer
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: { view="Timer" }
+            }
         }
     }
 
@@ -211,8 +217,6 @@ Window {
             }
 
             SetButton {// set date
-
-                state: "disable"
                 buttonTxt: "SET ALARM"
 
                 MouseArea {
@@ -278,7 +282,7 @@ Window {
                                 if(alarmClockList.equals(alarmList.isSelected[a],
                                             alarmList.everyDayAlarms.get(e)))
                                {
-                                    alarmList.everyDayAlarms.remove(e, 1)
+                                    alarmList.everyDayAlarms.remove(e--, 1)
                                 }
 
 
@@ -287,7 +291,7 @@ Window {
                                 if(alarmClockList.equals(alarmList.isSelected[a],
                                             alarmList.dateAlarms.get(i)))
                                 {
-                                    alarmList.dateAlarms.remove(i, 1)
+                                    alarmList.dateAlarms.remove(i--, 1)
                                 }
                         }
                         parent.state= "enabled"
@@ -312,7 +316,7 @@ Window {
                 if(isSelected.everyDay!==listedAlarm.everyDay)
                     return false
 
-                if(listedAlarm.everyDay)
+                if(!listedAlarm.everyDay)
                     return listedAlarm.date.getHours() ===
                             isSelected.date.getHours() &&
                            listedAlarm.date.getMinutes() ===
@@ -341,7 +345,6 @@ Window {
             }
 
             SetButton {
-                state: "disable"
                 buttonTxt: "SET DATE"
 
                 MouseArea {
@@ -361,14 +364,186 @@ Window {
                 }
             }
         }
+
+        Timer {
+            id: alarmTimer
+
+            interval: 60000; running: true; repeat: true
+            onTriggered: {
+                var thisMoment= {
+                    date: new Date(),
+                    everyDay: true,
+                    isActive: true
+                }
+
+                for(var e=0;e<alarmList.everyDayAlarms.count;e++)
+                    if(alarmClockList.equals(thisMoment,
+                                             alarmList.everyDayAlarms.get(e))
+                            && alarmList.everyDayAlarms.get(e).isActive)
+                        alarmSound.play()
+
+                thisMoment.everyDay= false
+
+                for(var i=0;i<alarmList.dateAlarms.count;i++)
+                    if(alarmClockList.equals(thisMoment,
+                                             alarmList.dateAlarms.get(i))
+                            && alarmList.dateAlarms.get(i).isActive)
+                        alarmSound.play()
+            }
+        }
+
+        SoundEffect {
+            id: alarmSound
+            source: "/sounds/alarm.wav"
+        }
     }
-    Item {
+
+    Item {//-------------------------------- view Timer
         id: timer
 
         anchors.centerIn: parent
 
         visible: view==="Timer"
 
+        Item {//-------------------------------- timer set
+            id: timerSet
 
+            anchors.centerIn: parent
+
+            visible: !root.isThereTimer
+
+            TimerSet {
+                id: timerHours
+
+                anchors.horizontalCenterOffset: -width/2-20
+
+                txt: "hours"
+            }
+
+            TimerSet {
+                id: timerMinutes
+
+                anchors.horizontalCenterOffset: width/2+20
+
+                txt: "mins"
+            }
+
+            Text {
+                text: ":"
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: timerHours.verticalCenter
+                anchors.verticalCenterOffset: timerHours.verticalOffset
+
+                font.pixelSize: 120
+                color: "#707070"
+            }
+
+            SetButton {
+                buttonTxt: "SET TIMER"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        parent.state="enabled"
+
+                        transitionTimer.thenChange=parent
+                        transitionTimer.nextState="disable"
+                        transitionTimer.nextView="Timer"
+                        transitionTimer.running=true
+
+                        setTimerTimer.running=true
+                    }
+                }
+            }
+
+            Timer {
+                id: setTimerTimer
+
+                interval: 300; running: false; repeat: false;
+                onTriggered: {
+                    timerCD.timeLeftHours=timerHours.value
+                    timerCD.timeLeftMinutes=timerMinutes.value
+                    timerCD.timeLeftSeconds=0
+
+                    timerCD.timerEnd=false
+                }
+            }
+        }
+
+        Item {//-------------------------------- timer CD
+            id: timerCountDown
+
+            anchors.centerIn: parent
+
+            visible: root.isThereTimer
+
+            TimerCD {
+                id: timerCD
+
+                isThereTimer: root.isThereTimer
+            }
+
+            Image {
+                property string clickState: "active"
+
+                source: timerCD.isRunning ? "/assets/btn-pause-"+clickState
+                                  : "/assets/btn-play-"+clickState
+
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: 250
+                anchors.horizontalCenterOffset: 100
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        parent.clickState="hover"
+
+                        timerTransitionTimer.thenChange=parent
+                        timerTransitionTimer.running= true
+
+                        timerCD.isRunning= !timerCD.isRunning
+                    }
+                }
+            }
+
+            Image {
+                property string clickState: "active"
+
+                source: "/assets/btn-reload-"+clickState
+
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: 250
+                anchors.horizontalCenterOffset: -100
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        parent.clickState="hover"
+
+                        timerTransitionTimer.thenChange=parent
+                        timerTransitionTimer.running= true
+
+                        timerCD.timeLeftHours=timerHours.value
+                        timerCD.timeLeftMinutes=timerMinutes.value
+                        timerCD.timeLeftSeconds=0
+                    }
+                }
+            }
+
+            Timer {
+                id: timerTransitionTimer
+
+                property var thenChange
+
+                interval: 300; running: false; repeat: false
+
+                onTriggered: {
+                    thenChange.clickState="active"
+                }
+            }
+        }
     }
 }
