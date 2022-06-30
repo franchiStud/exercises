@@ -106,7 +106,7 @@ Component {
 
         Text {// dateTxt
             text: everyDay ? "" : date.getDate()+"/"+
-                                  date.getMonth()+"/"+
+                                  (date.getMonth()+1)+"/"+
                                   date.getFullYear()
 
             anchors.horizontalCenter: hourTxt.horizontalCenter

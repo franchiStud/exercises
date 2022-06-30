@@ -1,0 +1,109 @@
+import QtQuick
+import QtMultimedia
+
+Component {
+
+    Item {
+        id: alarmClockList
+
+        AlarmList {
+            id: alarmListObj
+        }
+
+        DeleteButton {
+            visible: alarmListObj.howManySelected>0
+            state: "disabled"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    for(var a=0;a<alarmListObj.isSelected.length;a++){
+                        for(var e=0;e<everyDayAlarms.count;e++)
+                            if(alarmClockList.equals(alarmListObj.isSelected[a],
+                                        everyDayAlarms.get(e)))
+                           {
+                                everyDayAlarms.remove(e--, 1)
+                            }
+
+
+
+                        for(var i=0;i<dateAlarms.count;i++)
+                            if(alarmClockList.equals(alarmListObj.isSelected[a],
+                                        dateAlarms.get(i)))
+                            {
+                                dateAlarms.remove(i--, 1)
+                            }
+                    }
+                    parent.state= "enabled"
+                    transitionTimer.thenChange=parent
+                    transitionTimer.nextView="Alarm clock list"
+                    transitionTimer.nextState="disabled"
+                    transitionTimer.running=true
+                    deleteButtonTimer.running=true
+                    root.isThereAlarm=dateAlarms.count>0 ||
+                                      everyDayAlarms.count>0
+                    transitionTimer.changeStackView = false
+                }
+            }
+            Timer {
+                id: deleteButtonTimer
+
+                interval: 300; running: false; repeat: false;
+                onTriggered: { alarmListObj.howManySelected=0 }
+            }
+        }
+
+        function equals(isSelected, listedAlarm) {
+            if(isSelected.everyDay!==listedAlarm.everyDay)
+                return false
+
+            if(!listedAlarm.everyDay)
+                return listedAlarm.date.getHours() ===
+                        isSelected.date.getHours() &&
+                       listedAlarm.date.getMinutes() ===
+                        isSelected.date.getMinutes() &&
+                       listedAlarm.date.getDate() ===
+                        isSelected.date.getDate() &&
+                       listedAlarm.date.getMonth() ===
+                        isSelected.date.getMonth() &&
+                       listedAlarm.date.getFullYear() ===
+                        isSelected.date.getFullYear()
+            else
+                return listedAlarm.date.getHours() ===
+                        isSelected.date.getHours() &&
+                       listedAlarm.date.getMinutes() ===
+                        isSelected.date.getMinutes()
+        }
+
+        Timer {
+            id: alarmTimer
+
+            interval: 60000; running: true; repeat: true
+            onTriggered: {
+                var thisMoment= {
+                    date: new Date(),
+                    everyDay: true,
+                    isActive: true
+                }
+
+                for(var e=0;e<everyDayAlarms.count;e++)
+                    if(alarmClockList.equals(thisMoment,
+                                             everyDayAlarms.get(e))
+                            && everyDayAlarms.get(e).isActive)
+                        alarmSound.play()
+
+                thisMoment.everyDay= false
+
+                for(var i=0;i<dateAlarms.count;i++)
+                    if(alarmClockList.equals(thisMoment,
+                                             dateAlarms.get(i))
+                            && dateAlarms.get(i).isActive)
+                        alarmSound.play()
+            }
+        }
+        SoundEffect {
+            id: alarmSound
+            source: "/sounds/alarm.wav"
+        }
+    }
+}

@@ -1,6 +1,8 @@
 import QtQuick
 
 Item {
+    anchors.centerIn: parent
+
     AnalogClock {// orologio analogico
         id: ac
 

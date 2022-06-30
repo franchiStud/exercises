@@ -3,8 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property var everyDayAlarms: ListModel {}
-    property var dateAlarms: ListModel {}
     property var isSelected: []
     property real howManySelected: 0
     property var deleteButton: DeleteButton {}
@@ -13,7 +11,7 @@ Item {
                                         ? everyDayAlarms.count * 88 + 120
                                         : 0
 
-
+    anchors.centerIn: parent
 
     Text {
         id: everyDayTxt

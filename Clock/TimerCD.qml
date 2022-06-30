@@ -4,25 +4,19 @@ import QtMultimedia
 Item {
     id: root
 
-    property int timeLeftHours: 0
-    property int timeLeftMinutes: 0
-    property int timeLeftSeconds: 0
-    property bool isThereTimer
     property bool isRunning: true
-
-    property bool timerEnd: true
 
     anchors.centerIn: parent
 
     Text {
         id: timeLeftTxt
-        text: (root.timeLeftHours < 10
-                    ? "0"+root.timeLeftHours
-                    : root.timeLeftHours)
+        text: (timerTimeLeftHours < 10
+                    ? "0"+timerTimeLeftHours
+                    : timerTimeLeftHours)
               +":"+
-              (root.timeLeftMinutes < 10
-                      ? "0"+root.timeLeftMinutes
-                      : root.timeLeftMinutes)
+              (timerTimeLeftMinutes < 10
+                      ? "0"+timerTimeLeftMinutes
+                      : timerTimeLeftMinutes)
 
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -50
@@ -32,9 +26,9 @@ Item {
     }
 
     Text {
-        text: root.timeLeftSeconds < 10
-            ? "0"+root.timeLeftSeconds
-            : root.timeLeftSeconds
+        text: timerTimeLeftSeconds < 10
+            ? "0"+timerTimeLeftSeconds
+            : timerTimeLeftSeconds
 
         anchors.top: timeLeftTxt.bottom
         anchors.horizontalCenter: timeLeftTxt.horizontalCenter
@@ -43,38 +37,33 @@ Item {
         color: "#9FAAB0"
     }
 
-
-
-
-
-
     Timer {
-        interval: 1000; running: root.isThereTimer && root.isRunning; repeat: true
+        interval: 1000; running: isThereTimer && root.isRunning; repeat: true
         onTriggered: {
-            if(root.timeLeftSeconds <1){
+            if(timerTimeLeftSeconds <1){
 
-                if(root.timeLeftMinutes < 1)
+                if(timerTimeLeftMinutes < 1)
 
-                    if(root.timeLeftHours < 1){
-                        root.timerEnd=true
+                    if(timerTimeLeftHours < 1){
+                        isThereTimer=false
                         timerSound.play()
                     } else {
-                        root.timeLeftHours--
-                        root.timeLeftMinutes=59
-                        root.timeLeftSeconds=59
+                        timerTimeLeftHours--
+                        timerTimeLeftMinutes=59
+                        timerTimeLeftSeconds=59
                     }
                 else {
-                    root.timeLeftMinutes--
-                    root.timeLeftSeconds=59
+                    timerTimeLeftMinutes--
+                    timerTimeLeftSeconds=59
                 }
 
             } else
-                root.timeLeftSeconds--
+                timerTimeLeftSeconds--
 
         }
     }
     SoundEffect {
             id: timerSound
             source: "/sounds/timer.wav"
-        }
+   }
 }

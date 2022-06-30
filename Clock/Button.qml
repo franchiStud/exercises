@@ -5,7 +5,8 @@ Rectangle { //DeveClock buttons
 
     property string buttonTxt
 
-    y: buttonY
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.verticalCenterOffset: 330
     width: 190
     height: buttonHeight
     radius: buttonHeight/2

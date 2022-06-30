@@ -3,8 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property var newDate: new Date()
-
     anchors.centerIn: parent
 
     Rectangle {
@@ -21,7 +19,7 @@ Item {
         Text {
             id: day
 
-            text: newDate.getDate()
+            text: buttonDateValue.getDate()
 
             anchors.horizontalCenter: parent.horizontalCenter
             y: 104
@@ -35,7 +33,7 @@ Item {
             id: weekDay
 
             text: {
-                switch(root.newDate.getDay()){
+                switch(buttonDateValue.getDay()){
                     case 0: return "Sun"
                     case 1: return "Mon"
                     case 2: return "Tue"
@@ -58,7 +56,8 @@ Item {
         Text {
             id: restOfDate
 
-            text: "/"+root.newDate.getMonth()+"/"+root.newDate.getFullYear()
+            text: "/"+(buttonDateValue.getMonth()+1)+
+                  "/"+ buttonDateValue.getFullYear()
 
             x: parent.width+18
             anchors.verticalCenter: day.verticalCenter
@@ -76,11 +75,11 @@ Item {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= root.newDate
+                    var updateDate= buttonDateValue
 
                     updateDate.setDate(updateDate.getDate()+1)
 
-                    root.newDate=updateDate
+                    buttonDateValue=updateDate
 
                     arrowTimer.thenChange=parent
                     arrowTimer.running=true
@@ -94,11 +93,11 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= root.newDate
+                    var updateDate= buttonDateValue
 
                     updateDate.setDate(updateDate.getDate()-1)
 
-                    root.newDate=updateDate
+                    buttonDateValue=updateDate
 
                     arrowTimer.thenChange=parent
                     arrowTimer.running=true

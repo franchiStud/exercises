@@ -3,15 +3,12 @@ import QtQuick
 Item {
     id: root
 
-    property var hourSet: new Date()
     property bool isActive
 
     anchors.centerIn: parent
 
     AlarmAnalogClock {
         id: analogClock
-
-        hour: root.hourSet
 
         anchors.centerIn: parent
     }
@@ -65,7 +62,8 @@ Item {
     Timer {
         interval: 10; repeat: root.isActive; running: root.isActive
         onTriggered: {
-            var hourSetApp=root.hourSet
+            var hourSetApp=buttonDateValue
+            if(dragArea.drag.maximumX<cursor.x) return
             if(dragArea.drag.active) {
 
                 cursor.pressed=true
@@ -78,7 +76,7 @@ Item {
 
                 hourSetApp.setHours(Math.round(
                             5.5+(cursor.x-dragArea.drag.minimumX)
-                            / hourWidth))
+                            / hourWidth)%24)
 
 
                 if(posM<=(tenMinutesWidth*1))
@@ -94,13 +92,12 @@ Item {
                 else
                     hourSetApp.setMinutes(50)
 
-                root.hourSet=hourSetApp
-                txt.text=root.hourSet.getHours()+
+                buttonDateValue=hourSetApp
+                txt.text=buttonDateValue.getHours()+
                         ":"+
-                        ((root.hourSet.getMinutes() < 10)
+                        ((buttonDateValue.getMinutes() < 10)
                                 ? "00"
-                                : root.hourSet.getMinutes())
-                analogClock.hour=hourSet
+                                : buttonDateValue.getMinutes())
             } else
                 cursor.pressed=false
         }
