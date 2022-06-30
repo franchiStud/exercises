@@ -4,7 +4,6 @@ Rectangle {
     id: root
 
     property bool alarmSet: false
-    property var currentDate: new Date()
 
     anchors.centerIn: parent
     width: 444
@@ -48,11 +47,5 @@ Rectangle {
 
         color: "#9FAAB0"
         font.pixelSize: 30
-
-        Timer{
-            interval: 500; running: true; repeat: true
-            onTriggered: { parent.text=new Date().getHours()>12? "PM"
-                                                               : "AM" }
-        }
     }
 }

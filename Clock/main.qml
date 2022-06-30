@@ -16,7 +16,12 @@ Window {
     property var dateAlarms: ListModel {}
 
     property bool buttonDateSet: false
-    property var buttonDateValue: new Date()
+    property var buttonDateValue: {
+                                    var d=new Date()
+                                    d.setMinutes(0)
+                                    d.setHours(6)
+                                    return d
+                                 }
 
     property int timerTimeLeftHours: 0
     property int timerTimeLeftMinutes: 0

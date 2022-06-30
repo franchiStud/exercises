@@ -2,8 +2,6 @@ import QtQuick
 
 Image {
 
-    property date currentDate: new Date()
-
     source: "/assets/comp-clock-dial.svg"
 
     anchors.centerIn: parent
@@ -53,10 +51,7 @@ Image {
         }
     }
 
-    Timer { //l'ora si aggiorna ogni 0.5 secondi
-        interval: 500; running: true; repeat: true
-        onTriggered: { currentDate=new Date() }
-    }
+
 
     Image { //centro
         id: cen
