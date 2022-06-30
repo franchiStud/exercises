@@ -74,36 +74,5 @@ Component {
                        listedAlarm.date.getMinutes() ===
                         isSelected.date.getMinutes()
         }
-
-        Timer {
-            id: alarmTimer
-
-            interval: 60000; running: true; repeat: true
-            onTriggered: {
-                var thisMoment= {
-                    date: new Date(),
-                    everyDay: true,
-                    isActive: true
-                }
-
-                for(var e=0;e<everyDayAlarms.count;e++)
-                    if(alarmClockList.equals(thisMoment,
-                                             everyDayAlarms.get(e))
-                            && everyDayAlarms.get(e).isActive)
-                        alarmSound.play()
-
-                thisMoment.everyDay= false
-
-                for(var i=0;i<dateAlarms.count;i++)
-                    if(alarmClockList.equals(thisMoment,
-                                             dateAlarms.get(i))
-                            && dateAlarms.get(i).isActive)
-                        alarmSound.play()
-            }
-        }
-        SoundEffect {
-            id: alarmSound
-            source: "/sounds/alarm.wav"
-        }
     }
 }

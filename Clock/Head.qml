@@ -3,7 +3,7 @@ import QtQuick
 Item{
     id: root
 
-    property string txt
+    property string txt: "DeveClock"
 
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.top

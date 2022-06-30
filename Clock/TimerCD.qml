@@ -3,9 +3,6 @@ import QtMultimedia
 
 Item {
     id: root
-
-    property bool isRunning: true
-
     anchors.centerIn: parent
 
     Text {
@@ -37,33 +34,5 @@ Item {
         color: "#9FAAB0"
     }
 
-    Timer {
-        interval: 1000; running: isThereTimer && root.isRunning; repeat: true
-        onTriggered: {
-            if(timerTimeLeftSeconds <1){
 
-                if(timerTimeLeftMinutes < 1)
-
-                    if(timerTimeLeftHours < 1){
-                        isThereTimer=false
-                        timerSound.play()
-                    } else {
-                        timerTimeLeftHours--
-                        timerTimeLeftMinutes=59
-                        timerTimeLeftSeconds=59
-                    }
-                else {
-                    timerTimeLeftMinutes--
-                    timerTimeLeftSeconds=59
-                }
-
-            } else
-                timerTimeLeftSeconds--
-
-        }
-    }
-    SoundEffect {
-            id: timerSound
-            source: "/sounds/timer.wav"
-   }
 }

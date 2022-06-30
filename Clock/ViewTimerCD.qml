@@ -11,7 +11,7 @@ Component {
         Image {
             property string clickState: "active"
 
-            source: timerCD.isRunning ? "/assets/btn-pause-"+clickState
+            source: isTimerRunning ? "/assets/btn-pause-"+clickState
                               : "/assets/btn-play-"+clickState
 
             anchors.centerIn: parent
@@ -27,7 +27,7 @@ Component {
                     timerTransitionTimer.thenChange=parent
                     timerTransitionTimer.running= true
 
-                    timerCD.isRunning= !timerCD.isRunning
+                    isTimerRunning= !isTimerRunning
                 }
             }
         }

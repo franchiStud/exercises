@@ -30,6 +30,8 @@ Window {
     property int timerStartHours: 0
     property int timerStartMinutes: 0
 
+    property bool isTimerRunning: true
+
     width: 480
     height: 800
     visible: true
@@ -110,5 +112,67 @@ Window {
     ViewTimerCD      { id: viewTimerCD }
 
 
+    Timer {
+        id: alarmTimer
+
+        interval: 60000; running: true; repeat: true
+        onTriggered: {
+            var thisMoment= {
+                date: new Date(),
+                everyDay: true,
+                isActive: true
+            }
+
+            for(var e=0;e<everyDayAlarms.count;e++)
+                if(alarmClockList.equals(thisMoment,
+                                         everyDayAlarms.get(e))
+                        && everyDayAlarms.get(e).isActive)
+                    alarmSound.play()
+
+            thisMoment.everyDay= false
+
+            for(var i=0;i<dateAlarms.count;i++)
+                if(alarmClockList.equals(thisMoment,
+                                         dateAlarms.get(i))
+                        && dateAlarms.get(i).isActive)
+                    alarmSound.play()
+        }
+    }
+
+    Timer {
+        interval: 1000; running: isThereTimer && isTimerRunning; repeat: true
+        onTriggered: {
+            if(timerTimeLeftSeconds <1){
+
+                if(timerTimeLeftMinutes < 1)
+
+                    if(timerTimeLeftHours < 1){
+                        isThereTimer=false
+                        timerSound.play()
+                    } else {
+                        timerTimeLeftHours--
+                        timerTimeLeftMinutes=59
+                        timerTimeLeftSeconds=59
+                    }
+                else {
+                    timerTimeLeftMinutes--
+                    timerTimeLeftSeconds=59
+                }
+
+            } else
+                timerTimeLeftSeconds--
+
+        }
+    }
+
+    SoundEffect {
+        id: alarmSound
+        source: "/sounds/alarm.wav"
+    }
+
+    SoundEffect {
+        id: timerSound
+        source: "/sounds/timer.wav"
+   }
 
 }
