@@ -67,34 +67,33 @@ Window {
         }
     }
 
-        Timer {
-            id: transitionTimer
+    Timer {
+        id: transitionTimer
 
-            property string nextView
-            property var thenChange
-            property string nextState
-            property var nextStackView
-            property bool doPush: true
-            property bool changeStackView: true
+        property string nextView
+        property var thenChange
+        property string nextState
+        property var nextStackView
+        property bool doPush: true
+        property bool changeStackView: true
 
-            interval: 300; running: false; repeat: false
-            onTriggered: {
-                thenChange.state=nextState
-                root.view=nextView
+        interval: 300; running: false; repeat: false
+        onTriggered: {
+            thenChange.state=nextState
+            root.view=nextView
 
-                if(changeStackView){
-                    if(doPush)
-                        stackView.push(nextStackView)
-                    else {
-                        stackView.pop()
-                        doPush=true
-                    }
-                } else
-                    changeStackView= true
+            if(changeStackView){
+                if(doPush)
+                    stackView.push(nextStackView)
+                else {
+                    stackView.pop()
+                    doPush=true
+                }
+            } else
+                changeStackView= true
 
-            }
         }
-
+    }
 
     StackView {
         id: stackView
@@ -102,6 +101,39 @@ Window {
         anchors.fill: parent
 
         initialItem: viewDeveClock
+
+        pushEnter: Transition {
+                 PropertyAnimation {
+                     property: "opacity"
+                     from: 0
+                     to:1
+                     duration: 200
+                 }
+             }
+             pushExit: Transition {
+                 PropertyAnimation {
+                     property: "opacity"
+                     from: 1
+                     to:0
+                     duration: 200
+                 }
+             }
+             popEnter: Transition {
+                 PropertyAnimation {
+                     property: "opacity"
+                     from: 0
+                     to:1
+                     duration: 200
+                 }
+             }
+             popExit: Transition {
+                 PropertyAnimation {
+                     property: "opacity"
+                     from: 1
+                     to:0
+                     duration: 200
+                 }
+             }
     }
 
     ViewDeveClock    { id: viewDeveClock }
@@ -117,25 +149,28 @@ Window {
 
         interval: 60000; running: true; repeat: true
         onTriggered: {
-            var thisMoment= {
-                date: new Date(),
-                everyDay: true,
-                isActive: true
+            var now = new Date()
+
+
+            for(var e=0;e<everyDayAlarms.count;e++){
+                var alarmE = everyDayAlarms.get(e).date
+                if(now.getMinutes()===alarmE.getMinutes()
+                 &&now.getHours()  ===alarmE.getHours())
+                    alarmSound.play()
             }
 
-            for(var e=0;e<everyDayAlarms.count;e++)
-                if(alarmClockList.equals(thisMoment,
-                                         everyDayAlarms.get(e))
-                        && everyDayAlarms.get(e).isActive)
-                    alarmSound.play()
 
-            thisMoment.everyDay= false
-
-            for(var i=0;i<dateAlarms.count;i++)
-                if(alarmClockList.equals(thisMoment,
-                                         dateAlarms.get(i))
-                        && dateAlarms.get(i).isActive)
+            for(var i=0;i<dateAlarms.count;i++){
+                var alarmD = dateAlarm.get(e).date
+                if(now.getMinutes() ===alarmD.getMinutes()
+                 &&now.getHours()   ===alarmD.getHours()
+                 &&now.getDate()    ===alarmD.getDate()
+                 &&now.getMonth()   ===alarmD.getMonth()
+                 &&now.getFullYear()===alarmD.getFullYear())
                     alarmSound.play()
+            }
+
+
         }
     }
 
@@ -174,5 +209,4 @@ Window {
         id: timerSound
         source: "/sounds/timer.wav"
    }
-
 }

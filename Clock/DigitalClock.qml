@@ -4,6 +4,7 @@ Rectangle {
     id: root
 
     property bool alarmSet: false
+    property var currentDate
 
     anchors.centerIn: parent
     width: 444
@@ -32,11 +33,6 @@ Rectangle {
 
         color: "#FCB647"
         font.pixelSize: 120
-
-        Timer {
-            interval: 500; running: true; repeat: true
-            onTriggered: { currentDate= new Date() }
-        }
     }
 
     Text{

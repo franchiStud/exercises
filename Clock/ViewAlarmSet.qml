@@ -22,13 +22,16 @@ Component {
                 onClicked: {
                     parent.state= !alarm.everyDay ?
                                 "selected-hover" : "disabled-hover"
+
                     transitionTimer.thenChange=parent
                     transitionTimer.nextView="Alarm"
                     transitionTimer.nextState= !alarm.everyDay ?
                                 "selected" : "disabled"
                     transitionTimer.running=true
-                    alarmDate.state= !alarm.everyDay ?
-                                "disabled" : "selected"
+                    transitionTimer.changeStackView=false
+
+                    alarmDate.state= alarm.everyDay ?
+                                "selected" : "disabled"
                     alarm.everyDay= !alarm.everyDay
                 }
             }
@@ -52,13 +55,16 @@ Component {
                 anchors.fill: parent
                 onClicked: {
                     parent.state="selected-hover"
+
                     transitionTimer.thenChange=parent
                     transitionTimer.nextView="Set date"
                     transitionTimer.nextState= "selected"
                     transitionTimer.running=true
+                    transitionTimer.nextStackView = viewAlarmDateSet
+
                     alarmEveryday.state= "disabled"
                     alarm.everyDay= false
-                    transitionTimer.nextStackView = viewAlarmDateSet
+
                 }
             }
         }

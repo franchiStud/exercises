@@ -52,27 +52,5 @@ Component {
                 onTriggered: { alarmListObj.howManySelected=0 }
             }
         }
-
-        function equals(isSelected, listedAlarm) {
-            if(isSelected.everyDay!==listedAlarm.everyDay)
-                return false
-
-            if(!listedAlarm.everyDay)
-                return listedAlarm.date.getHours() ===
-                        isSelected.date.getHours() &&
-                       listedAlarm.date.getMinutes() ===
-                        isSelected.date.getMinutes() &&
-                       listedAlarm.date.getDate() ===
-                        isSelected.date.getDate() &&
-                       listedAlarm.date.getMonth() ===
-                        isSelected.date.getMonth() &&
-                       listedAlarm.date.getFullYear() ===
-                        isSelected.date.getFullYear()
-            else
-                return listedAlarm.date.getHours() ===
-                        isSelected.date.getHours() &&
-                       listedAlarm.date.getMinutes() ===
-                        isSelected.date.getMinutes()
-        }
     }
 }

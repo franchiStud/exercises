@@ -1,13 +1,15 @@
 import QtQuick
-import QtQuick.Controls
 
 Item {
+    id: root
     anchors.centerIn: parent
 
     property var currentDate: new Date()
 
     AnalogClock {// orologio analogico
         id: ac
+
+        currentDate: root.currentDate
 
         MouseArea {
             anchors.fill: parent
@@ -22,6 +24,8 @@ Item {
         id: dc
 
         visible: false
+
+        currentDate: root.currentDate
 
         MouseArea {
             anchors.fill: parent

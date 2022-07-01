@@ -41,7 +41,7 @@ Component {
 
                     transitionTimer.thenChange=parent
                     transitionTimer.nextState="disable"
-                    transitionTimer.nextView="Timer"
+                    transitionTimer.nextView="DeveClock"
                     transitionTimer.running=true
                     transitionTimer.doPush = false
                     isThereTimer = true

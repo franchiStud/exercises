@@ -1,6 +1,7 @@
 import QtQuick
 
 Image {
+    property var currentDate
 
     source: "/assets/comp-clock-dial.svg"
 
