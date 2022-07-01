@@ -1,8 +1,26 @@
 #include <iostream>
-#include <bits/stdc++.h>
 #include <vector>
+#include <iterator>
 
 using namespace std;
+
+vector<int> sort(vector<int> v){
+    vector<int> app;
+
+    while(v.size()>0){
+        int p=0;
+
+        for(int i=1;i<v.size();i++)
+            if(v.at(i)<v.at(p)){
+                p=i;
+            }
+
+        app.push_back(v.at(p));
+        v.erase(v.begin()+p);
+    }
+
+    return app;
+}
 
 int main(){
     int n, m;
@@ -18,7 +36,7 @@ int main(){
         v.push_back(x);
     }
 
-    sort(v.begin(), v.end());
+    v=sort(v);
 
     if(v.size()%2==0)
         m=(v.at(v.size()/2)+v.at(v.size()/2-1))/2;
