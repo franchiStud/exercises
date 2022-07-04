@@ -56,31 +56,30 @@ Component {
         }
 
         SetButton {// set date
+            id: setAlarm
+
             buttonTxt: "SET ALARM"
 
-            ClickableElement {
-                id: mouseAreaS
-                enabled: !(!alarm.everyDay&&!buttonDateSet)
+            clickEnabled: !(!alarm.everyDay&&!buttonDateSet)
 
-                doPush: false
-
-                onClicked: {
-                    var appendDate=buttonDateValue
-
-                    if(alarm.everyDay)
-                        everyDayAlarms.append({
-                            "date": appendDate,
-                            "everyDay": true,
-                            "isActive": true
+            onClick: {
+                if(!isClicked) return
+                if(alarm.everyDay)
+                    everyDayAlarms.append({
+                        "date": buttonDateValue,
+                        "everyDay": true,
+                        "isActive": true
+                    })
+                else
+                    dateAlarms.append({
+                        "date": buttonDateValue,
+                        "everyDay": false,
+                        "isActive": true,
                         })
-                    else
-                        dateAlarms.append({
-                            "date": appendDate,
-                            "everyDay": false,
-                            "isActive": true,
-                            })
-                    isThereAlarm=true
-                }
+                isThereAlarm=true
+
+                buttonDateValue.setHours(6)
+                buttonDateValue.setMinutes(0)
             }
         }
     }

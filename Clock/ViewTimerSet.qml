@@ -34,21 +34,9 @@ Component {
         SetButton {
             buttonTxt: "SET TIMER"
 
-            ClickableElement {
-                id: mouseAreaS
-                doPush: false
-                onClicked: {
-                    isThereTimer = true
-                    setTimerTimer.running = true
-                }
-            }
-        }
+            onClick: {
+                isThereTimer = true
 
-        Timer {
-            id: setTimerTimer
-
-            interval: 300; running: false; repeat: false;
-            onTriggered: {
                 timerTimeLeftHours=timerHours.value
                 timerStartHours=timerHours.value
 

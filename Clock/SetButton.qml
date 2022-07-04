@@ -4,6 +4,9 @@ Rectangle {
     id: root
 
     property string buttonTxt
+    property var onClick: ({})
+    property bool clickEnabled: true
+    property bool isClicked: mouseAreaS.containsPress
 
     anchors.centerIn: parent
     anchors.verticalCenterOffset: 340
@@ -42,5 +45,13 @@ Rectangle {
 
     Behavior on color {
         ColorAnimation { duration: 250 }
+    }
+
+    ClickableElement {
+        id: mouseAreaS
+
+        enabled: clickEnabled
+        doPush: false
+        onClicked: onClick
     }
 }

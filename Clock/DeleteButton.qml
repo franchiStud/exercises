@@ -49,7 +49,8 @@ Rectangle {
                  for(var e=0;e<everyDayAlarms.count;e++){
                      var alarmE = everyDayAlarms.get(e).date
                      if(now.getMinutes()===alarmE.getMinutes()
-                      &&now.getHours()  ===alarmE.getHours())
+                      &&now.getHours()  ===alarmE.getHours()
+                      &&everyDayAlarms.get(e).everyDay)
                          everyDayAlarms.remove(e--, 1);
                  }
 
@@ -60,7 +61,8 @@ Rectangle {
                       &&now.getHours()   ===alarmD.getHours()
                       &&now.getDate()    ===alarmD.getDate()
                       &&now.getMonth()   ===alarmD.getMonth()
-                      &&now.getFullYear()===alarmD.getFullYear())
+                      &&now.getFullYear()===alarmD.getFullYear()
+                      &&!dateAlarms.get(i).everyDay)
                          dateAlarms.remove(i--, 1)
                  }
              }

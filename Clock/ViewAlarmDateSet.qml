@@ -12,12 +12,7 @@ Component {
         SetButton {
             buttonTxt: "SET DATE"
 
-            ClickableElement {
-                id: mouseAreaS
-                doPush: false
-                onClicked: buttonDateSet=true
-            }
+            onClick: { buttonDateSet=true }
         }
     }
-
 }
