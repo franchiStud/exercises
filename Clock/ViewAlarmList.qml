@@ -17,22 +17,29 @@ Component {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+
+
+
                     for(var a=0;a<alarmListObj.isSelected.length;a++){
-                        for(var e=0;e<everyDayAlarms.count;e++)
-                            if(alarmClockList.equals(alarmListObj.isSelected[a],
-                                        everyDayAlarms.get(e)))
-                           {
-                                everyDayAlarms.remove(e--, 1)
-                            }
+                        var now=alarmListObj.isSelected[a].date;
+
+                        for(var e=0;e<everyDayAlarms.count;e++){
+                            var alarmE = everyDayAlarms.get(e).date
+                            if(now.getMinutes()===alarmE.getMinutes()
+                             &&now.getHours()  ===alarmE.getHours())
+                                everyDayAlarms.remove(e--, 1);
+                        }
 
 
-
-                        for(var i=0;i<dateAlarms.count;i++)
-                            if(alarmClockList.equals(alarmListObj.isSelected[a],
-                                        dateAlarms.get(i)))
-                            {
+                        for(var i=0;i<dateAlarms.count;i++){
+                            var alarmD = dateAlarms.get(i).date
+                            if(now.getMinutes() ===alarmD.getMinutes()
+                             &&now.getHours()   ===alarmD.getHours()
+                             &&now.getDate()    ===alarmD.getDate()
+                             &&now.getMonth()   ===alarmD.getMonth()
+                             &&now.getFullYear()===alarmD.getFullYear())
                                 dateAlarms.remove(i--, 1)
-                            }
+                        }
                     }
                     parent.state= "enabled"
                     transitionTimer.thenChange=parent

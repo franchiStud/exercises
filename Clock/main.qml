@@ -161,7 +161,7 @@ Window {
 
 
             for(var i=0;i<dateAlarms.count;i++){
-                var alarmD = dateAlarm.get(e).date
+                var alarmD = dateAlarms.get(i).date
                 if(now.getMinutes() ===alarmD.getMinutes()
                  &&now.getHours()   ===alarmD.getHours()
                  &&now.getDate()    ===alarmD.getDate()
