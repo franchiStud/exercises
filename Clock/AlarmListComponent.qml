@@ -63,7 +63,10 @@ Component {
                             : "/assets/check_selected.svg"
 
             MouseArea {
-                anchors.fill: parent
+                anchors.centerIn: parent
+
+                width: parent.width*2
+                height: parent.height*2
 
                 onClicked: {
                     if(parent.disable===true) {

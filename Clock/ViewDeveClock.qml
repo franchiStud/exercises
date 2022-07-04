@@ -16,19 +16,10 @@ Component {
 
             buttonTxt: "TIMER"
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    parent.state = "enabled"
-                    transitionTimer.thenChange = parent
-                    transitionTimer.nextView = "Timer"
-                    transitionTimer.nextState = "disabled"
-                    transitionTimer.running = true
-                    transitionTimer.nextStackView = isThereTimer
-                                                      ? viewTimerCD
-                                                      : viewTimerSet
-                }
-            }
+            nextStackView: isThereTimer
+                      ? viewTimerCD
+                      : viewTimerSet
+            nextView: "Timer"
         }
 
         Button {
@@ -40,17 +31,8 @@ Component {
 
             buttonTxt: "ALARM"
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    parent.state = "enabled"
-                    transitionTimer.thenChange = parent
-                    transitionTimer.nextView = "Alarm"
-                    transitionTimer.nextState = "disabled"
-                    transitionTimer.running = true
-                    transitionTimer.nextStackView= viewAlarmSet
-                }
-            }
+            nextStackView: viewAlarmSet
+            nextView: "Alarm"
         }
 
         Image {
@@ -62,12 +44,9 @@ Component {
 
             visible: isThereAlarm
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    view="Alarm clock list"
-                    stackView.push(viewAlarmList)
-                }
+            ClickableElement {
+                nextView: "Alarm clock list"
+                nextStackView: viewAlarmList
             }
         }
 
@@ -81,12 +60,9 @@ Component {
 
             visible: isThereTimer
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    view="Timer"
-                    stackView.push(viewTimerCD)
-                }
+            ClickableElement {
+                nextView: "Timer"
+                nextStackView: viewTimerCD
             }
         }
     }

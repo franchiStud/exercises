@@ -4,6 +4,8 @@ Rectangle { //DeveClock buttons
     id: root
 
     property string buttonTxt
+    property var nextStackView
+    property string nextView
 
     anchors.verticalCenter: parent.verticalCenter
     anchors.verticalCenterOffset: 330
@@ -14,7 +16,9 @@ Rectangle { //DeveClock buttons
     border.color: "#FCB647"
     border.width: 1
 
-    state: "disabled"
+    color: mouseArea.containsPress
+            ? "#FCB647"
+            : "#151B2"
 
     Behavior on color {
        ColorAnimation { duration: 250 }
@@ -31,33 +35,18 @@ Rectangle { //DeveClock buttons
         font.pixelSize: 30
         font.letterSpacing: 1.8
 
+        color: mouseArea.containsPress
+                ? "#151B2"
+                : "#FCB647"
+
         Behavior on color {
             ColorAnimation { duration: 250 }
         }
      }
 
-     states: [
-        State {
-            name: "enabled"
-            PropertyChanges {
-                target: root
-                color: "#FCB647"
-            }
-            PropertyChanges {
-                target: txt
-                color: "#151B2"
-            }
-        },
-        State {
-            name: "disabled"
-            PropertyChanges {
-                target: root
-                color: "#151B2"
-            }
-            PropertyChanges {
-                target: txt
-                color: "#FCB647"
-            }
-        }
-    ] //nel main ci sono due istanze di Button, una per timer e una per alarm
+    ClickableElement {
+        id: mouseArea
+        nextView: root.nextView
+        nextStackView: root.nextStackView
+    }
 }

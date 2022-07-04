@@ -16,7 +16,7 @@ qt_add_qml_module(appClock
     VERSION 1.0
     QML_FILES
         #File generali
-        main.qml Head.qml Back.qml SetButton.qml SetArrow.qml
+        main.qml Head.qml Back.qml SetButton.qml SetArrow.qml ClickableElement.qml
         #File della view DeveClock
         ViewDeveClock.qml
         Button.qml AnalogClock.qml DigitalClock.qml DateTxt.qml Clock.qml

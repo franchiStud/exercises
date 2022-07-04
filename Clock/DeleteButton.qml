@@ -12,7 +12,9 @@ Rectangle {
     border.color: "#EC6545"
     border.width: 1
     radius: 32
-    color: "transparent"
+    color: mouseArea.containsPress
+           ? "#EC6545"
+           :  "#151B2E"
 
     Behavior on color {
         ColorAnimation { duration: 250 }
@@ -25,7 +27,9 @@ Rectangle {
 
         anchors.centerIn: parent
 
-        color: "#EC6545"
+        color: mouseArea.containsPress
+                ? "#151B2E"
+                : "#EC6545"
         font.family: "Buenos Aires"
         font.pixelSize: 30
         font.letterSpacing: 1.8
@@ -34,28 +38,37 @@ Rectangle {
             ColorAnimation { duration: 250 }
         }
      }
-     states: [
-         State {
-             name: "enabled"
-             PropertyChanges {
-                 target: root
-                 color: "#EC6545"
+
+     MouseArea {
+         id: mouseArea
+         anchors.fill: parent
+         onClicked: {
+             for(var a=0;a<alarmListObj.isSelected.length;a++){
+                 var now=alarmListObj.isSelected[a].date;
+
+                 for(var e=0;e<everyDayAlarms.count;e++){
+                     var alarmE = everyDayAlarms.get(e).date
+                     if(now.getMinutes()===alarmE.getMinutes()
+                      &&now.getHours()  ===alarmE.getHours())
+                         everyDayAlarms.remove(e--, 1);
+                 }
+
+
+                 for(var i=0;i<dateAlarms.count;i++){
+                     var alarmD = dateAlarms.get(i).date
+                     if(now.getMinutes() ===alarmD.getMinutes()
+                      &&now.getHours()   ===alarmD.getHours()
+                      &&now.getDate()    ===alarmD.getDate()
+                      &&now.getMonth()   ===alarmD.getMonth()
+                      &&now.getFullYear()===alarmD.getFullYear())
+                         dateAlarms.remove(i--, 1)
+                 }
              }
-             PropertyChanges {
-                 target: txt
-                 color: "#151B2E"
-             }
-         },
-         State {
-             name: "disabled"
-             PropertyChanges {
-                 target: root
-                 color: "#151B2E"
-             }
-             PropertyChanges {
-                 target: txt
-                 color: "#EC6545"
-             }
+
+             isThereAlarm=dateAlarms.count>0 ||
+                               everyDayAlarms.count>0
+
+             alarmListObj.howManySelected=0
          }
-     ]
+     }
 }

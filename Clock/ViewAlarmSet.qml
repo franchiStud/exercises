@@ -14,26 +14,14 @@ Component {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: -width/2-10
 
-            state: "selected"
+            state: alarm.everyDay
+                    ? "selected"
+                    : "disabled"
+
             buttonTxt: "Everyday"
-
-            MouseArea {
+            MouseArea{
                 anchors.fill: parent
-                onClicked: {
-                    parent.state= !alarm.everyDay ?
-                                "selected-hover" : "disabled-hover"
-
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="Alarm"
-                    transitionTimer.nextState= !alarm.everyDay ?
-                                "selected" : "disabled"
-                    transitionTimer.running=true
-                    transitionTimer.changeStackView=false
-
-                    alarmDate.state= alarm.everyDay ?
-                                "selected" : "disabled"
-                    alarm.everyDay= !alarm.everyDay
-                }
+                onClicked: alarm.everyDay=true
             }
         }
 
@@ -43,29 +31,21 @@ Component {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.horizontalCenterOffset: width/2+10
 
-            state: "disabled"
+            state: alarm.everyDay
+                    ? "disabled"
+                    : "selected"
+
             buttonTxt: buttonDateSet
                         ? buttonDateValue.getDate()+"/"+
                          (buttonDateValue.getMonth()+1)+"/"+
                           buttonDateValue.getFullYear()
                          : "Set date"
 
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    parent.state="selected-hover"
-
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="Set date"
-                    transitionTimer.nextState= "selected"
-                    transitionTimer.running=true
-                    transitionTimer.nextStackView = viewAlarmDateSet
-
-                    alarmEveryday.state= "disabled"
-                    alarm.everyDay= false
-
-                }
+            ClickableElement {
+                id: mouseArea
+                nextStackView: viewAlarmDateSet
+                nextView: "Alarm set date"
+                onClicked: alarm.everyDay=false;
             }
         }
 
@@ -78,11 +58,13 @@ Component {
         SetButton {// set date
             buttonTxt: "SET ALARM"
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if(!alarm.everyDay&&!buttonDateSet) return
+            ClickableElement {
+                id: mouseAreaS
+                enabled: !(!alarm.everyDay&&!buttonDateSet)
 
+                doPush: false
+
+                onClicked: {
                     var appendDate=buttonDateValue
 
                     if(alarm.everyDay)
@@ -97,14 +79,7 @@ Component {
                             "everyDay": false,
                             "isActive": true,
                             })
-
-                    parent.state= "active"
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextView="DeveClock"
-                    transitionTimer.nextState="disable"
-                    transitionTimer.running=true
                     isThereAlarm=true
-                    transitionTimer.doPush= false
                 }
             }
         }

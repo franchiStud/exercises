@@ -34,19 +34,12 @@ Component {
         SetButton {
             buttonTxt: "SET TIMER"
 
-            MouseArea {
-                anchors.fill: parent
+            ClickableElement {
+                id: mouseAreaS
+                doPush: false
                 onClicked: {
-                    parent.state="enabled"
-
-                    transitionTimer.thenChange=parent
-                    transitionTimer.nextState="disable"
-                    transitionTimer.nextView="DeveClock"
-                    transitionTimer.running=true
-                    transitionTimer.doPush = false
                     isThereTimer = true
-
-                    setTimerTimer.running=true
+                    setTimerTimer.running = true
                 }
             }
         }

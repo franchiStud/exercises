@@ -5,28 +5,21 @@ Image {
 
     property int startX
 
-    state: "disabled"
-
+    source: mouseArea.containsPress
+            ? "/assets/btn-back-hover.svg"
+            : "/assets/btn-back-active.svg"
     sourceSize.height: 80
 
-    states: [
-        State {
-            name: "enabled"; PropertyChanges {
-                target: root
-                source: "/assets/btn-back-hover.svg"
-                x: root.startX-10
-            }
-        },
-        State {
-            name: "disabled"; PropertyChanges {
-                target: root
-                source: "/assets/btn-back-active.svg"
-                x: root.startX
-            }
-        }
-    ]
+    x: mouseArea.containsPress
+            ? root.startX-10
+            : root.startX
 
     Behavior on x {
         NumberAnimation { duration: 250 }
+    }
+
+    ClickableElement {
+        id: mouseArea
+        doPush: false;
     }
 }

@@ -49,50 +49,6 @@ Window {
         visible: root.view!=="DeveClock"
 
         anchors.verticalCenter: head.verticalCenter
-
-        state: "disabled"
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                parent.state = "enabled"
-                transitionTimer.thenChange = parent
-                transitionTimer.nextState = "disabled"
-                transitionTimer.nextView = (view==="Set date") ?
-                                          "Alarm"
-                                        : "DeveClock"
-                transitionTimer.running = true
-                transitionTimer.doPush = false
-            }
-        }
-    }
-
-    Timer {
-        id: transitionTimer
-
-        property string nextView
-        property var thenChange
-        property string nextState
-        property var nextStackView
-        property bool doPush: true
-        property bool changeStackView: true
-
-        interval: 300; running: false; repeat: false
-        onTriggered: {
-            thenChange.state=nextState
-            root.view=nextView
-
-            if(changeStackView){
-                if(doPush)
-                    stackView.push(nextStackView)
-                else {
-                    stackView.pop()
-                    doPush=true
-                }
-            } else
-                changeStackView= true
-
-        }
     }
 
     StackView {
@@ -101,39 +57,6 @@ Window {
         anchors.fill: parent
 
         initialItem: viewDeveClock
-
-        pushEnter: Transition {
-                 PropertyAnimation {
-                     property: "opacity"
-                     from: 0
-                     to:1
-                     duration: 200
-                 }
-             }
-             pushExit: Transition {
-                 PropertyAnimation {
-                     property: "opacity"
-                     from: 1
-                     to:0
-                     duration: 200
-                 }
-             }
-             popEnter: Transition {
-                 PropertyAnimation {
-                     property: "opacity"
-                     from: 0
-                     to:1
-                     duration: 200
-                 }
-             }
-             popExit: Transition {
-                 PropertyAnimation {
-                     property: "opacity"
-                     from: 1
-                     to:0
-                     duration: 200
-                 }
-             }
     }
 
     ViewDeveClock    { id: viewDeveClock }
