@@ -1,6 +1,6 @@
 import QtQuick
 
-Item{
+Item {
     property var currentDate
 
     width: clockDial.width

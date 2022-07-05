@@ -1,6 +1,6 @@
 import QtQuick
 
-Rectangle{
+Rectangle {
     id: root
 
     property int value: 0

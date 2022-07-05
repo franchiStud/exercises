@@ -1,6 +1,6 @@
 import QtQuick
 
-Item{
+Item {
     id: root
 
     property string txt: "DeveClock"
@@ -9,7 +9,7 @@ Item{
     anchors.verticalCenter: parent.top
     anchors.verticalCenterOffset: 60
 
-    Text{
+    Text {
         id: headTxt
 
         text: root.txt
@@ -20,7 +20,7 @@ Item{
         color: "#9FAAB0"
     }
 
-    Rectangle{
+    Rectangle {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 50
         width: 400

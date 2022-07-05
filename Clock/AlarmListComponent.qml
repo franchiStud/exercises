@@ -1,6 +1,5 @@
 import QtQuick
 
-
 Component {
     id: alarmListComponent
 
