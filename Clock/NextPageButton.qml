@@ -4,6 +4,7 @@ MouseArea {
     property bool doPush: true
     property var nextStackView
     property var stackView
+
     anchors.fill: parent
 
     onReleased: {

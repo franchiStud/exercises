@@ -3,13 +3,13 @@ import QtMultimedia
 import QtQuick.Controls
 
 Window {
-    id: root
+    id: window
 
     property bool isThereAlarm: false
     property bool isThereTimer: false
 
-    property int buttonY: root.height/2*0.725
-    property int buttonHeight: root.height*0.08
+    property int buttonY: window.height/2*0.725
+    property int buttonHeight: window.height*0.08
 
     property var everyDayAlarms: ListModel {}
     property var dateAlarms: ListModel {}
@@ -39,7 +39,7 @@ Window {
     title: "DeveClock"
 
     Back { // presente in tutte le view tranne DeveClock
-        visible: stackViewMain.depth>1
+        opacity: stackViewMain.depth>1 ? 1 : 0
 
         anchors.verticalCenter: stackViewMain.top
         anchors.verticalCenterOffset: height*0.75

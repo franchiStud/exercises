@@ -19,6 +19,10 @@ Image {
         NumberAnimation { duration: 250 }
     }
 
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
+    }
+
     NextPageButton {
         id: mouseArea
         doPush: false;
