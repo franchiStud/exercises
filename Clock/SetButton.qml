@@ -7,6 +7,7 @@ Rectangle {
     property var onClick: ({})
     property bool clickEnabled: true
     property bool isClicked: mouseAreaS.containsPress
+    property var stackView
 
     anchors.centerIn: parent
     anchors.verticalCenterOffset: 340
@@ -50,6 +51,7 @@ Rectangle {
     ClickableElement {
         id: mouseAreaS
 
+        stackView: root.stackView
         enabled: clickEnabled
         doPush: false
         onClicked: onClick

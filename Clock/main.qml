@@ -7,7 +7,6 @@ Window {
 
     property bool isThereAlarm: false
     property bool isThereTimer: false
-    property string view: "DeveClock"
 
     property int buttonY: root.height/2*0.725
     property int buttonHeight: root.height*0.08
@@ -39,32 +38,47 @@ Window {
     color: "#151B2E"
     title: "DeveClock"
 
-    Head {
-        id: head
-
-        txt: root.view
-    }
-
     Back { // presente in tutte le view tranne DeveClock
-        visible: root.view!=="DeveClock"
+        visible: stackViewMain.depth>1
 
-        anchors.verticalCenter: head.verticalCenter
+        anchors.verticalCenter: stackViewMain.top
+        anchors.verticalCenterOffset: height*0.75
+
+        stackView: stackViewMain
     }
 
     StackView {
-        id: stackView
+        id: stackViewMain
 
         anchors.fill: parent
 
         initialItem: viewDeveClock
     }
 
-    ViewDeveClock    { id: viewDeveClock }
-    ViewAlarmSet     { id: viewAlarmSet }
-    ViewAlarmDateSet { id: viewAlarmDateSet }
-    ViewAlarmList    { id: viewAlarmList }
-    ViewTimerSet     { id: viewTimerSet }
-    ViewTimerCD      { id: viewTimerCD }
+    Component {
+        id: viewDeveClock
+        ViewDeveClock { stackView: stackViewMain }
+    }
+    Component {
+        id: viewAlarmSet
+        ViewAlarmSet { stackView: stackViewMain }
+    }
+    Component {
+        id: viewAlarmDateSet
+        ViewAlarmDateSet { stackView: stackViewMain }
+    }
+    Component {
+        id: viewAlarmList
+        ViewAlarmList { stackView: stackViewMain }
+    }
+    Component {
+        id: viewTimerSet
+        ViewTimerSet { stackView: stackViewMain }
+    }
+    Component {
+        id: viewTimerCD
+        ViewTimerCD { stackView: stackViewMain }
+    }
 
 
     Timer {

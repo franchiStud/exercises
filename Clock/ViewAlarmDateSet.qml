@@ -1,18 +1,24 @@
 import QtQuick
 
-Component {
+Item {
+    id: alarmSetDateGeneral
 
-    Item {
-        id: alarmSetDateGeneral
+    property var stackView
 
-        AlarmSetDate {
-            id: alarmSetDate
-        }
+    Head {
+        id: head
 
-        SetButton {
-            buttonTxt: "SET DATE"
+        txt: "Set date"
+    }
 
-            onClick: { buttonDateSet=true }
-        }
+    AlarmSetDate {
+        id: alarmSetDate
+    }
+
+    SetButton {
+        buttonTxt: "SET DATE"
+
+        stackView: alarmSetDateGeneral.stackView
+        onClick: { buttonDateSet=true }
     }
 }

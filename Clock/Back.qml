@@ -4,6 +4,7 @@ Image {
     id: root
 
     property int startX
+    property var stackView
 
     source: mouseArea.containsPress
             ? "/assets/btn-back-hover.svg"
@@ -21,5 +22,6 @@ Image {
     ClickableElement {
         id: mouseArea
         doPush: false;
+        stackView: root.stackView
     }
 }

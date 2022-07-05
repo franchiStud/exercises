@@ -3,8 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property bool isActive
-
     anchors.centerIn: parent
 
     AlarmAnalogClock {
@@ -60,7 +58,7 @@ Item {
     }
 
     Timer {
-        interval: 10; repeat: root.isActive; running: root.isActive
+        interval: 20; repeat: dragArea.containsPress; running: dragArea.containsPress
         onTriggered: {
             var hourSetApp=buttonDateValue
             if(dragArea.drag.maximumX<cursor.x) return

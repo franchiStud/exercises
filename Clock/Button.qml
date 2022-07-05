@@ -5,7 +5,7 @@ Rectangle { //DeveClock buttons
 
     property string buttonTxt
     property var nextStackView
-    property string nextView
+    property var stackView
 
     anchors.verticalCenter: parent.verticalCenter
     anchors.verticalCenterOffset: 330
@@ -46,7 +46,7 @@ Rectangle { //DeveClock buttons
 
     ClickableElement {
         id: mouseArea
-        nextView: root.nextView
         nextStackView: root.nextStackView
+        stackView: root.stackView
     }
 }

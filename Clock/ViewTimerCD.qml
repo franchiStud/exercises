@@ -1,72 +1,78 @@
 import QtQuick
 
-Component {
-    Item {
-        id: timerCountDown
+Item {
+    id: timerCountDown
 
-        TimerCD {
-            id: timerCD
-        }
+    property var stackView
 
-        Image {
-            property string clickState: "active"
+    Head {
+        id: head
 
-            source: isTimerRunning ? "/assets/btn-pause-"+clickState
-                              : "/assets/btn-play-"+clickState
+        txt: "Timer"
+    }
 
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: 250
-            anchors.horizontalCenterOffset: 100
+    TimerCD {
+        id: timerCD
+    }
 
-            MouseArea {
-                anchors.fill: parent
+    Image {
+        property string clickState: "active"
 
-                onClicked: {
-                    parent.clickState="hover"
+        source: isTimerRunning ? "/assets/btn-pause-"+clickState
+                          : "/assets/btn-play-"+clickState
 
-                    timerTransitionTimer.thenChange=parent
-                    timerTransitionTimer.running= true
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: 250
+        anchors.horizontalCenterOffset: 100
 
-                    isTimerRunning= !isTimerRunning
-                }
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                parent.clickState="hover"
+
+                timerTransitionTimer.thenChange=parent
+                timerTransitionTimer.running= true
+
+                isTimerRunning= !isTimerRunning
             }
         }
+    }
 
-        Image {
-            property string clickState: "active"
+    Image {
+        property string clickState: "active"
 
-            source: "/assets/btn-reload-"+clickState
+        source: "/assets/btn-reload-"+clickState
 
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: 250
-            anchors.horizontalCenterOffset: -100
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: 250
+        anchors.horizontalCenterOffset: -100
 
-            MouseArea {
-                anchors.fill: parent
+        MouseArea {
+            anchors.fill: parent
 
-                onClicked: {
-                    parent.clickState="hover"
+            onClicked: {
+                parent.clickState="hover"
 
-                    timerTransitionTimer.thenChange=parent
-                    timerTransitionTimer.running= true
+                timerTransitionTimer.thenChange=parent
+                timerTransitionTimer.running= true
 
-                    timerTimeLeftHours=timerStartHours
-                    timerTimeLeftMinutes=timerStartMinutes
-                    timerTimeLeftSeconds=0
-                }
+                timerTimeLeftHours=timerStartHours
+                timerTimeLeftMinutes=timerStartMinutes
+                timerTimeLeftSeconds=0
             }
         }
+    }
 
-        Timer {
-            id: timerTransitionTimer
+    Timer {
+        id: timerTransitionTimer
 
-            property var thenChange
+        property var thenChange
 
-            interval: 300; running: false; repeat: false
+        interval: 300; running: false; repeat: false
 
-            onTriggered: {
-                thenChange.clickState="active"
-            }
+        onTriggered: {
+            thenChange.clickState="active"
         }
     }
 }

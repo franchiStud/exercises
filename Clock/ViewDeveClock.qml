@@ -1,70 +1,73 @@
 import QtQuick
 
-Component {
-    Item {
-        //anchors.centerIn: parent
+Item {
+    id: deveClock
 
-        id: deveClock
+    property var stackView
 
-        Clock {}
+    Head {
+        id: head
 
-        Button {
-            id: timerButton
+        txt: "DeveClock"
+    }
 
-            anchors.horizontalCenter: deveClock.horizontalCenter
-            anchors.horizontalCenterOffset: -width/2-30
+    Clock {}
 
-            buttonTxt: "TIMER"
+    Button {
+        id: timerButton
 
-            nextStackView: isThereTimer
-                      ? viewTimerCD
-                      : viewTimerSet
-            nextView: "Timer"
-        }
+        anchors.horizontalCenter: deveClock.horizontalCenter
+        anchors.horizontalCenterOffset: -width/2-30
 
-        Button {
-            id: alarmButton
+        buttonTxt: "TIMER"
 
-            anchors.horizontalCenter: deveClock.horizontalCenter
-            anchors.horizontalCenterOffset: width/2+30
+        nextStackView: isThereTimer
+                  ? viewTimerCD
+                  : viewTimerSet
+        stackView: deveClock.stackView
+    }
+
+    Button {
+        id: alarmButton
+
+        anchors.horizontalCenter: deveClock.horizontalCenter
+        anchors.horizontalCenterOffset: width/2+30
 
 
-            buttonTxt: "ALARM"
+        buttonTxt: "ALARM"
 
-            nextStackView: viewAlarmSet
-            nextView: "Alarm"
-        }
+        nextStackView: viewAlarmSet
+        stackView: deveClock.stackView
+    }
 
-        Image {
-            source: "/assets/alarm-on-feedback.svg"
+    Image {
+        source: "/assets/alarm-on-feedback.svg"
 
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -340
-            anchors.horizontalCenterOffset: 180
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -340
+        anchors.horizontalCenterOffset: 180
 
-            visible: isThereAlarm
+        visible: isThereAlarm
 
-            ClickableElement {
-                nextView: "Alarm clock list"
-                nextStackView: viewAlarmList
-            }
-        }
-
-        Image {
-            source: "/assets/timer.svg"
-
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -340
-
-            anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
-
-            visible: isThereTimer
-
-            ClickableElement {
-                nextView: "Timer"
-                nextStackView: viewTimerCD
-            }
+        ClickableElement {
+            nextStackView: viewAlarmList
+            stackView: deveClock.stackView
         }
     }
 
+    Image {
+        source: "/assets/timer.svg"
+
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -340
+
+        anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
+
+        visible: isThereTimer
+
+        ClickableElement {
+            nextStackView: viewTimerCD
+            stackView: deveClock.stackView
+        }
+    }
 }

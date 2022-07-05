@@ -1,17 +1,22 @@
 import QtQuick
 import QtMultimedia
 
-Component {
+Item {
+    id: alarmClockList
 
-    Item {
-        id: alarmClockList
+    property var stackView
 
-        AlarmList {
-            id: alarmListObj
-        }
+    Head {
+        id: head
 
-        DeleteButton {
-            visible: alarmListObj.howManySelected>0
-        }
+        txt: "Alarm clock list"
+    }
+
+    AlarmList {
+        id: alarmListObj
+    }
+
+    DeleteButton {
+        visible: alarmListObj.howManySelected>0
     }
 }

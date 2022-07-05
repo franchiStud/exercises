@@ -1,50 +1,58 @@
 import QtQuick
 
-Component {
-    Item {
-        id: timerSet
+Item {
+    id: timerSet
 
-        TimerSet {
-            id: timerHours
+    property var stackView
 
-            anchors.horizontalCenterOffset: -width/2-20
+    Head {
+        id: head
 
-            txt: "hours"
-        }
+        txt: "Timer"
+    }
 
-        TimerSet {
-            id: timerMinutes
+    TimerSet {
+        id: timerHours
 
-            anchors.horizontalCenterOffset: width/2+20
+        anchors.horizontalCenterOffset: -width/2-20
 
-            txt: "mins"
-        }
+        txt: "hours"
+    }
 
-        Text {
-            text: ":"
+    TimerSet {
+        id: timerMinutes
 
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: timerHours.verticalCenter
-            anchors.verticalCenterOffset: timerHours.verticalOffset
+        anchors.horizontalCenterOffset: width/2+20
 
-            font.pixelSize: 120
-            color: "#707070"
-        }
+        txt: "mins"
+    }
 
-        SetButton {
-            buttonTxt: "SET TIMER"
+    Text {
+        text: ":"
 
-            onClick: {
-                isThereTimer = true
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: timerHours.verticalCenter
+        anchors.verticalCenterOffset: timerHours.verticalOffset
 
-                timerTimeLeftHours=timerHours.value
-                timerStartHours=timerHours.value
+        font.pixelSize: 120
+        color: "#707070"
+    }
 
-                timerTimeLeftMinutes=timerMinutes.value
-                timerStartMinutes=timerMinutes.value
+    SetButton {
+        buttonTxt: "SET TIMER"
 
-                timerTimeLeftSeconds=0
-            }
+        stackView: timerSet.stackView
+
+        onClick: {
+            isThereTimer = true
+
+            timerTimeLeftHours=timerHours.value
+            timerStartHours=timerHours.value
+
+            timerTimeLeftMinutes=timerMinutes.value
+            timerStartMinutes=timerMinutes.value
+
+            timerTimeLeftSeconds=0
         }
     }
 }

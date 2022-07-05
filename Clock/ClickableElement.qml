@@ -2,17 +2,14 @@ import QtQuick
 
 MouseArea {
     property bool doPush: true
-    property string nextView
     property var nextStackView
+    property var stackView
     anchors.fill: parent
 
-    onClicked: {
-        if(doPush){
-            view=nextView
+    onReleased: {
+        if(doPush)
             stackView.push(nextStackView)
-        } else {
+        else
             stackView.pop()
-            view= (view!=="Alarm set date") ? "DeveClock" : "Alarm"
-        }
     }
 }
