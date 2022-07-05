@@ -46,6 +46,7 @@ Rectangle { //DeveClock buttons
 
     NextPageButton {
         id: mouseArea
+
         nextStackView: root.nextStackView
         stackView: root.stackView
     }

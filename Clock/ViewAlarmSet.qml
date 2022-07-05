@@ -4,7 +4,6 @@ Item {
     id: alarm
 
     property bool everyDay: true
-
     property var stackView
 
     Head {

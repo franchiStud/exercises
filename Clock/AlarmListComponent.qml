@@ -19,6 +19,7 @@ Component {
 
             x: parent.width-124
             anchors.verticalCenter: parent.verticalCenter
+
             width: 112
             height: 60          
             radius: width/14

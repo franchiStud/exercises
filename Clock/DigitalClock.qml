@@ -6,7 +6,6 @@ Item {
     property bool alarmSet: false
     property var currentDate
 
-
     width: clockDial.width
     height: clockDial.height
 

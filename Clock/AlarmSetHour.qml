@@ -61,7 +61,9 @@ Item {
         interval: 20; repeat: dragArea.containsPress; running: dragArea.containsPress
         onTriggered: {
             var hourSetApp=buttonDateValue
+
             if(dragArea.drag.maximumX<cursor.x) return
+
             if(dragArea.drag.active) {
 
                 cursor.pressed=true

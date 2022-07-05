@@ -22,11 +22,12 @@ Item {
             text: buttonDateValue.getDate()
 
             anchors.horizontalCenter: parent.horizontalCenter
+            horizontalAlignment: Text.AlignHCenter
             y: 104
+
             width: parent.width
 
             color: "#FCB647"
-            horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 120
         }
         Text {
@@ -46,6 +47,7 @@ Item {
 
             anchors.horizontalCenter: day.horizontalCenter
             anchors.bottom: day.top
+
             width: parent.width
 
             color: "#9FAAB0"
@@ -61,8 +63,8 @@ Item {
 
             x: parent.width+18
             anchors.verticalCenter: day.verticalCenter
-            width: parent.width
 
+            width: parent.width
 
             color: "#9FAAB0"
             font.pixelSize: 40
@@ -72,7 +74,11 @@ Item {
         SetArrow {
             direction: true
 
+            isHover: upMA.containsPress
+
             MouseArea{
+                id: upMA
+
                 anchors.fill: parent
                 onClicked: {
                     var updateDate= buttonDateValue
@@ -80,9 +86,6 @@ Item {
                     updateDate.setDate(updateDate.getDate()+1)
 
                     buttonDateValue=updateDate
-
-                    arrowTimer.thenChange=parent
-                    arrowTimer.running=true
                 }
             }
         }
@@ -90,7 +93,11 @@ Item {
         SetArrow {
             direction: false
 
+            isHover: downMA.containsPress
+
             MouseArea {
+                id: downMA
+
                 anchors.fill: parent
                 onClicked: {
                     var updateDate= buttonDateValue
@@ -98,20 +105,8 @@ Item {
                     updateDate.setDate(updateDate.getDate()-1)
 
                     buttonDateValue=updateDate
-
-                    arrowTimer.thenChange=parent
-                    arrowTimer.running=true
                 }
             }
         }
-    }
-
-    Timer {
-        id: arrowTimer
-
-        property var thenChange
-
-        interval: 150; running: false; repeat: false
-        onTriggered: thenChange.state= "active"
     }
 }

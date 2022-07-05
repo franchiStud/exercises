@@ -25,6 +25,7 @@ Image {
 
     NextPageButton {
         id: mouseArea
+
         doPush: false;
         stackView: root.stackView
     }

@@ -7,11 +7,13 @@ Rectangle {
     anchors.verticalCenterOffset: 340
     width: 434
     height: buttonHeight
+    radius: buttonHeight/2
 
     visible: true
+
     border.color: "#EC6545"
     border.width: 1
-    radius: 32
+
     color: mouseArea.containsPress
            ? "#EC6545"
            :  "#151B2E"
