@@ -44,7 +44,7 @@ Rectangle { //DeveClock buttons
         }
      }
 
-    ClickableElement {
+    NextPageButton {
         id: mouseArea
         nextStackView: root.nextStackView
         stackView: root.stackView

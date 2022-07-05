@@ -49,7 +49,7 @@ Item {
 
         visible: isThereAlarm
 
-        ClickableElement {
+        NextPageButton {
             nextStackView: viewAlarmList
             stackView: deveClock.stackView
         }
@@ -65,7 +65,7 @@ Item {
 
         visible: isThereTimer
 
-        ClickableElement {
+        NextPageButton {
             nextStackView: viewTimerCD
             stackView: deveClock.stackView
         }

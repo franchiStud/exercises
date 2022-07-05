@@ -19,7 +19,7 @@ Image {
         NumberAnimation { duration: 250 }
     }
 
-    ClickableElement {
+    NextPageButton {
         id: mouseArea
         doPush: false;
         stackView: root.stackView

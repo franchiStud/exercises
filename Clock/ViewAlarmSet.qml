@@ -46,7 +46,7 @@ Item {
                       buttonDateValue.getFullYear()
                      : "Set date"
 
-        ClickableElement {
+        NextPageButton {
             id: mouseArea
             nextStackView: viewAlarmDateSet
             stackView: alarm.stackView

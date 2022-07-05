@@ -48,7 +48,7 @@ Rectangle {
         ColorAnimation { duration: 250 }
     }
 
-    ClickableElement {
+    NextPageButton {
         id: mouseAreaS
 
         stackView: root.stackView
