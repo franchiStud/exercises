@@ -44,7 +44,8 @@ Item {
     Text {
         id: dateAlarmsTxt
 
-        anchors.left: everyDayTxt.left
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: -160
         y: everyDayTxt.y + everydayToOthersDistance
 
 

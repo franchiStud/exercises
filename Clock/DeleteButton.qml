@@ -50,7 +50,7 @@ Rectangle {
                      var alarmE = everyDayAlarms.get(e).date
                      if(now.getMinutes()===alarmE.getMinutes()
                       &&now.getHours()  ===alarmE.getHours()
-                      &&everyDayAlarms.get(e).everyDay)
+                      &&alarmListObj.isSelected[a].everyDay)
                          everyDayAlarms.remove(e--, 1);
                  }
 
@@ -62,7 +62,7 @@ Rectangle {
                       &&now.getDate()    ===alarmD.getDate()
                       &&now.getMonth()   ===alarmD.getMonth()
                       &&now.getFullYear()===alarmD.getFullYear()
-                      &&!dateAlarms.get(i).everyDay)
+                      &&!alarmListObj.isSelected[a].everyDay)
                          dateAlarms.remove(i--, 1)
                  }
              }
