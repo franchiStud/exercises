@@ -33,6 +33,4 @@ Item {
         font.pixelSize: 60
         color: "#9FAAB0"
     }
-
-
 }
