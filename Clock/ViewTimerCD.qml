@@ -5,6 +5,9 @@ Item {
 
     property var stackView
 
+    signal clickReset()
+    signal clickPause()
+
     Head {
         id: head
 
@@ -16,63 +19,44 @@ Item {
     }
 
     Image {
-        property string clickState: "active"
+        property bool clicked
 
-        source: isTimerRunning ? "/assets/btn-pause-"+clickState
-                          : "/assets/btn-play-"+clickState
+        source: isTimerRunning
+                ? (mouseAreaP.containsPress ? "/assets/btn-pause-hover"
+                                            : "/assets/btn-pause-active")
+                : (mouseAreaP.containsPress ? "/assets/btn-play-hover"
+                                            : "/assets/btn-play-active")
 
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 250
         anchors.horizontalCenterOffset: 100
 
         MouseArea {
+            id: mouseAreaP
+
             anchors.fill: parent
 
             onClicked: {
-                parent.clickState="hover"
-
-                timerTransitionTimer.thenChange=parent
-                timerTransitionTimer.running= true
-
-                isTimerRunning= !isTimerRunning
+                onClicked: timerCountDown.clickPause()
             }
         }
     }
 
     Image {
-        property string clickState: "active"
-
-        source: "/assets/btn-reload-"+clickState
+        source: mouseAreaR.containsPress
+                ? "/assets/btn-reload-hover"
+                : "/assets/btn-reload-active"
 
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 250
         anchors.horizontalCenterOffset: -100
 
         MouseArea {
+            id: mouseAreaR
+
             anchors.fill: parent
 
-            onClicked: {
-                parent.clickState="hover"
-
-                timerTransitionTimer.thenChange=parent
-                timerTransitionTimer.running= true
-
-                timerTimeLeftHours=timerStartHours
-                timerTimeLeftMinutes=timerStartMinutes
-                timerTimeLeftSeconds=0
-            }
-        }
-    }
-
-    Timer {
-        id: timerTransitionTimer
-
-        property var thenChange
-
-        interval: 300; running: false; repeat: false
-
-        onTriggered: {
-            thenChange.clickState="active"
+            onClicked: timerCountDown.clickReset()
         }
     }
 }

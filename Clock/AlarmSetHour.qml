@@ -3,10 +3,15 @@ import QtQuick
 Item {
     id: root
 
+    property var buttonDateValue
+
     anchors.centerIn: parent
 
     AlarmAnalogClock {
         id: analogClock
+
+        buttonDateValue: root.buttonDateValue
+        onButtonDateValueChanged: root.buttonDateValue=buttonDateValue
 
         anchors.centerIn: parent
     }

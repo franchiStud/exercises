@@ -4,8 +4,8 @@ Rectangle { //DeveClock buttons
     id: root
 
     property string buttonTxt
-    property var nextStackView
-    property var stackView
+
+    signal click
 
     anchors.verticalCenter: parent.verticalCenter
     anchors.verticalCenterOffset: 330
@@ -43,11 +43,11 @@ Rectangle { //DeveClock buttons
             ColorAnimation { duration: 250 }
         }
      }
-
-    NextPageButton {
+    MouseArea {
         id: mouseArea
 
-        nextStackView: root.nextStackView
-        stackView: root.stackView
+        anchors.fill: parent
+
+        onClicked: root.click()
     }
 }

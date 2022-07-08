@@ -6,17 +6,17 @@ Item {
 
     property var stackView
 
+    signal clickDelete()
+
     Head {
         id: head
 
         txt: "Alarm clock list"
     }
 
-    AlarmList {
-        id: alarmListObj
-    }
-
     DeleteButton {
         visible: alarmListObj.howManySelected>0
+
+        onClick: alarmClockList.clickDelete()
     }
 }

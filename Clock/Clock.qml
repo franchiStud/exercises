@@ -24,9 +24,10 @@ Item {
         AnalogClock {
             currentDate: root.currentDate
 
-            NextPageButton {
-                stackView: stackViewClock
-                nextStackView: dc
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: stackViewClock.push(dc)
             }
         }
     }
@@ -37,9 +38,10 @@ Item {
         DigitalClock {
             currentDate: root.currentDate
 
-            NextPageButton {
-                stackView: stackViewClock
-                doPush: false
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: stackViewClock.pop()
             }
         }
     }

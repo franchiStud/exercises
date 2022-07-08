@@ -3,8 +3,8 @@ import QtQuick
 Image {
     id: root
 
-    property date currentDate
-
+    property date currentDate: new Date()
+    property var buttonDateValue
 
     source: "/assets/comp-clock-dial-setting-alarm-mode.svg"
 

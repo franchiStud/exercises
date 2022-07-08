@@ -5,7 +5,6 @@ Item {
 
     property var isSelected: []
     property real howManySelected: 0
-    property var deleteButton: DeleteButton {}
 
     property var everydayToOthersDistance: everyDayAlarms.count > 0
                                         ? everyDayAlarms.count * 88 + 120

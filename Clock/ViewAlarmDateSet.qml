@@ -5,6 +5,8 @@ Item {
 
     property var stackView
 
+    signal click
+
     Head {
         id: head
 
@@ -18,7 +20,6 @@ Item {
     SetButton {
         buttonTxt: "SET DATE"
 
-        stackView: alarmSetDateGeneral.stackView
-        onClick: { buttonDateSet=true }
+        onClick: alarmSetDateGeneral.click()
     }
 }

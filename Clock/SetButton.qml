@@ -4,10 +4,9 @@ Rectangle {
     id: root
 
     property string buttonTxt
-    property var onClick: ({})
-    property bool clickEnabled: true
     property bool isClicked: mouseAreaS.containsPress
-    property var stackView
+
+    signal click()
 
     anchors.centerIn: parent
     anchors.verticalCenterOffset: 340
@@ -21,7 +20,7 @@ Rectangle {
     border.color: "#00A6E2"
     border.width: 1
 
-    color: mouseAreaS.containsPress
+    color: isClicked
             ? "#00A6E2"
             : "#151B2E"
 
@@ -32,7 +31,7 @@ Rectangle {
 
        anchors.centerIn: parent
 
-       color: mouseAreaS.containsPress
+       color: isClicked
                 ? "white"
                 : "#00A6E2"
        font.family: "Buenos Aires"
@@ -48,12 +47,10 @@ Rectangle {
         ColorAnimation { duration: 250 }
     }
 
-    NextPageButton {
+    MouseArea {
         id: mouseAreaS
+        anchors.fill: parent
 
-        stackView: root.stackView
-        enabled: clickEnabled
-        doPush: false
-        onClicked: onClick
+        onClicked: root.click()
     }
 }

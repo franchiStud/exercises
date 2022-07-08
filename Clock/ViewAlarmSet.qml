@@ -4,7 +4,10 @@ Item {
     id: alarm
 
     property bool everyDay: true
-    property var stackView
+    property var buttonDateValue
+
+    signal clickSet()
+    signal clickDateSet()
 
     Head {
         id: head
@@ -45,16 +48,22 @@ Item {
                       buttonDateValue.getFullYear()
                      : "Set date"
 
-        NextPageButton {
-            id: mouseArea
-            nextStackView: viewAlarmDateSet
-            stackView: alarm.stackView
-            onClicked: alarm.everyDay=false;
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked:  {
+                alarm.everyDay=false
+
+                alarm.clickDateSet()
+            }
         }
     }
 
     AlarmSetHour {
         id: alarmSetHour
+
+        buttonDateValue: alarm.buttonDateValue
+        onButtonDateValueChanged: alarm.buttonDateValue=buttonDateValue
     }
 
     SetButton {// set date
@@ -62,11 +71,9 @@ Item {
 
         buttonTxt: "SET ALARM"
 
-        clickEnabled: !(!alarm.everyDay&&!buttonDateSet)
-        stackView: alarm.stackView
-
         onClick: {
-            if(!isClicked) return
+            if(!alarm.everyDay&&!buttonDateSet) return
+
             if(alarm.everyDay)
                 everyDayAlarms.append({
                     "date": buttonDateValue,
@@ -83,6 +90,8 @@ Item {
 
             buttonDateValue.setHours(6)
             buttonDateValue.setMinutes(0)
+
+            clickSet()
         }
     }
 }

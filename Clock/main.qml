@@ -57,29 +57,157 @@ Window {
 
     Component {
         id: viewDeveClock
-        ViewDeveClock { stackView: stackViewMain }
+
+        ViewDeveClock {
+
+            onClickAlarm: stackViewMain.push(viewAlarmSet)
+
+            onClickTimer: stackViewMain.push(isThereTimer
+                                             ? viewTimerCD
+                                             : viewTimerSet)
+            Image {
+                source: "/assets/alarm-on-feedback.svg"
+
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -340
+                anchors.horizontalCenterOffset: 180
+
+                visible: isThereAlarm
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackViewMain.push(viewAlarmList)
+                }
+            }
+
+            Image {
+                source: "/assets/timer.svg"
+
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -340
+
+                anchors.horizontalCenterOffset: 180 - (isThereAlarm
+                                                       ? 50
+                                                       : 0)
+
+                visible: isThereTimer
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackViewMain.push(viewTimerCD)
+                }
+            }
+        }
     }
     Component {
         id: viewAlarmSet
-        ViewAlarmSet { stackView: stackViewMain }
+        ViewAlarmSet {
+            buttonDateValue: window.buttonDateValue
+
+            onClickSet: stackViewMain.pop()
+
+            onClickDateSet: stackViewMain.push(viewAlarmDateSet)
+        }
     }
     Component {
         id: viewAlarmDateSet
-        ViewAlarmDateSet { stackView: stackViewMain }
+        ViewAlarmDateSet {
+            onClick: {
+                buttonDateSet=true
+                stackViewMain.pop()
+            }
+        }
     }
     Component {
         id: viewAlarmList
-        ViewAlarmList { stackView: stackViewMain }
+
+        ViewAlarmList {
+
+            onClickDelete: {
+                for(var a=0;a<alarmListObj.isSelected.length;a++){
+                    var now=alarmListObj.isSelected[a].date;
+
+                    for(var e=0;e<everyDayAlarms.count;e++){
+                        var alarmE = everyDayAlarms.get(e).date
+                        if(now.getMinutes()===alarmE.getMinutes()
+                         &&now.getHours()  ===alarmE.getHours()
+                         &&alarmListObj.isSelected[a].everyDay)
+                            everyDayAlarms.remove(e--, 1);
+                    }
+
+
+                    for(var i=0;i<dateAlarms.count;i++){
+                        var alarmD = dateAlarms.get(i).date
+                        if(now.getMinutes() ===alarmD.getMinutes()
+                         &&now.getHours()   ===alarmD.getHours()
+                         &&now.getDate()    ===alarmD.getDate()
+                         &&now.getMonth()   ===alarmD.getMonth()
+                         &&now.getFullYear()===alarmD.getFullYear()
+                         &&!alarmListObj.isSelected[a].everyDay)
+                            dateAlarms.remove(i--, 1)
+                    }
+                }
+
+                isThereAlarm=dateAlarms.count>0 ||
+                                  everyDayAlarms.count>0
+
+                alarmListObj.howManySelected=0
+            }
+
+            AlarmList {
+                id: alarmListObj
+            }
+        }
     }
     Component {
         id: viewTimerSet
-        ViewTimerSet { stackView: stackViewMain }
+
+        ViewTimerSet {
+
+            onClickTimer: {
+                stackViewMain.pop()
+
+                isThereTimer = true
+
+                timerTimeLeftHours=timerHours.value
+                timerStartHours=timerHours.value
+
+                timerTimeLeftMinutes=timerMinutes.value
+                timerStartMinutes=timerMinutes.value
+
+                timerTimeLeftSeconds=0
+            }
+
+            TimerSet {
+                id: timerHours
+
+                anchors.horizontalCenterOffset: -width/2-20
+
+                txt: "hours"
+            }
+
+            TimerSet {
+                id: timerMinutes
+
+                anchors.horizontalCenterOffset: width/2+20
+
+                txt: "mins"
+            }
+        }
     }
     Component {
         id: viewTimerCD
-        ViewTimerCD { stackView: stackViewMain }
-    }
 
+        ViewTimerCD {
+            onClickPause: isTimerRunning= !isTimerRunning
+
+            onClickReset: {
+                timerTimeLeftHours=timerStartHours
+                timerTimeLeftMinutes=timerStartMinutes
+                timerTimeLeftSeconds=0
+            }
+        }
+    }
 
     Timer {
         id: alarmTimer
@@ -106,13 +234,11 @@ Window {
                  &&now.getFullYear()===alarmD.getFullYear())
                     alarmSound.play()
             }
-
-
         }
     }
 
     Timer {
-        interval: 1000; running: isThereTimer && isTimerRunning; repeat: true
+        interval: 1000; running: isThereTimer && isTimerRunning;repeat: true
         onTriggered: {
             if(timerTimeLeftSeconds <1){
 
@@ -133,7 +259,6 @@ Window {
 
             } else
                 timerTimeLeftSeconds--
-
         }
     }
 

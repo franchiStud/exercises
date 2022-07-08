@@ -3,7 +3,8 @@ import QtQuick
 Item {
     id: deveClock
 
-    property var stackView
+    signal clickTimer()
+    signal clickAlarm()
 
     Head {
         id: head
@@ -21,10 +22,7 @@ Item {
 
         buttonTxt: "TIMER"
 
-        nextStackView: isThereTimer
-                  ? viewTimerCD
-                  : viewTimerSet
-        stackView: deveClock.stackView
+        onClick: deveClock.clickTimer()
     }
 
     Button {
@@ -36,38 +34,6 @@ Item {
 
         buttonTxt: "ALARM"
 
-        nextStackView: viewAlarmSet
-        stackView: deveClock.stackView
-    }
-
-    Image {
-        source: "/assets/alarm-on-feedback.svg"
-
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -340
-        anchors.horizontalCenterOffset: 180
-
-        visible: isThereAlarm
-
-        NextPageButton {
-            nextStackView: viewAlarmList
-            stackView: deveClock.stackView
-        }
-    }
-
-    Image {
-        source: "/assets/timer.svg"
-
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: -340
-
-        anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
-
-        visible: isThereTimer
-
-        NextPageButton {
-            nextStackView: viewTimerCD
-            stackView: deveClock.stackView
-        }
+        onClick: deveClock.clickAlarm()
     }
 }

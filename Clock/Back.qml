@@ -23,10 +23,10 @@ Image {
         NumberAnimation { duration: 200 }
     }
 
-    NextPageButton {
+    MouseArea {
         id: mouseArea
 
-        doPush: false;
-        stackView: root.stackView
+        anchors.fill: parent
+        onClicked: stackView.pop()
     }
 }
