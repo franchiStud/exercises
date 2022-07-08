@@ -89,7 +89,6 @@ Window {
                 anchors.horizontalCenterOffset: 180 - (isThereAlarm
                                                        ? 50
                                                        : 0)
-
                 visible: isThereTimer
 
                 MouseArea {
@@ -99,6 +98,7 @@ Window {
             }
         }
     }
+
     Component {
         id: viewAlarmSet
         ViewAlarmSet {
@@ -109,6 +109,7 @@ Window {
             onClickDateSet: stackViewMain.push(viewAlarmDateSet)
         }
     }
+
     Component {
         id: viewAlarmDateSet
         ViewAlarmDateSet {
@@ -118,10 +119,12 @@ Window {
             }
         }
     }
+
     Component {
         id: viewAlarmList
 
         ViewAlarmList {
+            isSomethingSelected: alarmList.howManySelected>0
 
             onClickDelete: {
                 for(var a=0;a<alarmList.isSelected.length;a++){

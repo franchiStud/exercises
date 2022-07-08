@@ -6,6 +6,8 @@ Item {
 
     property var stackView
 
+    property bool isSomethingSelected
+
     signal clickDelete()
 
     Head {
@@ -15,7 +17,7 @@ Item {
     }
 
     DeleteButton {
-        visible: alarmListObj.howManySelected>0
+        visible: isSomethingSelected
 
         onClick: alarmClockList.clickDelete()
     }
