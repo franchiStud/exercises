@@ -22,12 +22,12 @@ Window {
                                     return d
                                  }
 
+    property int timerStartHours: 0
+    property int timerStartMinutes: 0
+
     property int timerTimeLeftHours: 0
     property int timerTimeLeftMinutes: 0
     property int timerTimeLeftSeconds: 0
-
-    property int timerStartHours: 0
-    property int timerStartMinutes: 0
 
     property bool isTimerRunning: true
 
@@ -124,14 +124,14 @@ Window {
         ViewAlarmList {
 
             onClickDelete: {
-                for(var a=0;a<alarmListObj.isSelected.length;a++){
-                    var now=alarmListObj.isSelected[a].date;
+                for(var a=0;a<alarmList.isSelected.length;a++){
+                    var now=alarmList.isSelected[a].date;
 
                     for(var e=0;e<everyDayAlarms.count;e++){
                         var alarmE = everyDayAlarms.get(e).date
                         if(now.getMinutes()===alarmE.getMinutes()
                          &&now.getHours()  ===alarmE.getHours()
-                         &&alarmListObj.isSelected[a].everyDay)
+                         &&alarmList.isSelected[a].everyDay)
                             everyDayAlarms.remove(e--, 1);
                     }
 
@@ -143,7 +143,7 @@ Window {
                          &&now.getDate()    ===alarmD.getDate()
                          &&now.getMonth()   ===alarmD.getMonth()
                          &&now.getFullYear()===alarmD.getFullYear()
-                         &&!alarmListObj.isSelected[a].everyDay)
+                         &&!alarmList.isSelected[a].everyDay)
                             dateAlarms.remove(i--, 1)
                     }
                 }
@@ -151,14 +151,13 @@ Window {
                 isThereAlarm=dateAlarms.count>0 ||
                                   everyDayAlarms.count>0
 
-                alarmListObj.howManySelected=0
+                alarmList.howManySelected=0
             }
 
-            AlarmList {
-                id: alarmListObj
-            }
+            AlarmList { id: alarmList }
         }
     }
+
     Component {
         id: viewTimerSet
 
@@ -169,32 +168,17 @@ Window {
 
                 isThereTimer = true
 
-                timerTimeLeftHours=timerHours.value
-                timerStartHours=timerHours.value
+                timerTimeLeftHours=timerHoursValue
+                timerStartHours=timerHoursValue
 
-                timerTimeLeftMinutes=timerMinutes.value
-                timerStartMinutes=timerMinutes.value
+                timerTimeLeftMinutes=timerMinutesValue
+                timerStartMinutes=timerMinutesValue
 
                 timerTimeLeftSeconds=0
             }
-
-            TimerSet {
-                id: timerHours
-
-                anchors.horizontalCenterOffset: -width/2-20
-
-                txt: "hours"
-            }
-
-            TimerSet {
-                id: timerMinutes
-
-                anchors.horizontalCenterOffset: width/2+20
-
-                txt: "mins"
-            }
         }
     }
+
     Component {
         id: viewTimerCD
 
@@ -216,14 +200,12 @@ Window {
         onTriggered: {
             var now = new Date()
 
-
             for(var e=0;e<everyDayAlarms.count;e++){
                 var alarmE = everyDayAlarms.get(e).date
                 if(now.getMinutes()===alarmE.getMinutes()
                  &&now.getHours()  ===alarmE.getHours())
                     alarmSound.play()
             }
-
 
             for(var i=0;i<dateAlarms.count;i++){
                 var alarmD = dateAlarms.get(i).date
@@ -238,7 +220,7 @@ Window {
     }
 
     Timer {
-        interval: 1000; running: isThereTimer && isTimerRunning;repeat: true
+        interval: 1000; running: isThereTimer && isTimerRunning; repeat: true
         onTriggered: {
             if(timerTimeLeftSeconds <1){
 
@@ -262,13 +244,11 @@ Window {
         }
     }
 
-    SoundEffect {
-        id: alarmSound
+    SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }
 
-    SoundEffect {
-        id: timerSound
+    SoundEffect { id: timerSound
         source: "/sounds/timer.wav"
    }
 }

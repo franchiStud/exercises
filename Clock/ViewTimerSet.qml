@@ -4,6 +4,8 @@ Item {
     id: timerSet
 
     property var stackView
+    property real timerHoursValue: timerHours.value
+    property real timerMinutesValue: timerMinutes.value
 
     signal clickTimer()
 
@@ -11,6 +13,22 @@ Item {
         id: head
 
         txt: "Timer"
+    }
+
+    TimerSet {
+        id: timerHours
+
+        anchors.horizontalCenterOffset: -width/2-20
+
+        txt: "hours"
+    }
+
+    TimerSet {
+        id: timerMinutes
+
+        anchors.horizontalCenterOffset: width/2+20
+
+        txt: "mins"
     }
 
     Text {
