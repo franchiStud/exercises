@@ -6,6 +6,7 @@ Window {
     id: window
 
     property bool isThereAlarm: false
+    property int activeAlarms: 0
     property bool isThereTimer: false
 
     property int buttonY: window.height/2*0.725
@@ -66,7 +67,10 @@ Window {
                                              ? viewTimerCD
                                              : viewTimerSet)
             Image {
-                source: "/assets/alarm-on-feedback.svg"
+                source: activeAlarms>0
+                        ? "/assets/alarm-on-feedback.svg"
+                        : "/assets/alarm-off-feedback.svg"
+
 
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -340
@@ -104,7 +108,10 @@ Window {
         ViewAlarmSet {
             buttonDateValue: window.buttonDateValue
 
-            onClickSet: stackViewMain.pop()
+            onClickSet: {
+                activeAlarms++;
+                stackViewMain.pop()
+            }
 
             onClickDateSet: stackViewMain.push(viewAlarmDateSet)
         }
@@ -124,40 +131,50 @@ Window {
         id: viewAlarmList
 
         ViewAlarmList {
-            isSomethingSelected: alarmList.howManySelected>0
-
-            onClickDelete: {
-                for(var a=0;a<alarmList.isSelected.length;a++){
-                    var now=alarmList.isSelected[a].date;
-
-                    for(var e=0;e<everyDayAlarms.count;e++){
-                        var alarmE = everyDayAlarms.get(e).date
-                        if(now.getMinutes()===alarmE.getMinutes()
-                         &&now.getHours()  ===alarmE.getHours()
-                         &&alarmList.isSelected[a].everyDay)
-                            everyDayAlarms.remove(e--, 1);
-                    }
-
-
-                    for(var i=0;i<dateAlarms.count;i++){
-                        var alarmD = dateAlarms.get(i).date
-                        if(now.getMinutes() ===alarmD.getMinutes()
-                         &&now.getHours()   ===alarmD.getHours()
-                         &&now.getDate()    ===alarmD.getDate()
-                         &&now.getMonth()   ===alarmD.getMonth()
-                         &&now.getFullYear()===alarmD.getFullYear()
-                         &&!alarmList.isSelected[a].everyDay)
-                            dateAlarms.remove(i--, 1)
-                    }
-                }
-
-                isThereAlarm=dateAlarms.count>0 ||
-                                  everyDayAlarms.count>0
-
-                alarmList.howManySelected=0
-            }
 
             AlarmList { id: alarmList }
+
+            DeleteButton {
+                visible: alarmList.howManySelected>0
+
+                onClick: {
+                    for(var a=0;a<alarmList.isSelected.length;a++){
+                        var now=alarmList.isSelected[a].date;
+
+                        for(var e=0;e<everyDayAlarms.count;e++){
+                            var alarmE = everyDayAlarms.get(e).date
+                            if(now.getMinutes()===alarmE.getMinutes()
+                             &&now.getHours()  ===alarmE.getHours()
+                             &&alarmList.isSelected[a].everyDay){
+                                everyDayAlarms.remove(e--, 1);
+                                if(--alarmList.isSelected.length==0)
+                                    break;
+                            }
+                        }
+
+                        for(var i=0;i<dateAlarms.count;i++){
+                            var alarmD = dateAlarms.get(i).date
+                            if(now.getMinutes() ===alarmD.getMinutes()
+                             &&now.getHours()   ===alarmD.getHours()
+                             &&now.getDate()    ===alarmD.getDate()
+                             &&now.getMonth()   ===alarmD.getMonth()
+                             &&now.getFullYear()===alarmD.getFullYear()
+                             &&!alarmList.isSelected[a].everyDay){
+                                dateAlarms.remove(i--, 1)
+                                if(--alarmList.isSelected.length==0)
+                                    break;
+                            }
+                        }
+                    }
+
+                    isThereAlarm=dateAlarms.count>0 ||
+                                      everyDayAlarms.count>0
+
+                    alarmList.howManySelected=0
+                }
+            }
+
+            NoAlarmSign { visible: dateAlarms.count+everyDayAlarms.count==0 }
         }
     }
 
@@ -199,7 +216,7 @@ Window {
     Timer {
         id: alarmTimer
 
-        interval: 60000; running: true; repeat: true
+        interval: 60000; running: isThereAlarm; repeat: isThereAlarm
         onTriggered: {
             var now = new Date()
 
@@ -223,7 +240,8 @@ Window {
     }
 
     Timer {
-        interval: 1000; running: isThereTimer && isTimerRunning; repeat: true
+        interval: 1000; running: isThereTimer && isTimerRunning;
+                        repeat: isThereTimer && isTimerRunning
         onTriggered: {
             if(timerTimeLeftSeconds <1){
 

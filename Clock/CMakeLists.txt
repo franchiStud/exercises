@@ -23,7 +23,7 @@ qt_add_qml_module(appClock
         #File Alarm
         ViewAlarmSet.qml ViewAlarmList.qml ViewAlarmDateSet.qml
         AlarmDateButton.qml AlarmAnalogClock.qml AlarmSetHour.qml AlarmList.qml
-        AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml
+        AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml NoAlarmSign.qml
         #File Timer
         ViewTimerSet.qml ViewTimerCD.qml
         TimerSet.qml TimerCD.qml

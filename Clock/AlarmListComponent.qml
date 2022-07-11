@@ -31,9 +31,11 @@ Component {
 
             MouseArea {
                 anchors.fill:parent
-                onClicked: isActive=!isActive
+                onClicked: {
+                    isActive=!isActive
+                    isActive ? activeAlarms++ : activeAlarms--
+                }
             }
-
         }
 
 
