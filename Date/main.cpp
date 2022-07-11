@@ -44,7 +44,11 @@ class Date{
                         this->month==12)
                         && this->day==31) {
                      day=1;
-                     addMonths();
+                     if(++this->month>12){
+                         this->month=1;
+                         this->year++;
+                     }
+
                 }
                 else if((this->month==4 ||
                          this->month==6 ||
@@ -52,40 +56,59 @@ class Date{
                          this->month==11)
                         &&this->day==30) {
                     day=1;
-                    addMonths();
+                    if(++this->month>12){
+                        this->month=1;
+                        this->year++;
+                    }
                 }
                 else if((this->month==2)
                         &&(this->year%4==0 &&
                            this->year%100!=0)
                         &&this->day==29){
                     day=1;
-                    addMonths();
+                    if(++this->month>12){
+                        this->month=1;
+                        this->year++;
+                    }
                 }
-                else if((this->month==2)
-                        &&(this->year%4!=0 ||
-                           this->year%100==0)
-                        &&this->day==28){
+                else if(this->day==28){
                     day=1;
-                    addMonths();
+                    if(++this->month>12){
+                        this->month=1;
+                        this->year++;
+                    }
                 }
                 else
                     day++;
             }
         }
         void addMonths(int months=1) {
+
             while(months-->0){
-                if(this->month==12){
-                    month=1;
-                    addYears();
-                }
+                if(this->month==1 ||
+                        this->month==3 ||
+                        this->month==5 ||
+                        this->month==7 ||
+                        this->month==8 ||
+                        this->month==10 ||
+                        this->month==12)
+                    addDays(31);
+                else if(this->month==4 ||
+                        this->month==6 ||
+                        this->month==9 ||
+                        this->month==11)
+                    addDays(30);
+                else if((this->month==2)
+                        &&(this->year%4==0 &&
+                           this->year%100!=0))
+                    addDays(29);
                 else
-                    month++;
+                    addDays(28);
             }
+
         }
         void addYears(int years=1) {
-            this->year+=years;
-            day--;
-            addDays();
+            addMonths(12*years);
         }
 
         void parseDate(string string){
@@ -114,10 +137,9 @@ class Date{
         }
 
 };
-
-int main()
-{
+int main(){
     Date d1;
     d1.parseDate("12-3-2034");
+    d1.addMonths();
     cout << d1 << endl;
 }
