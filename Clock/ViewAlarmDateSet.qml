@@ -3,8 +3,6 @@ import QtQuick
 Item {
     id: alarmSetDateGeneral
 
-    property var stackView
-
     signal click
 
     Head {
@@ -13,9 +11,7 @@ Item {
         txt: "Set date"
     }
 
-    AlarmSetDate {
-        id: alarmSetDate
-    }
+    AlarmSetDate { id: alarmSetDate }
 
     SetButton {
         buttonTxt: "SET DATE"

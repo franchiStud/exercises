@@ -42,7 +42,7 @@ Rectangle { //DeveClock buttons
         Behavior on color {
             ColorAnimation { duration: 250 }
         }
-     }
+    }
     MouseArea {
         id: mouseArea
 

@@ -101,7 +101,6 @@ Component {
             text: date.getHours()+":"+(date.getMinutes()<10
                                        ? "00"
                                        : date.getMinutes())
-
             x: 82
             y: everyDay ? 20 : 35
 

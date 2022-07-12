@@ -58,8 +58,6 @@ Item {
             }
         }
 
-
-
         Image { //centro
             id: cen
 

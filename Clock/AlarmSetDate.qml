@@ -30,6 +30,7 @@ Item {
             color: "#FCB647"
             font.pixelSize: 120
         }
+
         Text {
             id: weekDay
 

@@ -112,7 +112,6 @@ Window {
                 activeAlarms++;
                 stackViewMain.pop()
             }
-
             onClickDateSet: stackViewMain.push(viewAlarmDateSet)
         }
     }

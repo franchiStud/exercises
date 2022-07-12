@@ -9,7 +9,6 @@ Item {
     property var everydayToOthersDistance: everyDayAlarms.count > 0
                                         ? everyDayAlarms.count * 88 + 120
                                         : 0
-
     anchors.centerIn: parent
 
     Text {
