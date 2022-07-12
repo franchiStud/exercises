@@ -14,9 +14,7 @@ Item {
         txt: "Timer"
     }
 
-    TimerCD {
-        id: timerCD
-    }
+    TimerCD { id: timerCD }
 
     Image {
         property bool clicked
@@ -59,4 +57,9 @@ Item {
             onClicked: timerCountDown.clickReset()
         }
     }
+
+    TimerCircle {
+        anchors.centerIn: parent
+        timeLeft: (timerTimeLeftHours*3600+timerTimeLeftMinutes*60+timerTimeLeftSeconds)
+                  / (timerStartHours*3600+timerStartMinutes*60) }
 }
