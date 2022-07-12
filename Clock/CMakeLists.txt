@@ -26,7 +26,7 @@ qt_add_qml_module(appClock
         AlarmListComponent.qml DeleteButton.qml AlarmSetDate.qml NoAlarmSign.qml
         #File Timer
         ViewTimerSet.qml ViewTimerCD.qml
-        TimerSet.qml TimerCD.qml TimerCircle.qml
+        TimerSet.qml TimerCD.qml
 )
 
 qt_add_resources(appClock "assets"
