@@ -205,9 +205,11 @@ Window {
             onClickPause: isTimerRunning= !isTimerRunning
 
             onClickReset: {
+                stackViewMain.pop()
                 timerTimeLeftHours=timerStartHours
                 timerTimeLeftMinutes=timerStartMinutes
                 timerTimeLeftSeconds=0
+                isTimerRunning=true
             }
         }
     }
