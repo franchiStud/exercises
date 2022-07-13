@@ -1,15 +1,12 @@
 import QtQuick
-import QtQuick.Shapes 1.15
+import QtQuick.Shapes
 
 Shape {
-    property var timeLeft: 1
+    property real timeLeft: 1
+
     width: 400
     height: 400
-    anchors.verticalCenter: parent.verticalCenter
-    anchors.verticalCenterOffset: -30
-    anchors.right: parent.right
 
-    rotation: -90
     layer.enabled: true
     layer.samples: 4
 
@@ -20,9 +17,10 @@ Shape {
         capStyle: ShapePath.RoundCap
 
         PathAngleArc {
-            centerX: width/2; centerY: height/2
-            radiusX: 195; radiusY: 195
-            startAngle: 0
+            centerX: width/2;   centerY: height/2
+            radiusX: width/2-5; radiusY: height/2-5
+
+            startAngle: -90
             sweepAngle: timeLeft*360
 
             Behavior on sweepAngle {
