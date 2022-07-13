@@ -4,7 +4,6 @@ Item {
     id: alarm
 
     property bool everyDay: true
-    property var buttonDateValue
 
     signal clickSet()
     signal clickDateSet()
@@ -62,8 +61,8 @@ Item {
     AlarmSetHour {
         id: alarmSetHour
 
-        buttonDateValue: alarm.buttonDateValue
-        onButtonDateValueChanged: alarm.buttonDateValue=buttonDateValue
+        buttonHourValue: buttonDateValue
+        onHourChanged: buttonDateValue=buttonHourValue
     }
 
     SetButton {// set date

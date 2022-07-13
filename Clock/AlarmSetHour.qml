@@ -3,15 +3,16 @@ import QtQuick
 Item {
     id: root
 
-    property var buttonDateValue
+    property var buttonHourValue
+    signal hourChanged
 
     anchors.centerIn: parent
 
     AlarmAnalogClock {
         id: analogClock
 
-        buttonDateValue: root.buttonDateValue
-        onButtonDateValueChanged: root.buttonDateValue=buttonDateValue
+        buttonDateValue: root.buttonHourValue
+        onButtonDateValueChanged: root.buttonHourValue=buttonDateValue
 
         anchors.centerIn: parent
     }
@@ -48,7 +49,7 @@ Item {
         y: slider.y+12
 
         onXChanged: {
-            var hourSetApp=buttonDateValue
+            var hourSetApp=buttonHourValue
 
             if(dragArea.drag.maximumX<cursor.x) return
 
@@ -76,12 +77,13 @@ Item {
             else
                 hourSetApp.setMinutes(50)
 
-            buttonDateValue=hourSetApp
-            txt.text=buttonDateValue.getHours()+
+            buttonHourValue=hourSetApp
+            txt.text=buttonHourValue.getHours()+
                     ":"+
-                    ((buttonDateValue.getMinutes() < 10)
+                    ((buttonHourValue.getMinutes() < 10)
                             ? "00"
-                            : buttonDateValue.getMinutes())
+                            : buttonHourValue.getMinutes())
+            root.hourChanged()
         }
     }
 

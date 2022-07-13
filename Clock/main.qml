@@ -106,8 +106,6 @@ Window {
     Component {
         id: viewAlarmSet
         ViewAlarmSet {
-            buttonDateValue: window.buttonDateValue
-
             onClickSet: {
                 activeAlarms++;
                 stackViewMain.pop()
