@@ -44,7 +44,7 @@ Rectangle {
 
         SetArrow {
             direction: true
-            isHover: upArrow.pressed()
+            isHover: upArrow.containsPress
 
             MouseArea {
                 id: upArrow
@@ -55,7 +55,7 @@ Rectangle {
         }
         SetArrow {
             direction: false
-            isHover: downArrow.pressed()
+            isHover: downArrow.containsPress
 
             MouseArea {
                 id: downArrow
