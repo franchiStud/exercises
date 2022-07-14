@@ -3,17 +3,13 @@ import QtQuick
 Item {
     id: root
 
-    property var everyDayAlarms: ListModel {}
-    property var dateAlarms: ListModel {}
     property var isSelected: []
     property real howManySelected: 0
-    property var deleteButton: DeleteButton {}
 
     property var everydayToOthersDistance: everyDayAlarms.count > 0
                                         ? everyDayAlarms.count * 88 + 120
                                         : 0
-
-
+    anchors.centerIn: parent
 
     Text {
         id: everyDayTxt
@@ -46,7 +42,8 @@ Item {
     Text {
         id: dateAlarmsTxt
 
-        anchors.left: everyDayTxt.left
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: -160
         y: everyDayTxt.y + everydayToOthersDistance
 
 

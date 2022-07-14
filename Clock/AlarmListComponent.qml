@@ -1,6 +1,5 @@
 import QtQuick
 
-
 Component {
     id: alarmListComponent
 
@@ -19,6 +18,7 @@ Component {
 
             x: parent.width-124
             anchors.verticalCenter: parent.verticalCenter
+
             width: 112
             height: 60          
             radius: width/14
@@ -31,9 +31,11 @@ Component {
 
             MouseArea {
                 anchors.fill:parent
-                onClicked: isActive=!isActive
+                onClicked: {
+                    isActive=!isActive
+                    isActive ? activeAlarms++ : activeAlarms--
+                }
             }
-
         }
 
 
@@ -63,7 +65,10 @@ Component {
                             : "/assets/check_selected.svg"
 
             MouseArea {
-                anchors.fill: parent
+                anchors.centerIn: parent
+
+                width: parent.width*2
+                height: parent.height*2
 
                 onClicked: {
                     if(parent.disable===true) {
@@ -96,7 +101,6 @@ Component {
             text: date.getHours()+":"+(date.getMinutes()<10
                                        ? "00"
                                        : date.getMinutes())
-
             x: 82
             y: everyDay ? 20 : 35
 
@@ -106,7 +110,7 @@ Component {
 
         Text {// dateTxt
             text: everyDay ? "" : date.getDate()+"/"+
-                                  date.getMonth()+"/"+
+                                  (date.getMonth()+1)+"/"+
                                   date.getFullYear()
 
             anchors.horizontalCenter: hourTxt.horizontalCenter

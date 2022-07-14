@@ -3,8 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property var newDate: new Date()
-
     anchors.centerIn: parent
 
     Rectangle {
@@ -21,21 +19,23 @@ Item {
         Text {
             id: day
 
-            text: newDate.getDate()
+            text: buttonDateValue.getDate()
 
             anchors.horizontalCenter: parent.horizontalCenter
+            horizontalAlignment: Text.AlignHCenter
             y: 104
+
             width: parent.width
 
             color: "#FCB647"
-            horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 120
         }
+
         Text {
             id: weekDay
 
             text: {
-                switch(root.newDate.getDay()){
+                switch(buttonDateValue.getDay()){
                     case 0: return "Sun"
                     case 1: return "Mon"
                     case 2: return "Tue"
@@ -48,6 +48,7 @@ Item {
 
             anchors.horizontalCenter: day.horizontalCenter
             anchors.bottom: day.top
+
             width: parent.width
 
             color: "#9FAAB0"
@@ -58,12 +59,13 @@ Item {
         Text {
             id: restOfDate
 
-            text: "/"+root.newDate.getMonth()+"/"+root.newDate.getFullYear()
+            text: "/"+(buttonDateValue.getMonth()+1)+
+                  "/"+ buttonDateValue.getFullYear()
 
             x: parent.width+18
             anchors.verticalCenter: day.verticalCenter
-            width: parent.width
 
+            width: parent.width
 
             color: "#9FAAB0"
             font.pixelSize: 40
@@ -73,17 +75,18 @@ Item {
         SetArrow {
             direction: true
 
+            isHover: upMA.containsPress
+
             MouseArea{
+                id: upMA
+
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= root.newDate
+                    var updateDate= buttonDateValue
 
                     updateDate.setDate(updateDate.getDate()+1)
 
-                    root.newDate=updateDate
-
-                    arrowTimer.thenChange=parent
-                    arrowTimer.running=true
+                    buttonDateValue=updateDate
                 }
             }
         }
@@ -91,28 +94,20 @@ Item {
         SetArrow {
             direction: false
 
+            isHover: downMA.containsPress
+
             MouseArea {
+                id: downMA
+
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= root.newDate
+                    var updateDate= buttonDateValue
 
                     updateDate.setDate(updateDate.getDate()-1)
 
-                    root.newDate=updateDate
-
-                    arrowTimer.thenChange=parent
-                    arrowTimer.running=true
+                    buttonDateValue=updateDate
                 }
             }
         }
-    }
-
-    Timer {
-        id: arrowTimer
-
-        property var thenChange
-
-        interval: 150; running: false; repeat: false
-        onTriggered: thenChange.state= "active"
     }
 }

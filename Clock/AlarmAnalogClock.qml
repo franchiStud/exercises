@@ -4,7 +4,7 @@ Image {
     id: root
 
     property date currentDate: new Date()
-    property var hour: new Date()
+    property var buttonDateValue
 
     source: "/assets/comp-clock-dial-setting-alarm-mode.svg"
 
@@ -57,10 +57,10 @@ Image {
         anchors.verticalCenterOffset: -sourceSize.height/2
 
         transformOrigin: Item.Bottom
-        rotation: (hour.getHours()>12
-                        ? hour.getHours()-12
-                        : hour.getHours())*30
-                  + (hour.getMinutes()/60)*30
+        rotation: (buttonDateValue.getHours()>12
+                        ? buttonDateValue.getHours()-12
+                        : buttonDateValue.getHours())*30
+                  + (buttonDateValue.getMinutes()/60)*30
     }
 
     Timer { //hour refreshes every 0.5 secs

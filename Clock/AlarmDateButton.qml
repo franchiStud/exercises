@@ -69,42 +69,7 @@ Rectangle {
                 target: tick
                 source: "/assets/ic-tick-disabled"
             }
-        },
-
-        State {
-            name: "selected-hover"
-            PropertyChanges {
-                target: root
-                border.color: "#74818e"
-            }
-
-            PropertyChanges {
-                target: txt
-                color: "#74818e"
-            }
-
-            PropertyChanges {
-                target: tick
-                source: "/assets/ic-tick-hover"
-            }
-
-        },
-        State {
-            name: "disabled-hover"
-            PropertyChanges {
-                target: root
-                border.color: "#2b3e53"
-            }
-
-            PropertyChanges {
-                target: txt
-                color: "#74818e"
-            }
-
-            PropertyChanges {
-                target: tick
-                source: "/assets/ic-tick-hover"
-            }
         }
     ]
+
 }

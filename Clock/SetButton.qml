@@ -4,6 +4,9 @@ Rectangle {
     id: root
 
     property string buttonTxt
+    property bool isClicked: mouseAreaS.containsPress
+
+    signal click()
 
     anchors.centerIn: parent
     anchors.verticalCenterOffset: 340
@@ -17,7 +20,9 @@ Rectangle {
     border.color: "#00A6E2"
     border.width: 1
 
-    state: "disable"
+    color: isClicked
+            ? "#00A6E2"
+            : "#151B2E"
 
     Text {
        id: txt
@@ -26,7 +31,9 @@ Rectangle {
 
        anchors.centerIn: parent
 
-       color: "#00A6E2"
+       color: isClicked
+                ? "white"
+                : "#00A6E2"
        font.family: "Buenos Aires"
        font.pixelSize: 36
        font.letterSpacing: 1.8
@@ -36,32 +43,14 @@ Rectangle {
        }
     }
 
-    states: [
-        State { //stato del pulsante active
-            name: "active"
-            PropertyChanges {
-                target: txt
-                color: "white"
-            }
-            PropertyChanges {
-                target: root
-                color: "#00A6E2"
-            }
-        },
-        State { //stato del pulsante disable
-            name: "disable"
-            PropertyChanges {
-                target: txt
-                color: "#00A6E2"
-            }
-            PropertyChanges {
-                target: root
-                color: "#151B2E"
-            }
-        }
-    ]
-
     Behavior on color {
         ColorAnimation { duration: 250 }
+    }
+
+    MouseArea {
+        id: mouseAreaS
+        anchors.fill: parent
+
+        onClicked: root.click()
     }
 }

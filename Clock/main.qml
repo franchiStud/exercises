@@ -1,15 +1,36 @@
 import QtQuick
 import QtMultimedia
+import QtQuick.Controls
 
 Window {
-    id: root
+    id: window
 
     property bool isThereAlarm: false
-    property bool isThereTimer: !timerCD.timerEnd
-    property string view: "DeveClock"
+    property int activeAlarms: 0
+    property bool isThereTimer: false
 
-    property int buttonY: root.height/2*0.725
-    property int buttonHeight: root.height*0.08
+    property int buttonY: window.height/2*0.725
+    property int buttonHeight: window.height*0.08
+
+    property var everyDayAlarms: ListModel {}
+    property var dateAlarms: ListModel {}
+
+    property bool buttonDateSet: false
+    property var buttonDateValue: {
+                                    var d=new Date()
+                                    d.setMinutes(0)
+                                    d.setHours(6)
+                                    return d
+                                 }
+
+    property int timerStartHours: 0
+    property int timerStartMinutes: 0
+
+    property int timerTimeLeftHours: 0
+    property int timerTimeLeftMinutes: 0
+    property int timerTimeLeftSeconds: 0
+
+    property bool isTimerRunning: true
 
     width: 480
     height: 800
@@ -18,532 +39,236 @@ Window {
     color: "#151B2E"
     title: "DeveClock"
 
-    //-------------------------------- elementi comuni a più view
-    Head {
-        id: head
-
-        txt: root.view
-    }
-
     Back { // presente in tutte le view tranne DeveClock
-        visible: root.view!=="DeveClock"
+        opacity: stackViewMain.depth>1 ? 1 : 0
 
-        anchors.verticalCenter: head.verticalCenter
+        anchors.verticalCenter: stackViewMain.top
+        anchors.verticalCenterOffset: height*0.75
 
-        state: "disabled"
+        stackView: stackViewMain
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                parent.state = "enabled"
-                transitionTimer.thenChange = parent
-                transitionTimer.nextState = "disabled"
-                transitionTimer.nextView = (view==="Set date") ?
-                                          "Alarm"
-                                        : "DeveClock"
-                transitionTimer.running = true
+    StackView {
+        id: stackViewMain
+
+        anchors.fill: parent
+
+        initialItem: viewDeveClock
+    }
+
+    Component {
+        id: viewDeveClock
+
+        ViewDeveClock {
+
+            onClickAlarm: stackViewMain.push(viewAlarmSet)
+
+            onClickTimer: stackViewMain.push(isThereTimer
+                                             ? viewTimerCD
+                                             : viewTimerSet)
+            Image {
+                source: activeAlarms>0
+                        ? "/assets/alarm-on-feedback.svg"
+                        : "/assets/alarm-off-feedback.svg"
+
+
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -340
+                anchors.horizontalCenterOffset: 180
+
+                visible: isThereAlarm
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackViewMain.push(viewAlarmList)
+                }
             }
-        }
 
-        Timer {
-            id: transitionTimer
+            Image {
+                source: "/assets/timer.svg"
 
-            property string nextView
-            property var thenChange
-            property string nextState
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -340
 
-            interval: 300; running: false; repeat: false
-            onTriggered: {
-                thenChange.state=nextState
-                root.view=nextView
+                anchors.horizontalCenterOffset: 180 - (isThereAlarm
+                                                       ? 50
+                                                       : 0)
+                visible: isThereTimer
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: stackViewMain.push(viewTimerCD)
+                }
             }
         }
     }
 
-    //-------------------------------- view DeveClock
-    Item {
-        id: deveClock
+    Component {
+        id: viewAlarmSet
+        ViewAlarmSet {
+            buttonDateValue: window.buttonDateValue
 
-        anchors.centerIn: parent
-
-        visible: root.view==="DeveClock"
-
-        Clock {}
-
-        Button { //pulsante timer
-            id: timerButton
-
-            anchors.horizontalCenter: deveClock.horizontalCenter
-            anchors.horizontalCenterOffset: -width/2-30
-
-            buttonTxt: "TIMER"
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    parent.state = "enabled"
-                    transitionTimer.thenChange = parent
-                    transitionTimer.nextView = "Timer"
-                    transitionTimer.nextState = "disabled"
-                    transitionTimer.running = true
-                }
+            onClickSet: {
+                activeAlarms++;
+                stackViewMain.pop()
             }
+            onClickDateSet: stackViewMain.push(viewAlarmDateSet)
         }
+    }
 
-        Button {
-            id: alarmButton
-
-            anchors.horizontalCenter: deveClock.horizontalCenter
-            anchors.horizontalCenterOffset: width/2+30
-
-
-            buttonTxt: "ALARM"
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    parent.state = "enabled"
-                    transitionTimer.thenChange = parent
-                    transitionTimer.nextView = "Alarm"
-                    transitionTimer.nextState = "disabled"
-                    transitionTimer.running = true
-                }
-            }
-        }
-
-        Image {
-            source: "/assets/alarm-on-feedback.svg"
-
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -340
-            anchors.horizontalCenterOffset: 180
-
-            visible: root.isThereAlarm
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: { view="Alarm clock list" }
-            }
-        }
-
-        Image {
-            source: "/assets/timer.svg"
-
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -340
-
-            anchors.horizontalCenterOffset: 180 - (isThereAlarm ? 50 : 0)
-
-            visible: root.isThereTimer
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: { view="Timer" }
+    Component {
+        id: viewAlarmDateSet
+        ViewAlarmDateSet {
+            onClick: {
+                buttonDateSet=true
+                stackViewMain.pop()
             }
         }
     }
 
+    Component {
+        id: viewAlarmList
 
-    //----------------------------------- tutte le view relative ad Alarm
-    Item {
-        id: alarmGeneral
+        ViewAlarmList {
 
-        anchors.centerIn: parent
-
-        //-------------------------------- view Alarm
-        Item {
-            id: alarm
-
-            property bool everyDay: true
-            property bool setDate: false
-
-            anchors.centerIn: parent
-
-            visible: root.view==="Alarm"
-
-            AlarmDateButton {
-                id: alarmEveryday
-
-                anchors.horizontalCenter: alarm.horizontalCenter
-                anchors.horizontalCenterOffset: -width/2-10
-
-                state: "selected"
-                buttonTxt: "Everyday"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        parent.state= !alarm.everyDay ?
-                                    "selected-hover" : "disabled-hover"
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextView="Alarm"
-                        transitionTimer.nextState= !alarm.everyDay ?
-                                    "selected" : "disabled"
-                        transitionTimer.running=true
-                        alarmDate.state= !alarm.everyDay ?
-                                    "disabled" : "selected"
-                        alarm.everyDay= !alarm.everyDay
-                    }
-                }
-            }
-
-            AlarmDateButton {
-                id: alarmDate
-
-                anchors.horizontalCenter: alarm.horizontalCenter
-                anchors.horizontalCenterOffset: width/2+10
-
-                state: "disabled"
-                buttonTxt: "Set date"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        parent.state="selected-hover"
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextView="Set date"
-                        transitionTimer.nextState= "selected"
-                        transitionTimer.running=true
-                        alarmEveryday.state= "disabled"
-                        alarm.everyDay= false
-                    }
-                }
-            }
-
-            AlarmSetHour {
-                id: alarmSetHour
-
-                isActive: root.view==="Alarm"
-            }
-
-            SetButton {// set date
-                buttonTxt: "SET ALARM"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        if(!alarm.everyDay&&!alarm.setDate) return
-
-                        var appendDate=alarmSetHour.hourSet
-
-                        if(alarm.everyDay)
-                            alarmList.everyDayAlarms.append({
-                                "date": appendDate,
-                                "everyDay": true,
-                                "isActive": true
-                            })
-                        else{
-                            appendDate.setDate(
-                                alarmSetDate.newDate.getDate())
-                            appendDate.setMonth(
-                                        alarmSetDate.newDate.getMonth())
-                            appendDate.setFullYear(
-                                        alarmSetDate.newDate.getFullYear())
-                            alarmList.dateAlarms.append({
-                                "date": appendDate,
-                                "everyDay": false,
-                                "isActive": true,
-                                })
-                        }
-
-                        parent.state= "active"
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextView="DeveClock"
-                        transitionTimer.nextState="disable"
-                        transitionTimer.running=true
-                        isThereAlarm=true
-                    }
-                }
-            }
-        }
-
-
-        //-------------------------------- view Alarm clock list
-        Item {
-            id: alarmClockList
-
-            anchors.centerIn: parent
-
-            visible: root.view==="Alarm clock list"
-
-            AlarmList {
-                id: alarmList
-            }
+            AlarmList { id: alarmList }
 
             DeleteButton {
                 visible: alarmList.howManySelected>0
-                state: "disabled"
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        for(var a=0;a<alarmList.isSelected.length;a++){
-                            for(var e=0;e<alarmList.everyDayAlarms.count;e++)
-                                if(alarmClockList.equals(alarmList.isSelected[a],
-                                            alarmList.everyDayAlarms.get(e)))
-                               {
-                                    alarmList.everyDayAlarms.remove(e--, 1)
-                                }
+                onClick: {
+                    for(var a=0;a<alarmList.isSelected.length;a++){
+                        var now=alarmList.isSelected[a].date;
 
-
-
-                            for(var i=0;i<alarmList.dateAlarms.count;i++)
-                                if(alarmClockList.equals(alarmList.isSelected[a],
-                                            alarmList.dateAlarms.get(i)))
-                                {
-                                    alarmList.dateAlarms.remove(i--, 1)
-                                }
+                        for(var e=0;e<everyDayAlarms.count;e++){
+                            var alarmE = everyDayAlarms.get(e).date
+                            if(now.getMinutes()===alarmE.getMinutes()
+                             &&now.getHours()  ===alarmE.getHours()
+                             &&alarmList.isSelected[a].everyDay){
+                                everyDayAlarms.remove(e--, 1);
+                                if(--alarmList.isSelected.length==0)
+                                    break;
+                            }
                         }
-                        parent.state= "enabled"
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextView="Alarm clock list"
-                        transitionTimer.nextState="disabled"
-                        transitionTimer.running=true
-                        deleteButtonTimer.running=true
-                        root.isThereAlarm=alarmList.dateAlarms.count>0 ||
-                                alarmList.everyDayAlarms.count>0
+
+                        for(var i=0;i<dateAlarms.count;i++){
+                            var alarmD = dateAlarms.get(i).date
+                            if(now.getMinutes() ===alarmD.getMinutes()
+                             &&now.getHours()   ===alarmD.getHours()
+                             &&now.getDate()    ===alarmD.getDate()
+                             &&now.getMonth()   ===alarmD.getMonth()
+                             &&now.getFullYear()===alarmD.getFullYear()
+                             &&!alarmList.isSelected[a].everyDay){
+                                dateAlarms.remove(i--, 1)
+                                if(--alarmList.isSelected.length==0)
+                                    break;
+                            }
+                        }
                     }
-                }
-                Timer {
-                    id: deleteButtonTimer
 
-                    interval: 300; running: false; repeat: false;
-                    onTriggered: { alarmList.howManySelected=0 }
-                }
-            }
+                    isThereAlarm=dateAlarms.count>0 ||
+                                      everyDayAlarms.count>0
 
-            function equals(isSelected, listedAlarm) {
-                if(isSelected.everyDay!==listedAlarm.everyDay)
-                    return false
-
-                if(!listedAlarm.everyDay)
-                    return listedAlarm.date.getHours() ===
-                            isSelected.date.getHours() &&
-                           listedAlarm.date.getMinutes() ===
-                            isSelected.date.getMinutes() &&
-                           listedAlarm.date.getDate() ===
-                            isSelected.date.getDate() &&
-                           listedAlarm.date.getMonth() ===
-                            isSelected.date.getMonth() &&
-                           listedAlarm.date.getFullYear() ===
-                            isSelected.date.getFullYear()
-                else
-                    return listedAlarm.date.getHours() ===
-                            isSelected.date.getHours() &&
-                           listedAlarm.date.getMinutes() ===
-                            isSelected.date.getMinutes()
-            }
-        }
-
-        Item {
-            id: alarmSetDateGeneral
-
-            visible: view==="Set date"
-
-            AlarmSetDate {
-                id: alarmSetDate
-            }
-
-            SetButton {
-                buttonTxt: "SET DATE"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked:{
-                        alarmDate.buttonTxt=
-                                          alarmSetDate.newDate.getDate()+"/"+
-                                          alarmSetDate.newDate.getMonth()+"/"+
-                                          alarmSetDate.newDate.getFullYear()
-                        alarm.setDate=true
-                        parent.state= "active"
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextView="Alarm"
-                        transitionTimer.nextState="disable"
-                        transitionTimer.running=true
-                    }
+                    alarmList.howManySelected=0
                 }
             }
-        }
 
-        Timer {
-            id: alarmTimer
-
-            interval: 60000; running: true; repeat: true
-            onTriggered: {
-                var thisMoment= {
-                    date: new Date(),
-                    everyDay: true,
-                    isActive: true
-                }
-
-                for(var e=0;e<alarmList.everyDayAlarms.count;e++)
-                    if(alarmClockList.equals(thisMoment,
-                                             alarmList.everyDayAlarms.get(e))
-                            && alarmList.everyDayAlarms.get(e).isActive)
-                        alarmSound.play()
-
-                thisMoment.everyDay= false
-
-                for(var i=0;i<alarmList.dateAlarms.count;i++)
-                    if(alarmClockList.equals(thisMoment,
-                                             alarmList.dateAlarms.get(i))
-                            && alarmList.dateAlarms.get(i).isActive)
-                        alarmSound.play()
-            }
-        }
-
-        SoundEffect {
-            id: alarmSound
-            source: "/sounds/alarm.wav"
+            NoAlarmSign { visible: dateAlarms.count+everyDayAlarms.count==0 }
         }
     }
 
-    Item {//-------------------------------- view Timer
-        id: timer
+    Component {
+        id: viewTimerSet
 
-        anchors.centerIn: parent
+        ViewTimerSet {
 
-        visible: view==="Timer"
+            onClickTimer: {
+                stackViewMain.pop()
 
-        Item {//-------------------------------- timer set
-            id: timerSet
+                isThereTimer = true
 
-            anchors.centerIn: parent
+                timerTimeLeftHours=timerHoursValue
+                timerStartHours=timerHoursValue
 
-            visible: !root.isThereTimer
+                timerTimeLeftMinutes=timerMinutesValue
+                timerStartMinutes=timerMinutesValue
 
-            TimerSet {
-                id: timerHours
-
-                anchors.horizontalCenterOffset: -width/2-20
-
-                txt: "hours"
-            }
-
-            TimerSet {
-                id: timerMinutes
-
-                anchors.horizontalCenterOffset: width/2+20
-
-                txt: "mins"
-            }
-
-            Text {
-                text: ":"
-
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: timerHours.verticalCenter
-                anchors.verticalCenterOffset: timerHours.verticalOffset
-
-                font.pixelSize: 120
-                color: "#707070"
-            }
-
-            SetButton {
-                buttonTxt: "SET TIMER"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        parent.state="enabled"
-
-                        transitionTimer.thenChange=parent
-                        transitionTimer.nextState="disable"
-                        transitionTimer.nextView="Timer"
-                        transitionTimer.running=true
-
-                        setTimerTimer.running=true
-                    }
-                }
-            }
-
-            Timer {
-                id: setTimerTimer
-
-                interval: 300; running: false; repeat: false;
-                onTriggered: {
-                    timerCD.timeLeftHours=timerHours.value
-                    timerCD.timeLeftMinutes=timerMinutes.value
-                    timerCD.timeLeftSeconds=0
-
-                    timerCD.timerEnd=false
-                }
-            }
-        }
-
-        Item {//-------------------------------- timer CD
-            id: timerCountDown
-
-            anchors.centerIn: parent
-
-            visible: root.isThereTimer
-
-            TimerCD {
-                id: timerCD
-
-                isThereTimer: root.isThereTimer
-            }
-
-            Image {
-                property string clickState: "active"
-
-                source: timerCD.isRunning ? "/assets/btn-pause-"+clickState
-                                  : "/assets/btn-play-"+clickState
-
-                anchors.centerIn: parent
-                anchors.verticalCenterOffset: 250
-                anchors.horizontalCenterOffset: 100
-
-                MouseArea {
-                    anchors.fill: parent
-
-                    onClicked: {
-                        parent.clickState="hover"
-
-                        timerTransitionTimer.thenChange=parent
-                        timerTransitionTimer.running= true
-
-                        timerCD.isRunning= !timerCD.isRunning
-                    }
-                }
-            }
-
-            Image {
-                property string clickState: "active"
-
-                source: "/assets/btn-reload-"+clickState
-
-                anchors.centerIn: parent
-                anchors.verticalCenterOffset: 250
-                anchors.horizontalCenterOffset: -100
-
-                MouseArea {
-                    anchors.fill: parent
-
-                    onClicked: {
-                        parent.clickState="hover"
-
-                        timerTransitionTimer.thenChange=parent
-                        timerTransitionTimer.running= true
-
-                        timerCD.timeLeftHours=timerHours.value
-                        timerCD.timeLeftMinutes=timerMinutes.value
-                        timerCD.timeLeftSeconds=0
-                    }
-                }
-            }
-
-            Timer {
-                id: timerTransitionTimer
-
-                property var thenChange
-
-                interval: 300; running: false; repeat: false
-
-                onTriggered: {
-                    thenChange.clickState="active"
-                }
+                timerTimeLeftSeconds=0
             }
         }
     }
+
+    Component {
+        id: viewTimerCD
+
+        ViewTimerCD {
+            onClickPause: isTimerRunning= !isTimerRunning
+
+            onClickReset: {
+                timerTimeLeftHours=timerStartHours
+                timerTimeLeftMinutes=timerStartMinutes
+                timerTimeLeftSeconds=0
+            }
+        }
+    }
+
+    Timer {
+        id: alarmTimer
+
+        interval: 60000; running: isThereAlarm; repeat: isThereAlarm
+        onTriggered: {
+            var now = new Date()
+
+            for(var e=0;e<everyDayAlarms.count;e++){
+                var alarmE = everyDayAlarms.get(e).date
+                if(now.getMinutes()===alarmE.getMinutes()
+                 &&now.getHours()  ===alarmE.getHours())
+                    alarmSound.play()
+            }
+
+            for(var i=0;i<dateAlarms.count;i++){
+                var alarmD = dateAlarms.get(i).date
+                if(now.getMinutes() ===alarmD.getMinutes()
+                 &&now.getHours()   ===alarmD.getHours()
+                 &&now.getDate()    ===alarmD.getDate()
+                 &&now.getMonth()   ===alarmD.getMonth()
+                 &&now.getFullYear()===alarmD.getFullYear())
+                    alarmSound.play()
+            }
+        }
+    }
+
+    Timer {
+        interval: 1000; running: isThereTimer && isTimerRunning;
+                        repeat: isThereTimer && isTimerRunning
+        onTriggered: {
+            if(timerTimeLeftSeconds <1){
+
+                if(timerTimeLeftMinutes < 1)
+
+                    if(timerTimeLeftHours < 1){
+                        isThereTimer=false
+                        timerSound.play()
+                    } else {
+                        timerTimeLeftHours--
+                        timerTimeLeftMinutes=59
+                        timerTimeLeftSeconds=59
+                    }
+                else {
+                    timerTimeLeftMinutes--
+                    timerTimeLeftSeconds=59
+                }
+
+            } else
+                timerTimeLeftSeconds--
+        }
+    }
+
+    SoundEffect { id: alarmSound
+        source: "/sounds/alarm.wav"
+    }
+
+    SoundEffect { id: timerSound
+        source: "/sounds/timer.wav"
+   }
 }

@@ -1,29 +1,53 @@
 import QtQuick
+import QtQuick.Controls 2.0
 
 Item {
-    AnalogClock {// orologio analogico
-        id: ac
+    id: root
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                ac.visible=false
-                dc.visible=true
+    anchors.fill: parent
+
+    property var currentDate: new Date()
+
+    StackView {
+        id: stackViewClock
+
+        initialItem: ac
+
+        anchors.centerIn: parent
+        width: 444
+        height: 390
+    }
+
+    Component {
+        id: ac;
+
+        AnalogClock {
+            currentDate: root.currentDate
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: stackViewClock.push(dc)
             }
         }
     }
 
-    DigitalClock {// orologio digitale
-        id: dc
+    Component {
+        id: dc;
 
-        visible: false
+        DigitalClock {
+            currentDate: root.currentDate
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                dc.visible=false
-                ac.visible=true
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: stackViewClock.pop()
             }
         }
+    }
+
+    Timer { //l'ora si aggiorna ogni 0.5 secondi
+        interval: 500; running: true; repeat: true
+        onTriggered: { currentDate=new Date() }
     }
 }
