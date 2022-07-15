@@ -44,8 +44,10 @@ Rectangle {
 
         SetArrow {
             direction: true
+            isHover: upArrow.containsPress
 
             MouseArea {
+                id: upArrow
                 anchors.fill: parent
                 onClicked:
                     { root.value = (root.value+1)%60 }
@@ -53,8 +55,10 @@ Rectangle {
         }
         SetArrow {
             direction: false
+            isHover: downArrow.containsPress
 
             MouseArea {
+                id: downArrow
                 anchors.fill: parent
                 onClicked:
                     { root.value = (root.value === 0) ? 59 : root.value-1 }

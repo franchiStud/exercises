@@ -106,8 +106,6 @@ Window {
     Component {
         id: viewAlarmSet
         ViewAlarmSet {
-            buttonDateValue: window.buttonDateValue
-
             onClickSet: {
                 activeAlarms++;
                 stackViewMain.pop()
@@ -205,9 +203,11 @@ Window {
             onClickPause: isTimerRunning= !isTimerRunning
 
             onClickReset: {
+                isTimerRunning=false
                 timerTimeLeftHours=timerStartHours
                 timerTimeLeftMinutes=timerStartMinutes
                 timerTimeLeftSeconds=0
+                isTimerRunning=true
             }
         }
     }
