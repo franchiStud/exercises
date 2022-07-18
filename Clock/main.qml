@@ -5,10 +5,6 @@ import QtQuick.Controls
 Window {
     id: window
 
-    property bool isThereAlarm: false
-    property int activeAlarms: 0
-    property bool isThereTimer: false
-
     property int buttonY: window.height/2*0.725
     property int buttonHeight: window.height*0.08
 
@@ -23,14 +19,12 @@ Window {
                                     return d
                                  }
 
-    property int timerStartHours: 0
-    property int timerStartMinutes: 0
+//    property int timerStartHours: 0
+//    property int timerStartMinutes: 0
 
-    property int timerTimeLeftHours: 0
-    property int timerTimeLeftMinutes: 0
-    property int timerTimeLeftSeconds: 0
-
-    property bool isTimerRunning: true
+//    property int timerTimeLeftHours: 0
+//    property int timerTimeLeftMinutes: 0
+//    property int timerTimeLeftSeconds: 0
 
     width: 480
     height: 800
@@ -45,7 +39,7 @@ Window {
         anchors.verticalCenter: stackViewMain.top
         anchors.verticalCenterOffset: height*0.75
 
-        stackView: stackViewMain
+        onClick: stackViewMain.pop()
     }
 
     StackView {
@@ -63,53 +57,18 @@ Window {
 
             onClickAlarm: stackViewMain.push(viewAlarmSet)
 
-            onClickTimer: stackViewMain.push(isThereTimer
+            onClickTimer: stackViewMain.push(controls.isThereTimer
                                              ? viewTimerCD
                                              : viewTimerSet)
-            Image {
-                source: activeAlarms>0
-                        ? "/assets/alarm-on-feedback.svg"
-                        : "/assets/alarm-off-feedback.svg"
 
-
-                anchors.centerIn: parent
-                anchors.verticalCenterOffset: -340
-                anchors.horizontalCenterOffset: 180
-
-                visible: isThereAlarm
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: stackViewMain.push(viewAlarmList)
-                }
-            }
-
-            Image {
-                source: "/assets/timer.svg"
-
-                anchors.centerIn: parent
-                anchors.verticalCenterOffset: -340
-
-                anchors.horizontalCenterOffset: 180 - (isThereAlarm
-                                                       ? 50
-                                                       : 0)
-                visible: isThereTimer
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: stackViewMain.push(viewTimerCD)
-                }
-            }
+            onClickAlarmList: stackViewMain.push(viewAlarmList)
         }
     }
 
     Component {
         id: viewAlarmSet
         ViewAlarmSet {
-            onClickSet: {
-                activeAlarms++;
-                stackViewMain.pop()
-            }
+            onClickSet: stackViewMain.pop()
             onClickDateSet: stackViewMain.push(viewAlarmDateSet)
         }
     }
@@ -143,8 +102,11 @@ Window {
                             if(now.getMinutes()===alarmE.getMinutes()
                              &&now.getHours()  ===alarmE.getHours()
                              &&alarmList.isSelected[a].everyDay){
+
                                 everyDayAlarms.remove(e--, 1);
-                                if(--alarmList.isSelected.length==0)
+                                controls.activeAlarms--;
+
+                                if(alarmList.isSelected.length==0)
                                     break;
                             }
                         }
@@ -157,14 +119,17 @@ Window {
                              &&now.getMonth()   ===alarmD.getMonth()
                              &&now.getFullYear()===alarmD.getFullYear()
                              &&!alarmList.isSelected[a].everyDay){
+
                                 dateAlarms.remove(i--, 1)
-                                if(--alarmList.isSelected.length==0)
+                                controls.activeAlarms--;
+
+                                if(alarmList.isSelected.length==0)
                                     break;
                             }
                         }
                     }
 
-                    isThereAlarm=dateAlarms.count>0 ||
+                    controls.isThereAlarm=dateAlarms.count>0 ||
                                       everyDayAlarms.count>0
 
                     alarmList.howManySelected=0
@@ -179,19 +144,8 @@ Window {
         id: viewTimerSet
 
         ViewTimerSet {
-
-            onClickTimer: {
+            onClick: {
                 stackViewMain.pop()
-
-                isThereTimer = true
-
-                timerTimeLeftHours=timerHoursValue
-                timerStartHours=timerHoursValue
-
-                timerTimeLeftMinutes=timerMinutesValue
-                timerStartMinutes=timerMinutesValue
-
-                timerTimeLeftSeconds=0
             }
         }
     }
@@ -199,23 +153,14 @@ Window {
     Component {
         id: viewTimerCD
 
-        ViewTimerCD {
-            onClickPause: isTimerRunning= !isTimerRunning
-
-            onClickReset: {
-                isTimerRunning=false
-                timerTimeLeftHours=timerStartHours
-                timerTimeLeftMinutes=timerStartMinutes
-                timerTimeLeftSeconds=0
-                isTimerRunning=true
-            }
-        }
+        ViewTimerCD {}
     }
 
     Timer {
         id: alarmTimer
 
-        interval: 60000; running: isThereAlarm; repeat: isThereAlarm
+        interval: 60000; running: controls.isThereAlarm && controls.activeAlarms>0
+                         repeat:  controls.isThereAlarm && controls.activeAlarms>0
         onTriggered: {
             var now = new Date()
 
@@ -239,35 +184,19 @@ Window {
     }
 
     Timer {
-        interval: 1000; running: isThereTimer && isTimerRunning;
-                        repeat: isThereTimer && isTimerRunning
-        onTriggered: {
-            if(timerTimeLeftSeconds <1){
+        interval: 1000; running: controls.isThereTimer && controls.isTimerRunning
+                        repeat:  controls.isThereTimer && controls.isTimerRunning
+        onTriggered:
+            if (timerValues.drainTime()){
+                timerSound.play()
+                controls.isThereTimer=false
+            }
 
-                if(timerTimeLeftMinutes < 1)
-
-                    if(timerTimeLeftHours < 1){
-                        isThereTimer=false
-                        timerSound.play()
-                    } else {
-                        timerTimeLeftHours--
-                        timerTimeLeftMinutes=59
-                        timerTimeLeftSeconds=59
-                    }
-                else {
-                    timerTimeLeftMinutes--
-                    timerTimeLeftSeconds=59
-                }
-
-            } else
-                timerTimeLeftSeconds--
-        }
     }
 
     SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }
-
     SoundEffect { id: timerSound
         source: "/sounds/timer.wav"
    }

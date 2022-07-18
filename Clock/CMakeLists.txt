@@ -9,6 +9,10 @@ find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(appClock
     main.cpp
+
+    boolcontrols.h boolcontrols.cpp
+
+    timervalues.h  timervalues.cpp
 )
 
 qt_add_qml_module(appClock

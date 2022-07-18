@@ -33,7 +33,7 @@ Component {
                 anchors.fill:parent
                 onClicked: {
                     isActive=!isActive
-                    isActive ? activeAlarms++ : activeAlarms--
+                    isActive ? controls.activeAlarms++ : controls.activeAlarms--
                 }
             }
         }

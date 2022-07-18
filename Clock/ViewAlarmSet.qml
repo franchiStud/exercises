@@ -85,12 +85,13 @@ Item {
                     "everyDay": false,
                     "isActive": true,
                     })
-            isThereAlarm=true
+            controls.isThereAlarm=true
 
             buttonDateValue.setHours(6)
             buttonDateValue.setMinutes(0)
 
             clickSet()
+            controls.activeAlarms++;
         }
     }
 }
