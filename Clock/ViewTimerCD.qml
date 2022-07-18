@@ -16,7 +16,7 @@ Item {
     Image {
         property bool clicked
 
-        source: controls.isTimerRunning
+        source: timerValues.isTimerRunning
                 ? (mouseAreaP.containsPress ? "/assets/btn-pause-hover"
                                             : "/assets/btn-pause-active")
                 : (mouseAreaP.containsPress ? "/assets/btn-play-hover"
@@ -32,7 +32,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                onClicked: controls.isTimerRunning=!controls.isTimerRunning
+                timerValues.pause()
             }
         }
     }
@@ -52,11 +52,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                controls.isTimerRunning=false
-                timerValues.leftHours=timerValues.startHours
-                timerValues.leftMinutes=timerValues.startMinutes
-                timerValues.leftSeconds=0
-                controls.isTimerRunning=true
+                timerValues.reset()
             }
         }
     }

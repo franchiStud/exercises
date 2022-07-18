@@ -79,4 +79,3 @@ Image {
         anchors.verticalCenterOffset: -10
     }
 }
-

@@ -46,16 +46,10 @@ Item {
         buttonTxt: "SET TIMER"
 
         onClick: {
-            controls.isThereTimer=true;
-
-
-            timerValues.leftHours=timerHoursValue
+            timerValues.isThereTimer=true;
             timerValues.startHours=timerHoursValue
-
-            timerValues.leftMinutes=timerMinutesValue
             timerValues.startMinutes=timerMinutesValue
-
-            timerValues.leftSeconds=0
+            timerValues.start()
 
             timerSet.click()
         }

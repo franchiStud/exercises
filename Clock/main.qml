@@ -18,14 +18,6 @@ Window {
                                     d.setHours(6)
                                     return d
                                  }
-
-//    property int timerStartHours: 0
-//    property int timerStartMinutes: 0
-
-//    property int timerTimeLeftHours: 0
-//    property int timerTimeLeftMinutes: 0
-//    property int timerTimeLeftSeconds: 0
-
     width: 480
     height: 800
     visible: true
@@ -57,7 +49,7 @@ Window {
 
             onClickAlarm: stackViewMain.push(viewAlarmSet)
 
-            onClickTimer: stackViewMain.push(controls.isThereTimer
+            onClickTimer: stackViewMain.push(timerValues.isThereTimer
                                              ? viewTimerCD
                                              : viewTimerSet)
 
@@ -183,20 +175,21 @@ Window {
         }
     }
 
-    Timer {
-        interval: 1000; running: controls.isThereTimer && controls.isTimerRunning
-                        repeat:  controls.isThereTimer && controls.isTimerRunning
-        onTriggered:
-            if (timerValues.drainTime()){
-                timerSound.play()
-                controls.isThereTimer=false
-            }
+//    Timer {
+//        interval: 1000; running: controls.isThereTimer && controls.isTimerRunning
+//                        repeat:  controls.isThereTimer && controls.isTimerRunning
+//        onTriggered:
+//            if (timerValues.drainTime()){
+//                timerSound.play()
+//                controls.isThereTimer=false
+//            }
 
-    }
+//    }
 
     SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }
+
     SoundEffect { id: timerSound
         source: "/sounds/timer.wav"
    }

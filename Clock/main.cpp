@@ -9,13 +9,13 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    QQmlContext * context = engine.rootContext();
-
     BoolControls controls;
     TimerValues timerValues;
 
-    context->setContextProperty("controls", &controls);
+    QQmlApplicationEngine engine;
+    QQmlContext * context = engine.rootContext();
+
+    context->setContextProperty("controls",&controls);
     context->setContextProperty("timerValues",&timerValues);
 
     const QUrl url(u"qrc:/Clock/main.qml"_qs);

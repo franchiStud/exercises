@@ -62,7 +62,7 @@ Item {
         anchors.horizontalCenterOffset: 180 - (controls.isThereAlarm
                                                ? 50
                                                : 0)
-        visible: controls.isThereTimer
+        visible: timerValues.isThereTimer
 
         MouseArea {
             anchors.fill: parent

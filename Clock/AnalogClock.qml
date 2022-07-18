@@ -66,7 +66,4 @@ Item {
             anchors.centerIn: parent
         }
     }
-
-
 }
-
