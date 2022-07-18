@@ -3,7 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property bool alarmSet: false
     property var currentDate
 
     width: clockDial.width

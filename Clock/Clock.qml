@@ -4,9 +4,9 @@ import QtQuick.Controls 2.0
 Item {
     id: root
 
-    anchors.fill: parent
-
     property var currentDate: new Date()
+
+    anchors.fill: parent
 
     StackView {
         id: stackViewClock
@@ -23,7 +23,6 @@ Item {
 
         AnalogClock {
             currentDate: root.currentDate
-
             MouseArea {
                 anchors.fill: parent
 
@@ -37,7 +36,6 @@ Item {
 
         DigitalClock {
             currentDate: root.currentDate
-
             MouseArea {
                 anchors.fill: parent
 
@@ -46,8 +44,8 @@ Item {
         }
     }
 
-    Timer { //l'ora si aggiorna ogni 0.5 secondi
-        interval: 500; running: true; repeat: true
-        onTriggered: { currentDate=new Date() }
+    Timer {
+        interval: 500; running: true; repeat: true;
+        onTriggered: { currentDate=new Date(); }
     }
 }
