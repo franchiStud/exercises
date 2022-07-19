@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QSoundEffect>
+#include <QUrl>
 
 class TimerValues : public QObject
 {
@@ -31,7 +33,8 @@ private:
     bool isThereTimer=false;
     bool isTimerRunning=false;
 
-    QTimer *qTimer=new QTimer(this);;
+    QTimer *qTimer=new QTimer(this);
+    QSoundEffect *qSoundEffect=new QSoundEffect(this);
 
 signals:
     void onStartHoursChanged();

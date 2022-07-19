@@ -62,6 +62,9 @@ set_target_properties(appClock PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+find_package(Qt6 REQUIRED COMPONENTS Multimedia)
+target_link_libraries(appClock PRIVATE Qt6::Multimedia)
+
 target_compile_definitions(appClock
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(appClock

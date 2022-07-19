@@ -1,7 +1,15 @@
 #include "timervalues.h"
 
 TimerValues::TimerValues(QObject *parent)
-    : QObject{parent} {}
+    : QObject{parent} {
+    qTimer->setInterval(100);
+    qTimer->setSingleShot(false);
+    QObject::connect(qTimer, SIGNAL(timeout()), this, SLOT(drainTime()));
+
+    qSoundEffect->setSource(QUrl("qrc:/sounds/timer.wav"));
+    qSoundEffect->setMuted(false);
+    qSoundEffect->setLoopCount(0);
+}
 
 void TimerValues::drainTime() {
     if(leftSeconds <1) {
@@ -9,11 +17,15 @@ void TimerValues::drainTime() {
         if(leftMinutes < 1) {
 
             if(leftHours < 1) {
+                qSoundEffect->play();
+
                 isThereTimer=false;
                 isTimerRunning=false;
 
                 emit onIsThereTimerChanged();
                 emit onIsTimerRunningChanged();
+
+                qTimer->stop();
             } else {
                 leftHours--;
                 leftMinutes=59;
@@ -47,9 +59,6 @@ void TimerValues::start(){
     emit onLeftMinutesChanged();
     emit onLeftSecondsChanged();
 
-    qTimer->setInterval(1000);
-    qTimer->setSingleShot(false);
-    QObject::connect(qTimer, SIGNAL(timeout()), this, SLOT(drainTime()));
     qTimer->start();
 
     isThereTimer=true;
