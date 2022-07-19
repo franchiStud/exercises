@@ -175,17 +175,6 @@ Window {
         }
     }
 
-//    Timer {
-//        interval: 1000; running: controls.isThereTimer && controls.isTimerRunning
-//                        repeat:  controls.isThereTimer && controls.isTimerRunning
-//        onTriggered:
-//            if (timerValues.drainTime()){
-//                timerSound.play()
-//                controls.isThereTimer=false
-//            }
-
-//    }
-
     SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }

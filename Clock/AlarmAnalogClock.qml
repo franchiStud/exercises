@@ -2,8 +2,6 @@ import QtQuick
 
 Image {
     id: root
-
-    property date currentDate: new Date()
     property var buttonDateValue
 
     source: "/assets/comp-clock-dial-setting-alarm-mode.svg"
@@ -18,7 +16,7 @@ Image {
         anchors.verticalCenterOffset: -sourceSize.height/2
 
         transformOrigin: Item.Bottom
-        rotation: currentDate.getMinutes()*6
+        rotation: Qt.formatDateTime(currentDate.date, "m")*6
 
         Behavior on rotation {
             NumberAnimation{ duration: 200 }
@@ -35,11 +33,11 @@ Image {
         anchors.horizontalCenterOffset: sourceSize.width/2
 
         transformOrigin: Item.Left
-        rotation: (currentDate.getHours()>12 ?
-                      currentDate.getHours()-12 :
-                      currentDate.getHours())
+        rotation: Qt.formatDateTime(currentDate.date, "h")>12 ?
+                      Qt.formatDateTime(currentDate.date, "h")-12 :
+                      Qt.formatDateTime(currentDate.date, "h")
                  *30
-                 +30*(currentDate.getMinutes()/60)
+                 +30*(Qt.formatDateTime(currentDate.date, "m")/60)
                  -90
 
         Behavior on rotation {

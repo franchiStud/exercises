@@ -1,10 +1,7 @@
-
 import QtQuick
 
 Item {
     id: root
-
-    property var currentDate
 
     width: clockDial.width
     height: clockDial.height
@@ -27,13 +24,9 @@ Item {
         }
 
         Text {
-            text: (currentDate.getHours()>12 ?
-                      currentDate.getHours()-12 :
-                      currentDate.getHours())
-                  +":"
-                  +(currentDate.getMinutes()<10 ?
-                       "0" : "")
-                  +currentDate.getMinutes()
+            text: Qt.formatDateTime(currentDate.date, "h")>12
+                     ? Qt.formatDateTime(currentDate.date, "hh:mm AP").replace("PM","")
+                     : Qt.formatDateTime(currentDate.date, "hh:mm AP").replace("AM","")
 
             anchors.centerIn: parent
 
@@ -42,7 +35,7 @@ Item {
         }
 
         Text{
-            text: currentDate.getHours()>12 ? "PM" : "AM"
+            text: Qt.formatDateTime(currentDate.date, "h")>12 ? "PM" : "AM"
 
             anchors.horizontalCenter: clockDial.horizontalCenter
             y:292

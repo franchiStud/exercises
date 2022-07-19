@@ -3,7 +3,7 @@
 TimerValues::TimerValues(QObject *parent)
     : QObject{parent} {}
 
-bool TimerValues::drainTime() {
+void TimerValues::drainTime() {
     if(leftSeconds <1) {
 
         if(leftMinutes < 1) {
@@ -14,8 +14,6 @@ bool TimerValues::drainTime() {
 
                 emit onIsThereTimerChanged();
                 emit onIsTimerRunningChanged();
-
-                return true;
             } else {
                 leftHours--;
                 leftMinutes=59;
@@ -38,7 +36,6 @@ bool TimerValues::drainTime() {
 
         emit onLeftSecondsChanged();
     }
-    return false;
 }
 
 void TimerValues::start(){

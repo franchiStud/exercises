@@ -45,7 +45,7 @@ signals:
     void onIsTimerRunningChanged();
 
 public slots:
-    bool drainTime();
+    void drainTime();
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void pause();

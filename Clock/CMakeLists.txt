@@ -12,6 +12,7 @@ qt_add_executable(appClock
 
     boolcontrols.h boolcontrols.cpp
     timervalues.h  timervalues.cpp
+    date.h         date.cpp
 )
 
 qt_add_qml_module(appClock
