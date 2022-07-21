@@ -10,15 +10,15 @@ class TimerValues : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int startHours   MEMBER startHours   NOTIFY onStartHoursChanged)
-    Q_PROPERTY(int startMinutes MEMBER startMinutes NOTIFY onStartMinutesChanged)
+    Q_PROPERTY(int startHours    READ getStartHours    NOTIFY onStartHoursChanged)
+    Q_PROPERTY(int startMinutes  READ getStartMinutes  NOTIFY onStartMinutesChanged)
 
-    Q_PROPERTY(int leftHours    MEMBER leftHours    NOTIFY onLeftHoursChanged)
-    Q_PROPERTY(int leftMinutes  MEMBER leftMinutes  NOTIFY onLeftMinutesChanged)
-    Q_PROPERTY(int leftSeconds  MEMBER leftSeconds  NOTIFY onLeftSecondsChanged)
+    Q_PROPERTY(int leftHours    READ getLeftHours    NOTIFY onLeftHoursChanged)
+    Q_PROPERTY(int leftMinutes  READ getLeftMinutes  NOTIFY onLeftMinutesChanged)
+    Q_PROPERTY(int leftSeconds  READ getLeftSeconds  NOTIFY onLeftSecondsChanged)
 
-    Q_PROPERTY(bool isThereTimer   MEMBER isThereTimer   NOTIFY onIsThereTimerChanged)
-    Q_PROPERTY(bool isTimerRunning MEMBER isTimerRunning NOTIFY onIsTimerRunningChanged)
+    Q_PROPERTY(bool isThereTimer   READ getIsThereTimer   NOTIFY onIsThereTimerChanged)
+    Q_PROPERTY(bool isTimerRunning READ getIsTimerRunning NOTIFY onIsTimerRunningChanged)
 public:
     explicit TimerValues(QObject *parent=nullptr);
 
@@ -32,6 +32,18 @@ private:
 
     bool isThereTimer=false;
     bool isTimerRunning=false;
+
+    void setStartHours(int startHours);
+    void setStartMinutes(int startMinutes);
+
+    void setIsThereTimer(bool isThereTimer);
+    void setIsTimerRunning(bool isTimerRunning);
+
+    bool drainSeconds();
+    bool drainMinutes();
+    bool drainHours();
+
+    void resetTimeLeft();
 
     QTimer *qTimer=new QTimer(this);
     QSoundEffect *qSoundEffect=new QSoundEffect(this);
@@ -47,12 +59,20 @@ signals:
     void onIsThereTimerChanged();
     void onIsTimerRunningChanged();
 
-public slots:
+private slots:
     void drainTime();
-
-    Q_INVOKABLE void start();
+public slots:
+    Q_INVOKABLE void start(int startHours, int startMinutes);
     Q_INVOKABLE void pause();
     Q_INVOKABLE void reset();
+
+    bool getIsThereTimer();
+    bool getIsTimerRunning();
+    int getStartHours();
+    int getStartMinutes();
+    int getLeftHours();
+    int getLeftMinutes();
+    int getLeftSeconds();
 };
 
 #endif // TIMERVALUES_H

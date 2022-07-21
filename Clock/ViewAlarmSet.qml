@@ -41,9 +41,11 @@ Item {
                 ? "disabled"
                 : "selected"
 
-        buttonTxt: alarmDateSet.hasDateBeenSet
-                    ? Qt.formatDateTime(alarmDateSet.date,"dd/MM/yyyy")
-                    : "Set date"
+        buttonTxt: buttonDateSet
+                    ? buttonDateValue.getDate()+"/"+
+                     (buttonDateValue.getMonth()+1)+"/"+
+                      buttonDateValue.getFullYear()
+                     : "Set date"
 
         MouseArea {
             anchors.fill: parent
@@ -58,6 +60,9 @@ Item {
 
     AlarmSetHour {
         id: alarmSetHour
+
+        buttonHourValue: buttonDateValue
+        onHourChanged: buttonDateValue=buttonHourValue
     }
 
     SetButton {// set date
@@ -66,26 +71,26 @@ Item {
         buttonTxt: "SET ALARM"
 
         onClick: {
-            if(!alarm.everyDay&&!alarmDateSet.hasDateBeenSet) return
+            if(!alarm.everyDay&&!buttonDateSet) return
 
             if(alarm.everyDay)
                 everyDayAlarms.append({
-                    "date": alarmDateSet.date,
+                    "date": buttonDateValue,
                     "everyDay": true,
                     "isActive": true
                 })
             else
                 dateAlarms.append({
-                    "date": alarmDateSet.date,
+                    "date": buttonDateValue,
                     "everyDay": false,
                     "isActive": true,
                     })
-            controls.isThereAlarm=true
+            alarms.newAlarm();
 
-            alarmDateSet.assign(6,0)
+            buttonDateValue.setHours(6)
+            buttonDateValue.setMinutes(0)
 
             clickSet()
-            controls.activeAlarms++;
         }
     }
 }

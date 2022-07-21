@@ -15,15 +15,4 @@ void Date::refresh(){
     emit onDateChanged();
 }
 
-void Date::assign(int h, int m){
-    date.setTime(QTime::fromMSecsSinceStartOfDay(h*3600000+m*60000));
-    emit onDateChanged();
-}
-
-void Date::addDays(int d){
-    date=date.addDays(d);
-    hasDateBeenSet=true;
-
-    emit onHasDateBeenSetChanged();
-    emit onDateChanged();
-}
+QDateTime Date::getDate() { return date; }

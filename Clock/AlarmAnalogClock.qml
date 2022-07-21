@@ -55,10 +55,15 @@ Image {
         anchors.verticalCenterOffset: -sourceSize.height/2
 
         transformOrigin: Item.Bottom
-        rotation: (Qt.formatDateTime(alarmDateSet.date,"h")>12
-                        ? Qt.formatDateTime(alarmDateSet.date,"h")-12
-                        : Qt.formatDateTime(alarmDateSet.date,"h"))*30
-                  + (Qt.formatDateTime(alarmDateSet.date,"m")/60)*30
+        rotation: (buttonDateValue.getHours()>12
+                        ? buttonDateValue.getHours()-12
+                        : buttonDateValue.getHours())*30
+                  + (buttonDateValue.getMinutes()/60)*30
+    }
+
+    Timer { //hour refreshes every 0.5 secs
+        interval: 500; running: true; repeat: true;
+        onTriggered: { currentDate=new Date(); }
     }
 
 

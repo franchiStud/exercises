@@ -8,23 +8,21 @@
 class Date : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QDateTime date MEMBER date NOTIFY onDateChanged)
-    Q_PROPERTY(bool hasDateBeenSet MEMBER hasDateBeenSet NOTIFY onHasDateBeenSetChanged)
+    Q_PROPERTY(QDateTime date READ getDate NOTIFY onDateChanged)
 public:
     explicit Date(QObject *parent = nullptr, bool isActive=true);
 
 private:
     QDateTime date = QDateTime::currentDateTime();
-    QTimer *qTimer = new QTimer();
+    QTimer *qTimer = new QTimer(this);
 
-    bool hasDateBeenSet = false;
 signals:
     void onDateChanged();
-    void onHasDateBeenSetChanged();
-public slots:
+
+private slots:
     void refresh();
-    void assign(int h, int m);
-    void addDays(int d);
+public slots:
+    QDateTime getDate();
 };
 
 #endif // DATE_H

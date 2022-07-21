@@ -3,10 +3,16 @@ import QtQuick
 Item {
     id: root
 
+    property var buttonHourValue
+    signal hourChanged
+
     anchors.centerIn: parent
 
     AlarmAnalogClock {
         id: analogClock
+
+        buttonDateValue: root.buttonHourValue
+        onButtonDateValueChanged: root.buttonHourValue=buttonDateValue
 
         anchors.centerIn: parent
     }
@@ -43,7 +49,7 @@ Item {
         y: slider.y+12
 
         onXChanged: {
-            var h=0,m=0;
+            var hourSetApp=buttonHourValue
 
             if(dragArea.drag.maximumX<cursor.x) return
 
@@ -53,25 +59,31 @@ Item {
 
             var posM=(cursor.x-dragArea.drag.minimumX)%hourWidth
 
-            h=Math.round(5.5+(cursor.x-dragArea.drag.minimumX)
-                        / hourWidth)%24
+            hourSetApp.setHours(Math.round(
+                        5.5+(cursor.x-dragArea.drag.minimumX)
+                        / hourWidth)%24)
 
 
             if(posM<=(tenMinutesWidth*1))
-                m=0
+                hourSetApp.setMinutes(0)
             else if(posM<=(tenMinutesWidth*2))
-                m=10
+                hourSetApp.setMinutes(10)
             else if(posM<=(tenMinutesWidth*3))
-                m=20
+                hourSetApp.setMinutes(20)
             else if(posM<=(tenMinutesWidth*4))
-                m=30
+                hourSetApp.setMinutes(30)
             else if(posM<=(tenMinutesWidth*5))
-                m=40
+                hourSetApp.setMinutes(40)
             else
-                m=50
-            alarmDateSet.assign(h,m);
+                hourSetApp.setMinutes(50)
 
-            txt.text=Qt.formatDateTime(alarmDateSet.date,("hh:mm"))
+            buttonHourValue=hourSetApp
+            txt.text=buttonHourValue.getHours()+
+                    ":"+
+                    ((buttonHourValue.getMinutes() < 10)
+                            ? "00"
+                            : buttonHourValue.getMinutes())
+            root.hourChanged()
         }
     }
 

@@ -11,8 +11,13 @@ Window {
     property var everyDayAlarms: ListModel {}
     property var dateAlarms: ListModel {}
 
-    //property bool buttonDateSet: false
-
+    property bool buttonDateSet: false
+    property var buttonDateValue: {
+                                    var d=new Date()
+                                    d.setMinutes(0)
+                                    d.setHours(6)
+                                    return d
+                                 }
     width: 480
     height: 800
     visible: true
@@ -64,6 +69,7 @@ Window {
         id: viewAlarmDateSet
         ViewAlarmDateSet {
             onClick: {
+                buttonDateSet=true
                 stackViewMain.pop()
             }
         }
@@ -90,7 +96,7 @@ Window {
                              &&alarmList.isSelected[a].everyDay){
 
                                 everyDayAlarms.remove(e--, 1);
-                                controls.activeAlarms--;
+                                alarms.activeAlarms--;
 
                                 if(alarmList.isSelected.length==0)
                                     break;
@@ -107,7 +113,7 @@ Window {
                              &&!alarmList.isSelected[a].everyDay){
 
                                 dateAlarms.remove(i--, 1)
-                                controls.activeAlarms--;
+                                alarms.activeAlarms--;
 
                                 if(alarmList.isSelected.length==0)
                                     break;
@@ -115,7 +121,8 @@ Window {
                         }
                     }
 
-                    controls.isThereAlarm=dateAlarms.count+everyDayAlarms.count>0
+                    alarms.isThereAlarm=dateAlarms.count>0 ||
+                                      everyDayAlarms.count>0
 
                     alarmList.howManySelected=0
                 }
@@ -144,10 +151,10 @@ Window {
     Timer {
         id: alarmTimer
 
-        interval: 6000; running: controls.isThereAlarm && controls.activeAlarms>0
-                         repeat:  controls.isThereAlarm && controls.activeAlarms>0
+        interval: 60000; running: alarms.isThereAlarm && alarms.activeAlarms>0
+                         repeat:  alarms.isThereAlarm && alarms.activeAlarms>0
         onTriggered: {
-            var now = currentDate.date
+            var now = new Date()
 
             for(var e=0;e<everyDayAlarms.count;e++){
                 var alarmE = everyDayAlarms.get(e).date
@@ -171,4 +178,8 @@ Window {
     SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }
+
+    SoundEffect { id: timerSound
+        source: "/sounds/timer.wav"
+   }
 }

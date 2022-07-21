@@ -38,7 +38,7 @@ Item {
     }
 
     Image {
-        source: controls.activeAlarms>0
+        source: alarms.activeAlarms>0
                 ? "/assets/alarm-on-feedback.svg"
                 : "/assets/alarm-off-feedback.svg"
 
@@ -46,7 +46,7 @@ Item {
         anchors.verticalCenterOffset: -340
         anchors.horizontalCenterOffset: 180
 
-        visible: controls.isThereAlarm
+        visible: alarms.isThereAlarm
 
         MouseArea {
             anchors.fill: parent
@@ -59,7 +59,7 @@ Item {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -340
 
-        anchors.horizontalCenterOffset: 180 - (controls.isThereAlarm
+        anchors.horizontalCenterOffset: 180 - (alarms.isThereAlarm
                                                ? 50
                                                : 0)
         visible: timerValues.isThereTimer
