@@ -143,20 +143,15 @@ Window {
         interval: 60000; running: alarms.isThereAlarm && alarms.activeAlarms>0
                          repeat:  alarms.isThereAlarm && alarms.activeAlarms>0
         onTriggered: {
-            for(var e=0;e<everyDayAlarms.count;e++){
-                var alarmE = everyDayAlarms.get(e).date
-                if(alarms.check(alarmE, currentDate.date, true))
-                    alarmSound.play()
-            }
-            for(var i=0;i<dateAlarms.count;i++){
-                var alarmD = dateAlarms.get(i).date
-                if(alarms.check(alarmE, currentDate.date, false))
-                    alarmSound.play()
-            }
-        }
-    }
+            for(var e=0;e<everyDayAlarms.count;e++)
+                if(alarms.check(everyDayAlarms.get(e).date,
+                                currentDate.date, true))
+                    alarms.playSound()
 
-    SoundEffect { id: alarmSound
-        source: "/sounds/alarm.wav"
+            for(var i=0;i<dateAlarms.count;i++)
+                if(alarms.check(dateAlarms.get(i).date,
+                                currentDate.date, false))
+                    alarms.playSound()
+        }
     }
 }

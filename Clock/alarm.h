@@ -1,8 +1,10 @@
 #ifndef BOOLCONTROLS_H
 #define BOOLCONTROLS_H
 
+#include "qsoundeffect.h"
 #include <QObject>
 #include <QDateTime>
+#include <QSoundEffect>
 
 class Alarm : public QObject
 {
@@ -22,6 +24,8 @@ private:
 
     bool isThereAlarm=false;
     int activeAlarms=0;
+
+    QSoundEffect * qSoundEffect = new QSoundEffect(this);
 signals:
     void onDateChanged();
     void onDateSetChanged();
@@ -39,6 +43,8 @@ public slots:
     Q_INVOKABLE QDateTime assignDate();
 
     Q_INVOKABLE bool check(QDateTime d1, QDateTime d2, bool everyDay);
+
+    Q_INVOKABLE void playSound();
 };
 
 #endif

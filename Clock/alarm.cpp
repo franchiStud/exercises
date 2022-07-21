@@ -2,7 +2,12 @@
 
 Alarm::Alarm(QObject *parent)
     : QObject{parent} {
-    date=QDateTime::currentDateTime();
+    date.setDate(QDate::currentDate());
+    dateSetTime(6,0);
+
+    qSoundEffect->setSource(QUrl("qrc:/sounds/alarm.wav"));
+    qSoundEffect->setMuted(false);
+    qSoundEffect->setLoopCount(0);
 }
 
 void Alarm::newAlarm(){
@@ -33,5 +38,10 @@ QDateTime Alarm::assignDate() { return date; }
 
 bool Alarm::check(QDateTime d1, QDateTime d2, bool everyDay){
     return ((everyDay&&d1.toString("h:m")==      d2.toString("h:m"))
-                     ||d1.toString("h:m d:M:y")==d2.toString("h:m d:M:y"));
+            ||d1.toString("h:m d:M:y")==d2.toString("h:m d:M:y"));
 }
+
+void Alarm::playSound(){
+    qSoundEffect->play();
+}
+
