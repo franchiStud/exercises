@@ -78,31 +78,33 @@ Window {
                 visible: alarmList.howManySelected>0
 
                 onClick: {
-                    for(var a=0;a<alarmList.isSelected.length;a++){
-                        var now=alarmList.isSelected[a].date;
-                        for(var e=0;e<everyDayAlarms.count;e++){
-                            var alarmE = everyDayAlarms.get(e).date
+                    var alarmsToDelete=alarmList.isSelected.length;
 
-                            if(alarms.check(alarmE, now, true)
+                    for(var a=0;a<alarmList.isSelected.length;a++){
+                        for(var e=0;e<everyDayAlarms.count;e++){
+
+                            if(alarms.check(everyDayAlarms.get(e).date,
+                                            alarmList.isSelected[a].date, true)
                              &&alarmList.isSelected[a].everyDay){
 
                                 everyDayAlarms.remove(e--, 1);
                                 alarms.activeAlarms--;
 
-                                if(alarmList.isSelected.length==0)
+                                if(--alarmsToDelete==0)
                                     break;
                             }
                         }
 
                         for(var i=0;i<dateAlarms.count;i++){
-                            var alarmD = dateAlarms.get(i).date
-                            if(alarms.check(alarmD, now, false)
+
+                            if(alarms.check(dateAlarms.get(i).date,
+                                            alarmList.isSelected[a].date, false)
                              &&!alarmList.isSelected[a].everyDay){
 
                                 dateAlarms.remove(i--, 1)
                                 alarms.activeAlarms--;
 
-                                if(alarmList.isSelected.length==0)
+                                if(--alarmsToDelete==0)
                                     break;
                             }
                         }
@@ -157,8 +159,4 @@ Window {
     SoundEffect { id: alarmSound
         source: "/sounds/alarm.wav"
     }
-
-    SoundEffect { id: timerSound
-        source: "/sounds/timer.wav"
-   }
 }

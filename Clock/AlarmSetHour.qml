@@ -3,9 +3,6 @@ import QtQuick
 Item {
     id: root
 
-    property var buttonHourValue
-    signal hourChanged
-
     anchors.centerIn: parent
 
     AlarmAnalogClock {

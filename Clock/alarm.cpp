@@ -1,11 +1,8 @@
 #include "alarm.h"
 
-#include <iostream>
-
 Alarm::Alarm(QObject *parent)
     : QObject{parent} {
-    date.setDate(QDate::currentDate());
-    dateSetTime(6,0);
+    date=QDateTime::currentDateTime();
 }
 
 void Alarm::newAlarm(){
@@ -17,12 +14,14 @@ void Alarm::newAlarm(){
 }
 
 void Alarm::dateSetTime(int hours, int minutes){
-    date.setTime(QTime::fromMSecsSinceStartOfDay(hours*3600000+minutes*60000));
+    date.setTime(QTime::fromMSecsSinceStartOfDay(hours*3600000+
+                                                 minutes*60000));
     emit onDateChanged();
 }
 
 void Alarm::dateAddDays(int days){
-    date=date.addDays(days);
+    if(date.addDays(days).date()>=QDate::currentDate())
+        date=date.addDays(days);
     dateSet=true;
     emit onDateChanged();
     emit onDateSetChanged();
@@ -33,6 +32,6 @@ bool      Alarm::getDateSet() { return dateSet; }
 QDateTime Alarm::assignDate() { return date; }
 
 bool Alarm::check(QDateTime d1, QDateTime d2, bool everyDay){
-    return ((everyDay&&d1.toString("h:m")==d2.toString("h:m"))
-            ||d1.toString("h:m d:M:y")==d2.toString("h:m d:M:y"));
+    return ((everyDay&&d1.toString("h:m")==      d2.toString("h:m"))
+                     ||d1.toString("h:m d:M:y")==d2.toString("h:m d:M:y"));
 }
