@@ -1,8 +1,6 @@
 import QtQuick
 
 Item {
-    property var currentDate
-
     width: clockDial.width
     height: clockDial.height
 
@@ -30,7 +28,7 @@ Item {
             anchors.verticalCenterOffset: -sourceSize.height/2
 
             transformOrigin: Item.Bottom //rotazione calcolata in base ai minuti
-            rotation: currentDate.getMinutes()*6
+            rotation: Qt.formatDateTime(currentDate.date, "m")*6
 
             Behavior on rotation {
                 NumberAnimation { duration: 200 }
@@ -46,11 +44,11 @@ Item {
             anchors.horizontalCenterOffset: sourceSize.width/2
 
             transformOrigin: Item.Left
-            rotation: (currentDate.getHours()>12 ?
-                          currentDate.getHours()-12 :
-                          currentDate.getHours())
+            rotation: Qt.formatDateTime(currentDate.date, "h")>12 ?
+                          Qt.formatDateTime(currentDate.date, "h")-12 :
+                          Qt.formatDateTime(currentDate.date, "h")
                      *30
-                     +30*(currentDate.getMinutes()/60)
+                     +30*(Qt.formatDateTime(currentDate.date, "m")/60)
                      -90
 
             Behavior on rotation {
@@ -66,7 +64,4 @@ Item {
             anchors.centerIn: parent
         }
     }
-
-
 }
-

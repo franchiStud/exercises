@@ -27,7 +27,8 @@ Rectangle {
 
         text: buttonTxt
 
-        x: 60
+        x: buttonTxt==="Everyday" ||
+           buttonTxt==="Set date" ? 60 : 50
         y: 10
 
         font.pixelSize: 24

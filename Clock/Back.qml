@@ -6,6 +6,8 @@ Image {
     property int startX
     property var stackView
 
+    signal click()
+
     source: mouseArea.containsPress
             ? "/assets/btn-back-hover.svg"
             : "/assets/btn-back-active.svg"
@@ -27,6 +29,6 @@ Image {
         id: mouseArea
 
         anchors.fill: parent
-        onClicked: stackView.pop()
+        onClicked: root.click()
     }
 }

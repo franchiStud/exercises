@@ -5,9 +5,6 @@ Item {
 
     property var stackView
 
-    signal clickReset()
-    signal clickPause()
-
     Head {
         id: head
 
@@ -19,7 +16,7 @@ Item {
     Image {
         property bool clicked
 
-        source: isTimerRunning
+        source: timerValues.isTimerRunning
                 ? (mouseAreaP.containsPress ? "/assets/btn-pause-hover"
                                             : "/assets/btn-pause-active")
                 : (mouseAreaP.containsPress ? "/assets/btn-play-hover"
@@ -35,7 +32,7 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                onClicked: timerCountDown.clickPause()
+                timerValues.pause()
             }
         }
     }
@@ -54,7 +51,9 @@ Item {
 
             anchors.fill: parent
 
-            onClicked: timerCountDown.clickReset()
+            onClicked: {
+                timerValues.reset()
+            }
         }
     }
 
@@ -62,6 +61,6 @@ Item {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -30
 
-        timeLeft: (timerTimeLeftHours*3600+timerTimeLeftMinutes*60+timerTimeLeftSeconds)
-                  / (timerStartHours*3600+timerStartMinutes*60) }
+        timeLeft: (timerValues.leftHours*3600+timerValues.leftMinutes*60+timerValues.leftSeconds)
+                  / (timerValues.startHours*3600+timerValues.startMinutes*60) }
 }

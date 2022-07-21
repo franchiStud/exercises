@@ -7,7 +7,7 @@ Item {
     property real timerHoursValue: timerHours.value
     property real timerMinutesValue: timerMinutes.value
 
-    signal clickTimer()
+    signal click()
 
     Head {
         id: head
@@ -45,6 +45,10 @@ Item {
     SetButton {
         buttonTxt: "SET TIMER"
 
-        onClick: timerSet.clickTimer()
+        onClick: {
+            timerValues.start(timerHoursValue, timerMinutesValue)
+
+            timerSet.click()
+        }
     }
 }

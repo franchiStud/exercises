@@ -20,7 +20,7 @@ Component {
             anchors.verticalCenter: parent.verticalCenter
 
             width: 112
-            height: 60          
+            height: 60
             radius: width/14
 
             color: isActive ? "#0f494f" : "#313848"
@@ -33,7 +33,7 @@ Component {
                 anchors.fill:parent
                 onClicked: {
                     isActive=!isActive
-                    isActive ? activeAlarms++ : activeAlarms--
+                    isActive ? alarms.activeAlarms++ : alarms.activeAlarms--
                 }
             }
         }

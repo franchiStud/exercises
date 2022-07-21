@@ -9,6 +9,10 @@ find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(appClock
     main.cpp
+
+    alarm.h        alarm.cpp
+    timervalues.h  timervalues.cpp
+    date.h         date.cpp
 )
 
 qt_add_qml_module(appClock
@@ -57,6 +61,9 @@ set_target_properties(appClock PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+find_package(Qt6 REQUIRED COMPONENTS Multimedia)
+target_link_libraries(appClock PRIVATE Qt6::Multimedia)
 
 target_compile_definitions(appClock
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)

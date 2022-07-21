@@ -7,13 +7,13 @@ Item {
 
     Text {
         id: timeLeftTxt
-        text: (timerTimeLeftHours < 10
-                    ? "0"+timerTimeLeftHours
-                    : timerTimeLeftHours)
+        text: (timerValues.leftHours < 10
+                    ? "0"+timerValues.leftHours
+                    : timerValues.leftHours)
               +":"+
-              (timerTimeLeftMinutes < 10
-                      ? "0"+timerTimeLeftMinutes
-                      : timerTimeLeftMinutes)
+              (timerValues.leftMinutes < 10
+                      ? "0"+timerValues.leftMinutes
+                      : timerValues.leftMinutes)
 
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -50
@@ -23,9 +23,9 @@ Item {
     }
 
     Text {
-        text: timerTimeLeftSeconds < 10
-            ? "0"+timerTimeLeftSeconds
-            : timerTimeLeftSeconds
+        text: timerValues.leftSeconds < 10
+            ? "0"+timerValues.leftSeconds
+            : timerValues.leftSeconds
 
         anchors.top: timeLeftTxt.bottom
         anchors.horizontalCenter: timeLeftTxt.horizontalCenter

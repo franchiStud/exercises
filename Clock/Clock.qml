@@ -4,8 +4,6 @@ import QtQuick.Controls 2.0
 Item {
     id: root
 
-    property var currentDate: new Date()
-
     anchors.fill: parent
 
     StackView {
@@ -22,7 +20,6 @@ Item {
         id: ac;
 
         AnalogClock {
-            currentDate: root.currentDate
             MouseArea {
                 anchors.fill: parent
 
@@ -35,17 +32,11 @@ Item {
         id: dc;
 
         DigitalClock {
-            currentDate: root.currentDate
             MouseArea {
                 anchors.fill: parent
 
                 onClicked: stackViewClock.pop()
             }
         }
-    }
-
-    Timer {
-        interval: 500; running: true; repeat: true;
-        onTriggered: { currentDate=new Date(); }
     }
 }
