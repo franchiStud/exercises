@@ -37,6 +37,8 @@ public slots:
     bool getDateSet();
 
     Q_INVOKABLE QDateTime assignDate();
+
+    Q_INVOKABLE bool check(QDateTime d1, QDateTime d2, bool everyDay);
 };
 
 #endif

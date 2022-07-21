@@ -11,13 +11,6 @@ Window {
     property var everyDayAlarms: ListModel {}
     property var dateAlarms: ListModel {}
 
-//    property bool buttonDateSet: false
-//    property var buttonDateValue: {
-//                                    var d=new Date()
-//                                    d.setMinutes(0)
-//                                    d.setHours(6)
-//                                    return d
-//                                 }
     width: 480
     height: 800
     visible: true
@@ -87,11 +80,10 @@ Window {
                 onClick: {
                     for(var a=0;a<alarmList.isSelected.length;a++){
                         var now=alarmList.isSelected[a].date;
-
                         for(var e=0;e<everyDayAlarms.count;e++){
                             var alarmE = everyDayAlarms.get(e).date
-                            if(now.getMinutes()===alarmE.getMinutes()
-                             &&now.getHours()  ===alarmE.getHours()
+
+                            if(alarms.check(alarmE, now, true)
                              &&alarmList.isSelected[a].everyDay){
 
                                 everyDayAlarms.remove(e--, 1);
@@ -104,11 +96,7 @@ Window {
 
                         for(var i=0;i<dateAlarms.count;i++){
                             var alarmD = dateAlarms.get(i).date
-                            if(now.getMinutes() ===alarmD.getMinutes()
-                             &&now.getHours()   ===alarmD.getHours()
-                             &&now.getDate()    ===alarmD.getDate()
-                             &&now.getMonth()   ===alarmD.getMonth()
-                             &&now.getFullYear()===alarmD.getFullYear()
+                            if(alarms.check(alarmD, now, false)
                              &&!alarmList.isSelected[a].everyDay){
 
                                 dateAlarms.remove(i--, 1)
@@ -153,22 +141,14 @@ Window {
         interval: 60000; running: alarms.isThereAlarm && alarms.activeAlarms>0
                          repeat:  alarms.isThereAlarm && alarms.activeAlarms>0
         onTriggered: {
-            var now = new Date()
-
             for(var e=0;e<everyDayAlarms.count;e++){
                 var alarmE = everyDayAlarms.get(e).date
-                if(now.getMinutes()===alarmE.getMinutes()
-                 &&now.getHours()  ===alarmE.getHours())
+                if(alarms.check(alarmE, currentDate.date, true))
                     alarmSound.play()
             }
-
             for(var i=0;i<dateAlarms.count;i++){
                 var alarmD = dateAlarms.get(i).date
-                if(now.getMinutes() ===alarmD.getMinutes()
-                 &&now.getHours()   ===alarmD.getHours()
-                 &&now.getDate()    ===alarmD.getDate()
-                 &&now.getMonth()   ===alarmD.getMonth()
-                 &&now.getFullYear()===alarmD.getFullYear())
+                if(alarms.check(alarmE, currentDate.date, false))
                     alarmSound.play()
             }
         }

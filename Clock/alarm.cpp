@@ -1,5 +1,7 @@
 #include "alarm.h"
 
+#include <iostream>
+
 Alarm::Alarm(QObject *parent)
     : QObject{parent} {
     date.setDate(QDate::currentDate());
@@ -29,3 +31,8 @@ void Alarm::dateAddDays(int days){
 QDateTime Alarm::getDate()    { return date; }
 bool      Alarm::getDateSet() { return dateSet; }
 QDateTime Alarm::assignDate() { return date; }
+
+bool Alarm::check(QDateTime d1, QDateTime d2, bool everyDay){
+    return ((everyDay&&d1.toString("h:m")==d2.toString("h:m"))
+            ||d1.toString("h:m d:M:y")==d2.toString("h:m d:M:y"));
+}
