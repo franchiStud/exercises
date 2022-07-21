@@ -55,10 +55,10 @@ Image {
         anchors.verticalCenterOffset: -sourceSize.height/2
 
         transformOrigin: Item.Bottom
-        rotation: (buttonDateValue.getHours()>12
-                        ? buttonDateValue.getHours()-12
-                        : buttonDateValue.getHours())*30
-                  + (buttonDateValue.getMinutes()/60)*30
+        rotation: (Qt.formatDateTime(alarms.date,"h")>12
+                        ? Qt.formatDateTime(alarms.date,"h")-12
+                        : Qt.formatDateTime(alarms.date,"h"))*30
+                  + (Qt.formatDateTime(alarms.date,"m")/60)*30
     }
 
     Timer { //hour refreshes every 0.5 secs

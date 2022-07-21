@@ -19,7 +19,7 @@ Item {
         Text {
             id: day
 
-            text: buttonDateValue.getDate()
+            text: Qt.formatDateTime(alarms.date,"dd")
 
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
@@ -34,17 +34,7 @@ Item {
         Text {
             id: weekDay
 
-            text: {
-                switch(buttonDateValue.getDay()){
-                    case 0: return "Sun"
-                    case 1: return "Mon"
-                    case 2: return "Tue"
-                    case 3: return "Wed"
-                    case 4: return "Thu"
-                    case 5: return "Fri"
-                    case 6: return "Sat"
-                }
-            }
+            text: Qt.formatDateTime(alarms.date,"ddd")
 
             anchors.horizontalCenter: day.horizontalCenter
             anchors.bottom: day.top
@@ -59,8 +49,7 @@ Item {
         Text {
             id: restOfDate
 
-            text: "/"+(buttonDateValue.getMonth()+1)+
-                  "/"+ buttonDateValue.getFullYear()
+            text: Qt.formatDateTime(alarms.date,"/MM/yyyy")
 
             x: parent.width+18
             anchors.verticalCenter: day.verticalCenter
@@ -82,11 +71,7 @@ Item {
 
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= buttonDateValue
-
-                    updateDate.setDate(updateDate.getDate()+1)
-
-                    buttonDateValue=updateDate
+                    alarms.dateAddDays(1)
                 }
             }
         }
@@ -101,11 +86,7 @@ Item {
 
                 anchors.fill: parent
                 onClicked: {
-                    var updateDate= buttonDateValue
-
-                    updateDate.setDate(updateDate.getDate()-1)
-
-                    buttonDateValue=updateDate
+                    alarms.dateAddDays(-1)
                 }
             }
         }

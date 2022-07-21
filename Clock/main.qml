@@ -11,13 +11,13 @@ Window {
     property var everyDayAlarms: ListModel {}
     property var dateAlarms: ListModel {}
 
-    property bool buttonDateSet: false
-    property var buttonDateValue: {
-                                    var d=new Date()
-                                    d.setMinutes(0)
-                                    d.setHours(6)
-                                    return d
-                                 }
+//    property bool buttonDateSet: false
+//    property var buttonDateValue: {
+//                                    var d=new Date()
+//                                    d.setMinutes(0)
+//                                    d.setHours(6)
+//                                    return d
+//                                 }
     width: 480
     height: 800
     visible: true
@@ -69,7 +69,6 @@ Window {
         id: viewAlarmDateSet
         ViewAlarmDateSet {
             onClick: {
-                buttonDateSet=true
                 stackViewMain.pop()
             }
         }
